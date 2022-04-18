@@ -3,29 +3,30 @@ import { TaskContent, Task } from "types/type";
 
 class TodoAPI {
   constructor(private readonly fetchService: FetchService) {}
-  getTodoList() {
-    return this.fetchService.get<undefined, Task[]>("todos/");
+  getTasks(listId: string) {
+    const endpoint = `todos/${listId}`;
+    return this.fetchService.get<undefined, Task[]>(endpoint);
   }
 
-  deleteTask(id: string) {
-    const endpoint = `todos/delete-task/${id}`;
+  addTask(listId: string, newTask: TaskContent) {
+    const endpoint = `todos/add-task/${listId}`;
+
+    return this.fetchService.post<TaskContent, Task>(endpoint, newTask);
+  }
+
+  deleteTask(taskId: string) {
+    const endpoint = `todos/delete-task/${taskId}`;
+    return this.fetchService.delete<undefined, Task>(endpoint);
+  }
+
+  clearCompleted(listId: string) {
+    const endpoint = `todos/clear-tasks/${listId}`;
     return this.fetchService.delete<undefined, Task[]>(endpoint);
   }
 
-  clearCompleted() {
-    return this.fetchService.delete<undefined, Task[]>("todos/clear-tasks");
-  }
-
-  addTask(newTask: TaskContent) {
-    return this.fetchService.post<TaskContent, Task[]>(
-      "todos/add-task",
-      newTask
-    );
-  }
-
-  updateTask(changes: TaskContent) {
-    const endpoint = `todos/change-task/${changes._id}`;
-    return this.fetchService.put<TaskContent, Task[]>(endpoint, changes);
+  updateTask(taskId: string, changes: TaskContent) {
+    const endpoint = `todos/change-task/${taskId}`;
+    return this.fetchService.put<TaskContent, Task>(endpoint, changes);
   }
 }
 

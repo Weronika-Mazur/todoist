@@ -1,13 +1,25 @@
 export interface Task {
-  _id: string;
+  taskId: string;
   content: string;
   state: "completed" | "active";
+  priority?: number;
+  dueDate?: Date;
+}
+
+export interface List {
+  listId: string;
+  name: string;
+  owner: string;
+  color: number;
+  activeCount: number;
 }
 
 export interface TaskContent {
-  _id?: string;
+  taskId?: string;
   content?: string;
   state?: "completed" | "active";
+  dueDate?: Date;
+  priority?: number;
 }
 
 export interface EditMode {
@@ -15,16 +27,12 @@ export interface EditMode {
   id: string;
 }
 
-export interface FormValues {
-  email?: string;
-  password?: string;
-}
-
-export interface User {
-  _id: string;
+export interface LoginFormValues {
   email: string;
   password: string;
-  todo: Task[];
+}
+
+export interface Token {
   token?: string;
   error?: string;
 }
