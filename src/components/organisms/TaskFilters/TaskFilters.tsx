@@ -7,7 +7,7 @@ import {
 } from "features/todo/todoSlice";
 
 import { FilterArray, Filter } from "types/type";
-import { ClearCompleted, FilterBar, FilterOption, FilterList } from "./styles";
+import * as S from "./styles";
 
 const TaskFilters = () => {
   const dispatch = useAppDispatch();
@@ -42,11 +42,11 @@ const TaskFilters = () => {
   }
 
   return (
-    <FilterBar>
+    <S.FilterBar>
       <p>{itemsLeft}</p>
-      <FilterList>
+      <S.FilterList>
         {filterArray.map((filter) => (
-          <FilterOption
+          <S.FilterOption
             key={filter.type}
             onClick={() => {
               handleSetFilter(filter.type);
@@ -54,13 +54,13 @@ const TaskFilters = () => {
             $selected={isActiveFilter(filter.type)}
           >
             {filter.desc}
-          </FilterOption>
+          </S.FilterOption>
         ))}
-      </FilterList>
-      <ClearCompleted onClick={handleClearCompleted}>
+      </S.FilterList>
+      <S.ClearCompleted onClick={handleClearCompleted}>
         Clear completed
-      </ClearCompleted>
-    </FilterBar>
+      </S.ClearCompleted>
+    </S.FilterBar>
   );
 };
 

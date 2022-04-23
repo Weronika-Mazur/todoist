@@ -9,7 +9,10 @@ w-[80%]
 flex
 justify-center
 items-center
-z-10
+z-400
+animate__animated
+animate__slideInUp
+animate__fast
 `;
 
 export const BannerContainer = tw.div`

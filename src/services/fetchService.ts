@@ -42,6 +42,11 @@ export class FetchService {
         throw new Error("No data returned");
       }
 
+      if (!data.ok) {
+        const text = await data.text();
+        throw new Error(text);
+      }
+
       const response = await data.json();
       return response;
     } catch (err) {

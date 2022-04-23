@@ -9,6 +9,7 @@ import TaskContainer from "components/organisms/TaskContainer/TaskContainer";
 import SideBar from "components/organisms/SideBar/SideBar";
 import { fetchListArray } from "features/list/listSlice";
 import { setEmail, setUserName } from "features/user/userSlice";
+import Modals from "components/organisms/Modals/Modals";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ const Home = () => {
           <TaskContainer />
         </div>
       </div>
+      <Modals />
     </div>
   );
 };

@@ -11,6 +11,7 @@ items-center
 justify-between
 bg-blue
 py-3
+z-[8]
 `;
 
 export const Logo = tw.h1`

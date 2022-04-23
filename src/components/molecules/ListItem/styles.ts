@@ -1,16 +1,29 @@
+import styled from "styled-components";
 import tw from "tailwind-styled-components";
+import { Colors } from "utils/constants";
+import { ListColors } from "../../../types/type";
 
 interface ContainerProps {
-  $color: number;
+  $color: ListColors;
 }
 
-const Colors = [
-  "fill-green-400",
-  "fill-sky-400",
-  "fill-violet-400",
-  "fill-fuchsia-400",
-  "fill-rose-400",
-];
+const ListItemHover = styled.li`
+  &:hover {
+    .options-button {
+      display: block;
+    }
+
+    .options-count {
+      display: none;
+    }
+  }
+`;
+
+export const ListItemContainer = tw(ListItemHover)`
+mt-2 
+flex 
+items-center
+`;
 
 export const Container = tw.div<ContainerProps>`
   w-6
@@ -20,4 +33,13 @@ export const Container = tw.div<ContainerProps>`
   items-center
   mr-1
   ${(p: ContainerProps) => Colors[p.$color]}
+  `;
+
+export const OptionsButton = tw.button`
+ flex 
+ self-stretch
+  ml-3 
+  hidden 
+  options-button
+
   `;

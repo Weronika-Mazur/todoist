@@ -31,6 +31,7 @@ export const userSlice = createSlice({
     setIsSubmitted: (state, action: PayloadAction<boolean>) => {
       state.isSubmitted = action.payload;
     },
+    resetUser: () => initialState,
   },
 });
 
@@ -84,6 +85,7 @@ export const login = (values: LoginFormValues): TodoAppThunk => {
   };
 };
 
-export const { setUserName, setEmail, setIsSubmitted } = userSlice.actions;
+export const { setUserName, setEmail, setIsSubmitted, resetUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;

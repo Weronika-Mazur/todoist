@@ -2,16 +2,18 @@ import tw from "tailwind-styled-components";
 
 export const Backdrop = tw.div`
 fixed
-z-1
+z-[30]
 w-full
 h-full
 top-0
 left-0
+bg-backdrop
+
 `;
 
 export const EditContainer = tw.div`
 relative
-z-2
+z-[40]
 flex 
 justify-between 
 items-center 

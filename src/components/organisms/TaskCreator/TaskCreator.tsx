@@ -5,11 +5,7 @@ import { useState } from "react";
 import BusyIcon from "assets/BusyIcon";
 import { TaskContent } from "types/type";
 import Button from "components/atoms/Button/Button";
-import {
-  BusyAnimation,
-  TaskCreatorContainer,
-  TaskCreatorInput,
-} from "./styles";
+import * as S from "./styles";
 
 const TaskCreator = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +18,7 @@ const TaskCreator = () => {
       if (text !== "") {
         const newTask: TaskContent = {
           content: text,
-          state: "active",
+          status: "active",
         };
 
         const data = await dispatch(addTask(newTask));
@@ -38,22 +34,22 @@ const TaskCreator = () => {
 
   if (!isLoading) {
     return (
-      <TaskCreatorContainer>
+      <S.TaskCreatorContainer>
         <Button onClick={handleAddItem} text="add"></Button>
-        <TaskCreatorInput
+        <S.TaskCreatorInput
           type="text"
           placeholder="Create a new todo..."
           maxLength={200}
           value={text}
           onChange={handleTextChange}
         />
-      </TaskCreatorContainer>
+      </S.TaskCreatorContainer>
     );
   } else {
     return (
-      <BusyAnimation>
+      <S.BusyAnimation>
         <BusyIcon className="busy-icon" />
-      </BusyAnimation>
+      </S.BusyAnimation>
     );
   }
 };

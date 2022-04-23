@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string } from "yup";
 
 import { LoginFormValues } from "types/type";
 import { login, setIsSubmitted } from "features/user/userSlice";
 import { selectIsSubmitted } from "../../../features/user/userSlice";
-import { Label, SubmitButton } from "./styles";
+import * as S from "./styles";
+import { schema } from "utils/schemas";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -17,17 +17,12 @@ const LoginForm = () => {
 
   const isSubmitted = useAppSelector(selectIsSubmitted);
 
-  const schema = object().shape({
-    email: string().required("Email is required").email("Invalid email"),
-    password: string().required("Password is required"),
-  });
-
   useEffect(() => {
     if (isSubmitted) {
       dispatch(setIsSubmitted(false));
       navigate("/");
     }
-  }, [isSubmitted, dispatch, navigate]);
+  }, [isSubmitted, dispatch, navigate]); //przeniesc do reduxa
 
   return (
     <div>
@@ -40,7 +35,7 @@ const LoginForm = () => {
       >
         {() => (
           <Form className="flex gap-1 flex-col mt-2">
-            <Label htmlFor="email">Email:</Label>
+            <S.Label htmlFor="email">Email:</S.Label>
             <Field
               id="email"
               type="email"
@@ -52,7 +47,7 @@ const LoginForm = () => {
               component="div"
               className="text-pink-400 mt-1 font-light text-sm"
             />
-            <Label htmlFor="password">Password:</Label>
+            <S.Label htmlFor="password">Password:</S.Label>
 
             <Field
               type="password"
@@ -65,7 +60,7 @@ const LoginForm = () => {
               component="div"
               className="text-pink-400 mt-1 font-light text-sm"
             />
-            <SubmitButton type="submit">Submit</SubmitButton>
+            <S.SubmitButton type="submit">Submit</S.SubmitButton>
           </Form>
         )}
       </Formik>

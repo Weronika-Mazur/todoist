@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks";
 import { setErrorMessage, selectErrorMessage } from "features/todo/todoSlice";
 
 import CrossIcon from "assets/CrossIcon";
-import { Banner, BannerContainer, CrossButton, ErrorContent } from "./styles";
+import * as S from "./styles";
 
 const ErrorBar = () => {
   const dispatch = useAppDispatch();
@@ -15,14 +15,14 @@ const ErrorBar = () => {
   }
 
   return (
-    <Banner>
-      <BannerContainer>
-        <ErrorContent>{errorMessage}</ErrorContent>
-        <CrossButton onClick={handleCloseBanner}>
+    <S.Banner>
+      <S.BannerContainer>
+        <S.ErrorContent>{errorMessage}</S.ErrorContent>
+        <S.CrossButton onClick={handleCloseBanner}>
           <CrossIcon className="fill-slate-100" />
-        </CrossButton>
-      </BannerContainer>
-    </Banner>
+        </S.CrossButton>
+      </S.BannerContainer>
+    </S.Banner>
   );
 };
 

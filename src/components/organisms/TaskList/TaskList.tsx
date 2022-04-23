@@ -3,14 +3,14 @@ import TaskItem from "../../molecules/TaskItem/TaskItem";
 import { useAppSelector } from "store/hooks";
 import {
   selectTaskArrayWithFilters,
-  selectEditModeId,
+  selectTaskEditModeId,
 } from "features/todo/todoSlice";
 
 import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
 
 const TaskList = () => {
   const taskArray: Task[] = useAppSelector(selectTaskArrayWithFilters);
-  const editModeId = useAppSelector(selectEditModeId);
+  const editModeId = useAppSelector(selectTaskEditModeId);
 
   function isEditModeActive(taskId: string): boolean {
     return taskId === editModeId;
@@ -23,7 +23,7 @@ const TaskList = () => {
           <TaskItem
             key={task.taskId}
             id={task.taskId}
-            state={task.state}
+            status={task.status}
             content={task.content}
           />
         ) : (

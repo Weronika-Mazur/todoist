@@ -22,6 +22,8 @@ const ListTitle = ({ text, listId }: ListTitleProps) => {
 
   const Title = tw.p<Title>`
   ml-2
+  break-words
+  truncate
 ${(p: Title) =>
   isSelected(p.$selected)
     ? "text-slate-100 font-extrabold"
@@ -37,6 +39,7 @@ ${(p: Title) =>
       onClick={() => {
         handleSelectList(listId);
       }}
+      title={text}
     >
       {text}
     </Title>

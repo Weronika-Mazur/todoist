@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
+import { TaskStatus } from "types/type";
 
 const TaskItemHover = styled.div`
   &:hover {
@@ -19,6 +20,7 @@ px-4
 border-b-[3px] 
 border-main-600 
 rounded-md
+
 `;
 
 export const Circle = tw.div`
@@ -28,20 +30,24 @@ h-3
 bg-main-500
 `;
 
-interface Checked {
-  $state: "completed" | "active";
+interface TaskProps {
+  $status: TaskStatus;
 }
 
-const isCompleted = (state: "completed" | "active") => state === "completed";
+const isCompleted = (state: TaskStatus) => state === "completed";
 
-export const TaskText = tw.p<Checked>`
+export const TaskText = tw.p<TaskProps>`
 ml-2 
 w-full
-${(p: Checked) => (isCompleted(p.$state) ? " text-main-500 " : "")}
+animate__animated animate__fast animate__fadeInUp z-[0]
+${(p: TaskProps) => (isCompleted(p.$status) ? " text-main-500 " : "")}
 `;
 
-export const TaskButton = tw.button<Checked>`
+export const TaskButton = tw.button<TaskProps>`
 rounded-full 
 border-2 
-${(p: Checked) => (isCompleted(p.$state) ? " border-main-500" : "border-blue")}
+
+animate__animated animate__fast animate__fadeInUp z-initial
+${(p: TaskProps) =>
+  isCompleted(p.$status) ? " border-main-500" : "border-blue"}
 `;
