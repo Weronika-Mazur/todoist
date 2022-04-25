@@ -28,14 +28,10 @@ const NavBar = ({ handleToggleSideBar }: NavBarProps) => {
     navigate("/login");
   }
 
-  const handleMenu = () => {
-    handleToggleSideBar();
-  };
-
   return (
     <S.Bar>
       <S.LogoContainer>
-        <S.MenuButton onClick={handleMenu}>
+        <S.MenuButton onClick={handleToggleSideBar}>
           <MenuIcon className="fill-main-100 w-5 h-5 ml-3" />
         </S.MenuButton>
         <S.Logo>TODO</S.Logo>
