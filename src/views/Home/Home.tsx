@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
@@ -10,10 +10,17 @@ import SideBar from "components/organisms/SideBar/SideBar";
 import { fetchListArray } from "features/list/listSlice";
 import { setEmail, setUserName } from "features/user/userSlice";
 import Modals from "components/organisms/Modals/Modals";
+import * as S from "./styles";
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const [sideBarVisible, setSideBarVisible] = useState(false);
+
+  const handleToggleSideBar = () => {
+    setSideBarVisible(!sideBarVisible);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -30,12 +37,12 @@ const Home = () => {
 
   return (
     <div className="w-full ">
-      <NavBar />
+      <NavBar handleToggleSideBar={handleToggleSideBar} />
       <div className="w-full mt-14 ">
-        <SideBar />
-        <div className=" p-8 w-full pl-[18rem]">
+        <SideBar isVisible={sideBarVisible} />
+        <S.MainContainer $isVisible={sideBarVisible}>
           <TaskContainer />
-        </div>
+        </S.MainContainer>
       </div>
       <Modals />
     </div>

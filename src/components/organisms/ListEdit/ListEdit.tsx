@@ -19,19 +19,17 @@ const ListEdit = () => {
   };
 
   const editCurrentList = async (newName: string, newColor: ListColors) => {
-    try {
-      if (newName !== "") {
-        const newList: ListContent = {
-          name: newName,
-          color: newColor,
-        };
+    if (newName !== "") {
+      const newList: ListContent = {
+        name: newName,
+        color: newColor,
+      };
 
-        const data = await dispatch(updateList(newList, editMode.id));
-        if (data) {
-          handleCloseModal();
-        }
+      const data = await dispatch(updateList(newList, editMode.id));
+      if (data) {
+        handleCloseModal();
       }
-    } catch (err) {}
+    }
   };
 
   return (

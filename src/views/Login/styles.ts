@@ -13,6 +13,7 @@ w-[640px]
 bg-main-600 
 rounded-md 
 px-12
+mx-4
 `;
 
 const LoginLine = styled.div`
@@ -56,13 +57,6 @@ text-center
 `;
 
 export const SignUp = tw.p`
-
 my-7
 text-center
-`;
-
-export const SignUpLink = tw.a`
-text-slate-100 
-cursor-pointer 
-font-bold
 `;

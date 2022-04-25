@@ -34,7 +34,7 @@ const DropDownMenu = () => {
       <S.Backdrop onClick={handleClose}>
         <S.DropDownList
           style={{
-            left: `${dropDownProperties.x}px`,
+            left: `${dropDownProperties.x - 70}px`,
             top: `${dropDownProperties.y}px`,
           }}
         >

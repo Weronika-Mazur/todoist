@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import UserIcon from "assets/UserIcon";
 import LoginForm from "components/organisms/LoginForm/LoginForm";
 import * as S from "./styles";
@@ -14,7 +16,13 @@ const Login = () => {
         <LoginForm />
         <S.SignUp>
           Don't have an account?
-          <S.SignUpLink> Sign up</S.SignUpLink>
+          <Link
+            to="/register"
+            className="text-slate-100 cursor-pointer font-bold"
+          >
+            {" "}
+            Sign up
+          </Link>
         </S.SignUp>
       </S.LoginCard>
     </S.LoginContainer>

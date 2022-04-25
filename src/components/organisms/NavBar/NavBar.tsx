@@ -8,8 +8,13 @@ import { resetUser } from "features/user/userSlice";
 import UserIcon from "assets/UserIcon";
 import { selectEmail } from "features/user/userSlice";
 import * as S from "./styles";
+import MenuIcon from "assets/MenuIcon";
 
-const NavBar = () => {
+interface NavBarProps {
+  handleToggleSideBar: () => void;
+}
+
+const NavBar = ({ handleToggleSideBar }: NavBarProps) => {
   const username = useAppSelector(selectEmail);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -23,9 +28,18 @@ const NavBar = () => {
     navigate("/login");
   }
 
+  const handleMenu = () => {
+    handleToggleSideBar();
+  };
+
   return (
     <S.Bar>
-      <S.Logo>TODO</S.Logo>
+      <S.LogoContainer>
+        <S.MenuButton onClick={handleMenu}>
+          <MenuIcon className="fill-main-100 w-5 h-5 ml-3" />
+        </S.MenuButton>
+        <S.Logo>TODO</S.Logo>
+      </S.LogoContainer>
       <S.NavContainer>
         <S.UserName>{username}</S.UserName>
         <UserIcon className={"w-7 h-7 mr-3 fill-main-700"} />

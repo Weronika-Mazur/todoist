@@ -13,8 +13,10 @@ const ListItemHover = styled.li`
       display: block;
     }
 
-    .options-count {
-      display: none;
+    @media (min-width: 768px) {
+      .options-count {
+        display: none;
+      }
     }
   }
 `;
@@ -22,7 +24,7 @@ const ListItemHover = styled.li`
 export const ListItemContainer = tw(ListItemHover)`
 mt-2 
 flex 
-items-center
+items-center 
 `;
 
 export const Container = tw.div<ContainerProps>`
@@ -39,7 +41,7 @@ export const OptionsButton = tw.button`
  flex 
  self-stretch
   ml-3 
-  hidden 
+  block 
   options-button
-
+  md:hidden
   `;

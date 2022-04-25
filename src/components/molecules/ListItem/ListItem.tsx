@@ -30,8 +30,10 @@ const ListItem = ({ name, color, id, number }: ListItemProps) => {
       <S.Container $color={color}>
         <DotIcon />
       </S.Container>
-      <ListTitle listId={id} text={name} />
-      <ActiveCount count={number} className="options-count" />
+      <div className="w-full flex truncate md:w-auto">
+        <ListTitle listId={id} text={name} />
+        <ActiveCount count={number} className="options-count" />
+      </div>
       <S.OptionsButton onClick={handleShowMenu}>
         <OptionsIcon className="fill-main-300 w-4 h-4 " />
       </S.OptionsButton>

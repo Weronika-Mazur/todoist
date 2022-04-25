@@ -42,3 +42,14 @@ text-slate-100
 font-bold
 mr-4
 `;
+
+export const MenuButton = tw.button`
+md:hidden
+block
+`;
+
+export const LogoContainer = tw.div`
+flex 
+justify-center 
+items-center
+`;
