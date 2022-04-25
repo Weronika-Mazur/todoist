@@ -55,4 +55,6 @@ export class FetchService {
   }
 }
 
-export const fetchService = new FetchService("http://localhost:3030/");
+export const fetchService = new FetchService(
+  "https://lit-sands-47270.herokuapp.com/"
+);
