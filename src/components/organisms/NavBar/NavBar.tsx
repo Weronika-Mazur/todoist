@@ -5,11 +5,14 @@ import { resetTodo } from "features/todo/todoSlice";
 import { resetList } from "features/list/listSlice";
 import { resetUser } from "features/user/userSlice";
 
-import UserIcon from "assets/UserIcon";
 import { selectEmail } from "features/user/userSlice";
 import * as S from "./styles";
 
-const NavBar = () => {
+interface NavBarProps {
+  handleToggleSideBar: () => void;
+}
+
+const NavBar = ({ handleToggleSideBar }: NavBarProps) => {
   const username = useAppSelector(selectEmail);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -25,10 +28,15 @@ const NavBar = () => {
 
   return (
     <S.Bar>
-      <S.Logo>TODO</S.Logo>
+      <S.LogoContainer>
+        <S.MenuButton onClick={handleToggleSideBar}>
+          <S.WhiteMenuIcon />
+        </S.MenuButton>
+        <S.Logo>TODO</S.Logo>
+      </S.LogoContainer>
       <S.NavContainer>
         <S.UserName>{username}</S.UserName>
-        <UserIcon className={"w-7 h-7 mr-3 fill-main-700"} />
+        <S.DarkUserIcon />
         <S.LogOutButton onClick={handleLogOut}>Log out</S.LogOutButton>
       </S.NavContainer>
     </S.Bar>

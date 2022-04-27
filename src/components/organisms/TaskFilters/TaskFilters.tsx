@@ -45,15 +45,15 @@ const TaskFilters = () => {
     <S.FilterBar>
       <p>{itemsLeft}</p>
       <S.FilterList>
-        {filterArray.map((filter) => (
+        {filterArray.map(({ type, desc }) => (
           <S.FilterOption
-            key={filter.type}
+            key={type}
             onClick={() => {
-              handleSetFilter(filter.type);
+              handleSetFilter(type);
             }}
-            $selected={isActiveFilter(filter.type)}
+            $selected={isActiveFilter(type)}
           >
-            {filter.desc}
+            {desc}
           </S.FilterOption>
         ))}
       </S.FilterList>

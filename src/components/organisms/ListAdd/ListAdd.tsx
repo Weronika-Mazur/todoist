@@ -12,19 +12,17 @@ const ListAdd = () => {
   };
 
   const addNewList = async (newName: string, newColor: ListColors) => {
-    try {
-      if (newName !== "") {
-        const newList: ListContent = {
-          name: newName,
-          color: newColor,
-        };
+    if (newName !== "") {
+      const newList: ListContent = {
+        name: newName,
+        color: newColor,
+      };
 
-        const data = await dispatch(addList(newList));
-        if (data) {
-          handleCloseModal();
-        }
+      const data = await dispatch(addList(newList));
+      if (data) {
+        handleCloseModal();
       }
-    } catch (err) {}
+    }
   };
 
   return (

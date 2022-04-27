@@ -46,6 +46,13 @@ export interface LoginFormValues {
   password: string;
 }
 
+export interface RegisterFormValues {
+  username: string;
+  email: string;
+  password: string;
+  repeatPassword?: string;
+}
+
 export interface Token {
   token?: string;
   error?: string;

@@ -6,7 +6,11 @@ import ListItem from "components/molecules/ListItem/ListItem";
 import PredefinedLists from "../PredefinedLists/PredefinedLists";
 import * as S from "./styles";
 
-const SideBar = () => {
+interface SideBarProps {
+  isVisible: boolean;
+}
+
+const SideBar = ({ isVisible }: SideBarProps) => {
   const dispatch = useAppDispatch();
   const listArray = useAppSelector(selectListArray);
 
@@ -15,8 +19,8 @@ const SideBar = () => {
   };
 
   return (
-    <S.SideBarNav>
-      <S.SideBarContainer>
+    <S.SideBarNav $isVisible={isVisible}>
+      <S.SideBarContainer $isVisible={isVisible}>
         <PredefinedLists />
         <S.ButtonContainer>
           <Button onClick={handleShowListCreator} text="new list" />

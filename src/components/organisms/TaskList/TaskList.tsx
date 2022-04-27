@@ -6,6 +6,7 @@ import {
   selectTaskEditModeId,
 } from "features/todo/todoSlice";
 
+import * as S from "./styles";
 import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
 
 const TaskList = () => {
@@ -17,7 +18,7 @@ const TaskList = () => {
   }
 
   return (
-    <section className="flex flex-col mt-6 bg-main-700 rounded-md">
+    <S.TaskSection>
       {taskArray.map((task) =>
         !isEditModeActive(task.taskId) ? (
           <TaskItem
@@ -30,7 +31,7 @@ const TaskList = () => {
           <TaskEdit key={task.taskId} id={task.taskId} content={task.content} />
         )
       )}
-    </section>
+    </S.TaskSection>
   );
 };
 

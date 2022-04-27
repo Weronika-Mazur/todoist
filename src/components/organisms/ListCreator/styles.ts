@@ -79,3 +79,8 @@ border-main-500
 px-8 
 py-5
 `;
+
+export const ListEditContainer = tw.div`
+px-8 
+pb-0
+`;

@@ -3,7 +3,7 @@ import type { RootState } from "store/store";
 import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { userApi } from "../../services/userAPI";
-import { LoginFormValues } from "../../types/type";
+import { LoginFormValues, RegisterFormValues } from "../../types/type";
 import { setErrorMessage } from "features/todo/todoSlice";
 
 interface State {
@@ -80,6 +80,35 @@ export const login = (values: LoginFormValues): TodoAppThunk => {
     } catch (e: any) {
       const error = e.message || e;
       const errorMessage = `loging in. ${error}`;
+      dispatch(setErrorMessage(errorMessage));
+    }
+  };
+};
+
+export const register = (values: RegisterFormValues): TodoAppThunk => {
+  return async (dispatch) => {
+    try {
+      const response = await userApi.register(values);
+
+      if (!response) {
+        throw Error("Cannot connect to server");
+      }
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      const { token } = response;
+
+      if (!token) {
+        throw Error("Error authenticating");
+      }
+
+      localStorage.setItem("jwt", token);
+      dispatch(setIsSubmitted(true));
+    } catch (e: any) {
+      const error = e.message || e;
+      const errorMessage = `signing up. ${error}`;
       dispatch(setErrorMessage(errorMessage));
     }
   };

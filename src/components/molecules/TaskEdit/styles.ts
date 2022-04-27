@@ -1,3 +1,4 @@
+import CrossIcon from "assets/CrossIcon";
 import tw from "tailwind-styled-components";
 
 export const Backdrop = tw.div`
@@ -8,7 +9,6 @@ h-full
 top-0
 left-0
 bg-backdrop
-
 `;
 
 export const EditContainer = tw.div`
@@ -36,4 +36,8 @@ text-base
 text-main-100 
 font-body 
 font-medium
+`;
+
+export const GreyCrossIcon = tw(CrossIcon)`
+fill-main-300
 `;

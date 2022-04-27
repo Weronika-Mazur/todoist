@@ -24,6 +24,7 @@ const ListTitle = ({ text, listId }: ListTitleProps) => {
   ml-2
   break-words
   truncate
+
 ${(p: Title) =>
   isSelected(p.$selected)
     ? "text-slate-100 font-extrabold"

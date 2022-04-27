@@ -1,7 +1,7 @@
+import CrossIcon from "assets/CrossIcon";
 import tw from "tailwind-styled-components";
 
 export const Banner = tw.div`
-
 fixed
 left-[10%]
 bottom-6
@@ -9,7 +9,7 @@ w-[80%]
 flex
 justify-center
 items-center
-z-400
+z-[400]
 animate__animated
 animate__slideInUp
 animate__fast
@@ -44,5 +44,8 @@ px-[6]
 flex
 justify-center
 items-center
+`;
 
+export const WhiteCrossIcon = tw(CrossIcon)`
+fill-slate-100
 `;
