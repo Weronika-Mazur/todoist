@@ -30,13 +30,17 @@ flex
 items-center
 mr-3.5
 text-slate-100
+min-w-0
 `;
 
 export const UserName = tw.p`
 text-violet-100 
 font-medium 
 m-0
-mr-3
+mx-3
+truncate
+min-w-0
+flex-1
 `;
 
 export const LogOutButton = tw.button`

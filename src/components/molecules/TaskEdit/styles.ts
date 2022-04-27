@@ -12,7 +12,10 @@ bg-backdrop
 `;
 
 export const EditContainer = tw.div`
-relative
+md:relative
+sticky
+bottom-4
+md:bottom-0
 z-[40]
 flex 
 justify-between 

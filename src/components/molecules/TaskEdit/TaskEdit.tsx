@@ -43,6 +43,7 @@ const TaskEdit = ({ content, id }: TaskEditProps) => {
           value={text}
           maxLength={200}
           onChange={handleTextChange}
+          autoFocus
         />
         <button onClick={handleCancelEdit}>
           <S.GreyCrossIcon />
