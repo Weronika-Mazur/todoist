@@ -49,9 +49,9 @@ export const Card = tw.div`
 z-40
 bg-main-700
 rounded-md
-min-w-[480px]
+w-[480px]
 drop-shadow-2xl
-
+mx-4
 `;
 
 export const Title = tw.h1`

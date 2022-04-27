@@ -22,7 +22,7 @@ pl-4`;
 export const ClearCompleted = tw.p`
 hover:cursor-pointer
 font-medium
-
+text-center
 `;
 
 export const FilterBar = tw.section`
@@ -35,5 +35,8 @@ border-main-300
 mt-5
 py-1.5
 px-3
+`;
 
+export const TasksLeftCounter = tw.p`
+text-center
 `;

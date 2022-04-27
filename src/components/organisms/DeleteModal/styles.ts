@@ -18,7 +18,8 @@ export const Card = tw.div`
 z-40
 bg-main-700
 rounded-md
-min-w-[480px]
+w-[480px]
+mx-4
 drop-shadow-2xl
 `;
 
@@ -37,5 +38,5 @@ text-lg
 mb-8
 mt-10
 text-center
-
+mx-2
 `;
