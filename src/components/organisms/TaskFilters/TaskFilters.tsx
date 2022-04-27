@@ -43,7 +43,7 @@ const TaskFilters = () => {
 
   return (
     <S.FilterBar>
-      <p>{itemsLeft}</p>
+      <S.TasksLeftCounter>{itemsLeft}</S.TasksLeftCounter>
       <S.FilterList>
         {filterArray.map(({ type, desc }) => (
           <S.FilterOption
