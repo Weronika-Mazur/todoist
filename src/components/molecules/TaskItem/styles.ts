@@ -1,3 +1,5 @@
+import CrossIcon from "assets/CrossIcon";
+import EditIcon from "assets/EditIcon";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import { TaskStatus } from "types/type";
@@ -51,4 +53,22 @@ animate__animated animate__fast animate__fadeInUp
 z-initial
 ${(p: TaskProps) =>
   isCompleted(p.$status) ? " border-main-500" : "border-blue"}
+`;
+
+export const CrossButton = tw.button`
+cross-button 
+invisible
+`;
+
+export const EditButton = tw.button`
+edit-button 
+invisible
+`;
+
+export const GreyCrossIcon = tw(CrossIcon)`
+fill-main-300
+`;
+
+export const GreyEditIcon = tw(EditIcon)`
+fill-main-300
 `;

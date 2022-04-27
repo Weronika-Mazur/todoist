@@ -45,7 +45,7 @@ const ListCreator = ({
   return (
     <S.Backdrop>
       <S.Card>
-        <div className="px-8 pb-0">
+        <S.ListEditContainer>
           <S.Title>{title}</S.Title>
           <S.InputContainer>
             <DotIcon className={Colors[currentColor]} />
@@ -58,7 +58,7 @@ const ListCreator = ({
             />
           </S.InputContainer>
           <ColorPick handleChangeColor={handleChangeColor} />
-        </div>
+        </S.ListEditContainer>
         <S.ButtonContainer>
           <Button text="confirm" onClick={handleConfirm} />
           <CancelButton onClick={handleCancel} />

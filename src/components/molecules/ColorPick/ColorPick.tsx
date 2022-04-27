@@ -1,4 +1,3 @@
-import DotIcon from "assets/DotIcon";
 import * as S from "./styles";
 import { Colors } from "utils/constants";
 import { ListColors } from "types/type";
@@ -20,7 +19,7 @@ const ColorPick = ({ handleChangeColor }: ColorPickProps) => {
             handleChangeColor(value as ListColors);
           }}
         >
-          <DotIcon className="w-8 h-8 hover:scale-110 cursor-pointer" />
+          <S.ColorIcon />
         </S.ColorContainer>
       ))}
     </S.ColorPicker>

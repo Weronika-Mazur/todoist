@@ -5,9 +5,6 @@ import {
   changeTask,
 } from "features/todo/todoSlice";
 
-import CrossIcon from "assets/CrossIcon";
-import EditIcon from "assets/EditIcon";
-
 import * as S from "./styles";
 import { TaskStatus } from "types/type";
 
@@ -43,12 +40,12 @@ const TaskItem = ({ content, status, id }: TaskItemProps) => {
         <S.Circle></S.Circle>
       </S.TaskButton>
       <S.TaskText $status={status}>{content}</S.TaskText>
-      <button className="edit-button invisible" onClick={handleEditTask}>
-        <EditIcon className="fill-main-300" />
-      </button>
-      <button className="cross-button invisible" onClick={handleDeleteTask}>
-        <CrossIcon className="fill-main-300" />
-      </button>
+      <S.EditButton onClick={handleEditTask}>
+        <S.GreyEditIcon />
+      </S.EditButton>
+      <S.CrossButton onClick={handleDeleteTask}>
+        <S.GreyCrossIcon />
+      </S.CrossButton>
     </S.TaskItemContainer>
   );
 };

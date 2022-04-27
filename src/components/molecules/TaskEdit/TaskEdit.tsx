@@ -4,7 +4,6 @@ import { useAppDispatch } from "store/hooks";
 import { deactivateTaskEditMode, editTask } from "features/todo/todoSlice";
 import disableScroll from "disable-scroll";
 
-import CrossIcon from "assets/CrossIcon";
 import * as S from "./styles";
 
 interface TaskEditProps {
@@ -46,7 +45,7 @@ const TaskEdit = ({ content, id }: TaskEditProps) => {
           onChange={handleTextChange}
         />
         <button onClick={handleCancelEdit}>
-          <CrossIcon className="fill-main-300" />
+          <S.GreyCrossIcon />
         </button>
       </S.EditContainer>
     </>

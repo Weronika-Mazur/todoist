@@ -12,7 +12,7 @@ const TaskCreator = () => {
     <TaskCreatorContainer />
   ) : (
     <S.BusyAnimation>
-      <BusyIcon className="busy-icon" />
+      <BusyIcon />
     </S.BusyAnimation>
   );
 };
