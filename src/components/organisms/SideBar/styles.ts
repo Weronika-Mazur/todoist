@@ -15,20 +15,31 @@ const SideBarScrollbar = styled.div`
   }
 `;
 
-export const SideBarNav = tw.nav`
-fixed 
-w-[16rem] 
+interface SideBarProps {
+  $isVisible: boolean;
+}
+
+export const SideBarNav = tw.nav<SideBarProps>`
+fixed
+w-full 
+md:w-[16rem] 
 h-full 
 pb-[3.5rem]
+z-[20]
+${(p: SideBarProps) => (p.$isVisible ? " block " : "hidden")}
+md:block
 `;
 
-export const SideBarContainer = tw(SideBarScrollbar)`
+export const SideBarContainer = tw(SideBarScrollbar)<SideBarProps>`
 mr-0 
 h-full 
 overflow-y-auto  
 font-medium  
 bg-main-700 
 overflow-y-auto 
+animate__animated animate__faster animate__fadeInLeft
+${(p: SideBarProps) => (p.$isVisible ? "block " : "hidden")}
+md:block
 `;
 
 export const ButtonContainer = tw.div`

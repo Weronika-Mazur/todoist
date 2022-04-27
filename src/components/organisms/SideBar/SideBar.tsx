@@ -1,27 +1,31 @@
-import { useAppSelector } from "store/hooks";
-import { selectListArray } from "features/list/listSlice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { selectListArray, setShowModal } from "features/list/listSlice";
 
-import Button from "../../atoms/Button/Button";
-import ListItem from "../../molecules/ListItem/ListItem";
+import Button from "components/atoms/Button/Button";
+import ListItem from "components/molecules/ListItem/ListItem";
 import PredefinedLists from "../PredefinedLists/PredefinedLists";
-import {
-  SideBarNav,
-  SideBarContainer,
-  ButtonContainer,
-  UserList,
-} from "./styles";
+import * as S from "./styles";
 
-const SideBar = () => {
+interface SideBarProps {
+  isVisible: boolean;
+}
+
+const SideBar = ({ isVisible }: SideBarProps) => {
+  const dispatch = useAppDispatch();
   const listArray = useAppSelector(selectListArray);
 
+  const handleShowListCreator = () => {
+    dispatch(setShowModal("createList"));
+  };
+
   return (
-    <SideBarNav>
-      <SideBarContainer>
+    <S.SideBarNav $isVisible={isVisible}>
+      <S.SideBarContainer $isVisible={isVisible}>
         <PredefinedLists />
-        <ButtonContainer>
-          <Button onClick={() => {}} text="new list" />
-        </ButtonContainer>
-        <UserList>
+        <S.ButtonContainer>
+          <Button onClick={handleShowListCreator} text="new list" />
+        </S.ButtonContainer>
+        <S.UserList>
           {listArray.map((list) => (
             <ListItem
               key={list.listId}
@@ -31,9 +35,9 @@ const SideBar = () => {
               number={list.activeCount}
             />
           ))}
-        </UserList>
-      </SideBarContainer>
-    </SideBarNav>
+        </S.UserList>
+      </S.SideBarContainer>
+    </S.SideBarNav>
   );
 };
 

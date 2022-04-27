@@ -1,54 +1,53 @@
 import { useAppDispatch } from "store/hooks";
 import {
   deleteTask,
-  activateEditMode,
+  activateTaskEditMode,
   changeTask,
 } from "features/todo/todoSlice";
 
-import CrossIcon from "assets/CrossIcon";
-import EditIcon from "assets/EditIcon";
-import { Circle, TaskItemContainer, TaskText, TaskButton } from "./styles";
+import * as S from "./styles";
+import { TaskStatus } from "types/type";
 
 interface TaskItemProps {
   content: string;
-  state: "completed" | "active";
+  status: TaskStatus;
   id: string;
 }
 
-function TaskItem({ content, state, id }: TaskItemProps) {
+const TaskItem = ({ content, status, id }: TaskItemProps) => {
   const dispatch = useAppDispatch();
 
-  function handleDeleteTask() {
+  const handleDeleteTask = () => {
     dispatch(deleteTask(id));
-  }
+  };
 
-  function handleEditTask() {
-    dispatch(activateEditMode(id));
-  }
+  const handleEditTask = () => {
+    dispatch(activateTaskEditMode(id));
+  };
 
-  function handleToggleItemState() {
-    const taskStatus = state === "active" ? "completed" : "active";
+  const handleToggleItemState = () => {
+    const taskStatus = status === "active" ? "completed" : "active";
     dispatch(
       changeTask(id, {
-        state: taskStatus,
+        status: taskStatus,
       })
     );
-  }
+  };
 
   return (
-    <TaskItemContainer>
-      <TaskButton $state={state} onClick={handleToggleItemState}>
-        <Circle></Circle>
-      </TaskButton>
-      <TaskText $state={state}>{content}</TaskText>
-      <button className="edit-button invisible" onClick={handleEditTask}>
-        <EditIcon className="fill-main-300" />
-      </button>
-      <button className="cross-button invisible" onClick={handleDeleteTask}>
-        <CrossIcon className="fill-main-300" />
-      </button>
-    </TaskItemContainer>
+    <S.TaskItemContainer>
+      <S.TaskButton $status={status} onClick={handleToggleItemState}>
+        <S.Circle></S.Circle>
+      </S.TaskButton>
+      <S.TaskText $status={status}>{content}</S.TaskText>
+      <S.EditButton onClick={handleEditTask}>
+        <S.GreyEditIcon />
+      </S.EditButton>
+      <S.CrossButton onClick={handleDeleteTask}>
+        <S.GreyCrossIcon />
+      </S.CrossButton>
+    </S.TaskItemContainer>
   );
-}
+};
 
 export default TaskItem;

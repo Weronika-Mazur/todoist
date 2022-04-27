@@ -3,34 +3,35 @@ import TaskItem from "../../molecules/TaskItem/TaskItem";
 import { useAppSelector } from "store/hooks";
 import {
   selectTaskArrayWithFilters,
-  selectEditModeId,
+  selectTaskEditModeId,
 } from "features/todo/todoSlice";
 
+import * as S from "./styles";
 import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
 
 const TaskList = () => {
   const taskArray: Task[] = useAppSelector(selectTaskArrayWithFilters);
-  const editModeId = useAppSelector(selectEditModeId);
+  const editModeId = useAppSelector(selectTaskEditModeId);
 
   function isEditModeActive(taskId: string): boolean {
     return taskId === editModeId;
   }
 
   return (
-    <section className="flex flex-col mt-6 bg-main-700 rounded-md">
+    <S.TaskSection>
       {taskArray.map((task) =>
         !isEditModeActive(task.taskId) ? (
           <TaskItem
             key={task.taskId}
             id={task.taskId}
-            state={task.state}
+            status={task.status}
             content={task.content}
           />
         ) : (
           <TaskEdit key={task.taskId} id={task.taskId} content={task.content} />
         )
       )}
-    </section>
+    </S.TaskSection>
   );
 };
 

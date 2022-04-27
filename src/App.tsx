@@ -8,6 +8,7 @@ import Home from "views/Home/Home";
 import Login from "views/Login/Login";
 
 import ErrorBanner from "components/molecules/ErrorBanner/ErrorBanner";
+import Register from "views/Register/Register";
 
 function App() {
   const errorMessage = useAppSelector(selectErrorMessage);
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </div>

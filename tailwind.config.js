@@ -14,6 +14,8 @@ module.exports = {
           900: "#0f1424",
         },
         blue: "#5847eb",
+
+        backdrop: "rgba(0, 0, 0, 0.55)",
       },
       fontFamily: {
         body: " 'Maven Pro', sans-serif",

@@ -1,30 +1,31 @@
+import { Link } from "react-router-dom";
+
 import UserIcon from "assets/UserIcon";
 import LoginForm from "components/organisms/LoginForm/LoginForm";
-import {
-  LoginCard,
-  LoginContainer,
-  LoginHeader,
-  LoginTitle,
-  SignUp,
-  SignUpLink,
-} from "./styles";
+import * as S from "./styles";
 
 const Login = () => {
   return (
-    <LoginContainer>
-      <LoginCard>
-        <LoginHeader>
+    <S.LoginContainer>
+      <S.LoginCard>
+        <S.LoginHeader>
           <UserIcon className="fill-blue w-16 h-16" />
-        </LoginHeader>
+        </S.LoginHeader>
 
-        <LoginTitle>Sign In</LoginTitle>
+        <S.LoginTitle>Sign In</S.LoginTitle>
         <LoginForm />
-        <SignUp>
+        <S.SignUp>
           Don't have an account?
-          <SignUpLink> Sign up</SignUpLink>
-        </SignUp>
-      </LoginCard>
-    </LoginContainer>
+          <Link
+            to="/register"
+            className="text-slate-100 cursor-pointer font-bold"
+          >
+            {" "}
+            Sign up
+          </Link>
+        </S.SignUp>
+      </S.LoginCard>
+    </S.LoginContainer>
   );
 };
 

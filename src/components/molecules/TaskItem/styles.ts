@@ -1,5 +1,8 @@
+import CrossIcon from "assets/CrossIcon";
+import EditIcon from "assets/EditIcon";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
+import { TaskStatus } from "types/type";
 
 const TaskItemHover = styled.div`
   &:hover {
@@ -9,6 +12,7 @@ const TaskItemHover = styled.div`
     }
   }
 `;
+
 export const TaskItemContainer = tw(TaskItemHover)`
 flex 
 justify-between 
@@ -28,20 +32,43 @@ h-3
 bg-main-500
 `;
 
-interface Checked {
-  $state: "completed" | "active";
+interface TaskProps {
+  $status: TaskStatus;
 }
 
-const isCompleted = (state: "completed" | "active") => state === "completed";
+const isCompleted = (state: TaskStatus) => state === "completed";
 
-export const TaskText = tw.p<Checked>`
+export const TaskText = tw.p<TaskProps>`
 ml-2 
 w-full
-${(p: Checked) => (isCompleted(p.$state) ? " text-main-500 " : "")}
+animate__animated animate__fast animate__fadeInUp 
+z-[0]
+${(p: TaskProps) => (isCompleted(p.$status) ? " text-main-500 " : "")}
 `;
 
-export const TaskButton = tw.button<Checked>`
+export const TaskButton = tw.button<TaskProps>`
 rounded-full 
 border-2 
-${(p: Checked) => (isCompleted(p.$state) ? " border-main-500" : "border-blue")}
+animate__animated animate__fast animate__fadeInUp 
+z-initial
+${(p: TaskProps) =>
+  isCompleted(p.$status) ? " border-main-500" : "border-blue"}
+`;
+
+export const CrossButton = tw.button`
+cross-button 
+invisible
+`;
+
+export const EditButton = tw.button`
+edit-button 
+invisible
+`;
+
+export const GreyCrossIcon = tw(CrossIcon)`
+fill-main-300
+`;
+
+export const GreyEditIcon = tw(EditIcon)`
+fill-main-300
 `;

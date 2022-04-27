@@ -1,24 +1,41 @@
-import DotIcon from "assets/DotIcon";
+import { useAppDispatch } from "store/hooks";
+import { setDropDown, setShowModal } from "features/list/listSlice";
+
 import ListTitle from "components/atoms/ListTitle/ListTitle";
-import ActiveCount from "components/atoms/ActiveCount/ActiveCount";
-import { Container } from "./styles";
+
+import * as S from "./styles";
+import { ListColors } from "types/type";
+
+import DotIcon from "assets/DotIcon";
 
 interface ListItemProps {
   name: string;
-  color: number;
+  color: ListColors;
   id: string;
   number?: number;
 }
 
 const ListItem = ({ name, color, id, number }: ListItemProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleShowMenu = (e: React.MouseEvent<HTMLElement>) => {
+    dispatch(setDropDown({ id, active: true, x: e.clientX, y: e.clientY }));
+    dispatch(setShowModal("dropDown"));
+  };
+
   return (
-    <li className="mt-2 flex items-center">
-      <Container $color={color}>
+    <S.ListItemContainer>
+      <S.Container $color={color}>
         <DotIcon />
-      </Container>
-      <ListTitle listId={id} text={name} />
-      <ActiveCount count={number} />
-    </li>
+      </S.Container>
+      <S.TitleContainer>
+        <ListTitle listId={id} text={name} />
+        <S.OptionsActiveCount count={number} />
+      </S.TitleContainer>
+      <S.OptionsButton onClick={handleShowMenu}>
+        <S.GreyOptionsIcon />
+      </S.OptionsButton>
+    </S.ListItemContainer>
   );
 };
 
