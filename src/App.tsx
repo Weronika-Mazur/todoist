@@ -1,19 +1,28 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { useAppSelector } from "store/hooks";
 import { selectErrorMessage } from "features/todo/todoSlice";
 
 import "./App.scss";
-import Home from "views/Home/HomePage/Home";
-import ErrorBanner from "components/ErrorBanner/ErrorBanner";
+import Home from "views/Home/Home";
+import Login from "views/Login/Login";
+
+import ErrorBanner from "components/molecules/ErrorBanner/ErrorBanner";
+import Register from "views/Register/Register";
 
 function App() {
   const errorMessage = useAppSelector(selectErrorMessage);
 
   return (
-    <div className="App">
+    <div className="App font-body text-main-100 font-medium text-base">
       {errorMessage && <ErrorBanner />}
-
-      <div className="background-img"></div>
-      <Home />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

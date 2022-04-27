@@ -42,6 +42,11 @@ export class FetchService {
         throw new Error("No data returned");
       }
 
+      if (!data.ok) {
+        const text = await data.text();
+        throw new Error(text);
+      }
+
       const response = await data.json();
       return response;
     } catch (err) {
@@ -50,4 +55,6 @@ export class FetchService {
   }
 }
 
-export const fetchService = new FetchService("http://localhost:3030/");
+export const fetchService = new FetchService(
+  "https://lit-sands-47270.herokuapp.com/"
+);

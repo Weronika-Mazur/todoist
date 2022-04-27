@@ -1,32 +1,77 @@
+export type TaskStatus = "completed" | "active";
+
 export interface Task {
-  _id: string;
+  taskId: string;
   content: string;
-  state: "completed" | "active";
+  status: TaskStatus;
+  priority?: number;
+  dueDate?: Date;
+}
+
+export interface List {
+  listId: string;
+  name: string;
+  owner: string;
+  color: ListColors;
+  activeCount: number;
+}
+
+export interface ListContent {
+  name: string;
+  color: ListColors;
 }
 
 export interface TaskContent {
-  _id?: string;
+  taskId?: string;
   content?: string;
-  state?: "completed" | "active";
+  status?: TaskStatus;
+  dueDate?: Date;
+  priority?: number;
 }
 
-export interface EditMode {
+export interface TaskEditMode {
   active: boolean;
   id: string;
 }
 
-export interface FormValues {
-  email?: string;
-  password?: string;
+export interface ListEditMode {
+  active?: boolean;
+  id: string;
+  name: string;
+  color: ListColors;
 }
 
-export interface User {
-  _id: string;
+export interface LoginFormValues {
   email: string;
   password: string;
-  todo: Task[];
+}
+
+export interface RegisterFormValues {
+  username: string;
+  email: string;
+  password: string;
+  repeatPassword?: string;
+}
+
+export interface Token {
   token?: string;
   error?: string;
+}
+
+export type Filter = "all" | "active" | "completed";
+
+export type Modal =
+  | undefined
+  | "createList"
+  | "editList"
+  | "dropDown"
+  | "deleteList";
+
+export interface DropDown {
+  active: boolean;
+  x: number;
+  y: number;
+  id: string;
 }
 
 export interface FilterArray {
@@ -34,4 +79,10 @@ export interface FilterArray {
   desc: string;
 }
 
-export type Filter = "all" | "active" | "completed";
+export enum ListColors {
+  green = "GREEN",
+  sky = "SKY",
+  violet = "VIOLET",
+  fuchsia = "FUCHSIA",
+  rose = "ROSE",
+}

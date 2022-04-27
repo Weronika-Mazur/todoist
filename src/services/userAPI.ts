@@ -1,15 +1,18 @@
 import { fetchService, FetchService } from "./fetchService";
-import { FormValues, User } from "types/type";
+import { LoginFormValues, RegisterFormValues, Token } from "types/type";
 
 class UserAPI {
   constructor(private readonly fetchService: FetchService) {}
 
-  login(values: FormValues) {
-    return this.fetchService.post<FormValues, User>("user/login", values);
+  login(values: LoginFormValues) {
+    return this.fetchService.post<LoginFormValues, Token>("user/login", values);
   }
 
-  register(values: FormValues) {
-    return this.fetchService.post<FormValues, User>("user/register", values);
+  register(values: RegisterFormValues) {
+    return this.fetchService.post<RegisterFormValues, Token>(
+      "user/register",
+      values
+    );
   }
 }
 

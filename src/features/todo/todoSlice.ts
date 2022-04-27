@@ -4,14 +4,15 @@ import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 
 import { todoApi } from "services/todoAPI";
-import { Task, TaskContent, EditMode, Filter } from "types/type";
+import { Task, TaskContent, TaskEditMode, Filter } from "types/type";
+import { updateActiveCount } from "features/list/listSlice";
 
 interface State {
   taskArray: Task[];
   taskFilter: Filter;
   isLoading: boolean;
   errorMessage: string;
-  editMode: EditMode;
+  editMode: TaskEditMode;
 }
 
 const initialState: State = {
@@ -41,18 +42,19 @@ export const todoSlice = createSlice({
     setErrorMessage: (state, action: PayloadAction<string | undefined>) => {
       state.errorMessage = action.payload || "";
     },
-    activateEditMode: (state, action: PayloadAction<string>) => {
+    activateTaskEditMode: (state, action: PayloadAction<string>) => {
       state.editMode = {
         active: true,
         id: action.payload,
       };
     },
-    deactivateEditMode: (state) => {
+    deactivateTaskEditMode: (state) => {
       state.editMode = {
         active: false,
         id: "",
       };
     },
+    resetTodo: () => initialState,
   },
 });
 
@@ -62,12 +64,12 @@ export const selectTaskArrayWithFilters = (state: RootState) => {
   return state.todo.taskFilter === "all"
     ? state.todo.taskArray
     : state.todo.taskArray.filter(
-        (task: Task) => task.state === state.todo.taskFilter
+        (task: Task) => task.status === state.todo.taskFilter
       );
 };
 
 export const selectItemsCounter = (state: RootState): number => {
-  return state.todo.taskArray.filter((task: Task) => task.state === "active")
+  return state.todo.taskArray.filter((task: Task) => task.status === "active")
     .length;
 };
 
@@ -83,7 +85,7 @@ export const selectErrorMessage = (state: RootState): string => {
   return state.todo.errorMessage;
 };
 
-export const selectEditModeId = (state: RootState): string => {
+export const selectTaskEditModeId = (state: RootState): string => {
   return state.todo.editMode.id;
 };
 
@@ -97,12 +99,14 @@ type AppThunk<ReturnType = void> = ThunkAction<
 >;
 
 type TodoAppThunk = AppThunk<Promise<Task[] | undefined>>;
+type TaskAppThunk = AppThunk<Promise<Task | undefined>>;
 
 export const fetchTaskArray = (): TodoAppThunk => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
-      const data = await todoApi.getTodoList();
+      const activeListID = getState().list.activeListID;
+      const data = await todoApi.getTasks(activeListID);
 
       if (!data) {
         throw Error("Couldn't get tasks");
@@ -112,8 +116,9 @@ export const fetchTaskArray = (): TodoAppThunk => {
       dispatch(setErrorMessage(""));
 
       return data;
-    } catch (err) {
-      dispatch(setErrorMessage("trying to get tasks"));
+    } catch (err: any) {
+      const errorMessage = `trying to get tasks. ${err.message}`;
+      dispatch(setErrorMessage(errorMessage));
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -121,10 +126,11 @@ export const fetchTaskArray = (): TodoAppThunk => {
 };
 
 export const clearCompleted = (): TodoAppThunk => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
-      const data = await todoApi.clearCompleted();
+      const activeListID = getState().list.activeListID;
+      const data = await todoApi.clearCompleted(activeListID);
 
       if (!data) {
         throw Error("Couldn't clear tasks");
@@ -132,68 +138,138 @@ export const clearCompleted = (): TodoAppThunk => {
 
       dispatch(fetchTaskArray());
       return data;
-    } catch (err) {
-      dispatch(setErrorMessage("trying to clear completed tasks"));
+    } catch (err: any) {
+      const errorMessage = `trying to clear completed tasks. ${err.message}`;
+      dispatch(setErrorMessage(errorMessage));
     } finally {
       dispatch(setIsLoading(false));
     }
   };
 };
 
-export const addTask = (newTask: TaskContent): TodoAppThunk => {
-  return async (dispatch) => {
+export const addTask = (newTask: TaskContent): TaskAppThunk => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
-      const data = await todoApi.addTask(newTask);
+      const activeListID = getState().list.activeListID;
+      const returnedTask = await todoApi.addTask(activeListID, newTask);
 
-      if (!data) {
+      if (!returnedTask) {
         throw Error("Couldn't add task");
       }
 
-      dispatch(fetchTaskArray());
-      return data;
-    } catch (err) {
-      dispatch(setErrorMessage("adding the task"));
+      const currentTaskArray: Task[] = getState().todo.taskArray;
+
+      dispatch(setTaskArray([...currentTaskArray, returnedTask]));
+
+      dispatch(updateActiveCount(1));
+
+      return returnedTask;
+    } catch (err: any) {
+      const errorMessage = `adding the task. ${err.message}`;
+      dispatch(setErrorMessage(errorMessage));
     } finally {
       dispatch(setIsLoading(false));
     }
   };
 };
 
-export const changeTask = (changes: TaskContent): TodoAppThunk => {
-  return async (dispatch) => {
+export const changeTask = (
+  taskId: string,
+  changes: TaskContent
+): TaskAppThunk => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
-      const data = await todoApi.updateTask(changes);
+      const returnedTask = await todoApi.updateTask(taskId, changes);
 
-      if (!data) {
+      if (!returnedTask) {
         throw Error("Couldn't change task");
       }
 
-      dispatch(fetchTaskArray());
-      return data;
-    } catch (err) {
-      dispatch(setErrorMessage("changing tasks state"));
+      const currentTaskArray: Task[] = getState().todo.taskArray;
+
+      dispatch(
+        setTaskArray(
+          currentTaskArray.map((task) =>
+            task.taskId === returnedTask.taskId ? returnedTask : task
+          )
+        )
+      );
+
+      if (changes.status) {
+        const amount = returnedTask.status === "active" ? 1 : -1;
+        dispatch(updateActiveCount(amount));
+      }
+      return returnedTask;
+    } catch (err: any) {
+      const errorMessage = `changing tasks status. ${err.message}`;
+      dispatch(setErrorMessage(errorMessage));
     } finally {
       dispatch(setIsLoading(false));
     }
   };
 };
 
-export const deleteTask = (taskId: string): TodoAppThunk => {
-  return async (dispatch) => {
+export const editTask = (
+  taskId: string,
+  changes: TaskContent
+): TaskAppThunk => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
-      const data = await todoApi.deleteTask(taskId);
+      const returnedTask = await todoApi.updateTask(taskId, changes);
 
-      if (!data) {
+      if (!returnedTask) {
+        throw Error("Couldn't edit task");
+      }
+
+      const currentTaskArray: Task[] = getState().todo.taskArray;
+
+      dispatch(
+        setTaskArray(
+          currentTaskArray.map((task) =>
+            task.taskId === returnedTask.taskId ? returnedTask : task
+          )
+        )
+      );
+
+      dispatch(deactivateTaskEditMode());
+      return returnedTask;
+    } catch (err: any) {
+      const errorMessage = `editing tasks. ${err.message}`;
+      dispatch(setErrorMessage(errorMessage));
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+};
+
+export const deleteTask = (taskId: string): TaskAppThunk => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setIsLoading(true));
+      const returnedTask = await todoApi.deleteTask(taskId);
+
+      if (!returnedTask) {
         throw Error("Couldn't delete task");
       }
 
-      dispatch(fetchTaskArray());
-      return data;
-    } catch (err) {
-      dispatch(setErrorMessage("deleting task"));
+      const currentTaskArray: Task[] = getState().todo.taskArray;
+
+      dispatch(
+        setTaskArray(
+          currentTaskArray.filter((task) => task.taskId !== returnedTask.taskId)
+        )
+      );
+
+      if (returnedTask.status === "active") {
+        dispatch(updateActiveCount(-1));
+      }
+      return returnedTask;
+    } catch (err: any) {
+      const errorMessage = `deleting task. ${err.message}`;
+      dispatch(setErrorMessage(errorMessage));
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -205,8 +281,9 @@ export const {
   setTaskArray,
   setIsLoading,
   setErrorMessage,
-  activateEditMode,
-  deactivateEditMode,
+  activateTaskEditMode,
+  deactivateTaskEditMode,
+  resetTodo,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;
