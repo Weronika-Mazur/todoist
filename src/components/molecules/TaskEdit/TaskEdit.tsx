@@ -16,11 +16,14 @@ const TaskEdit = ({ content, id }: TaskEditProps) => {
   const [text, setText] = useState(content);
 
   const handleEndEditing = () => {
-    dispatch(
-      editTask(id, {
-        content: text,
-      })
-    );
+    text !== content
+      ? dispatch(
+          editTask(id, {
+            content: text,
+          })
+        )
+      : dispatch(deactivateTaskEditMode());
+
     disableScroll.off();
   };
 
@@ -36,7 +39,10 @@ const TaskEdit = ({ content, id }: TaskEditProps) => {
 
   return (
     <>
-      <S.Backdrop onClick={handleEndEditing}></S.Backdrop>
+      <S.Backdrop
+        onClick={handleEndEditing}
+        data-testid="taskedit-backdrop"
+      ></S.Backdrop>
       <S.EditContainer>
         <S.EditInput
           type="text"

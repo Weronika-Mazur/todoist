@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 
 import { LoginFormValues } from "types/type";
 import { login, setIsSubmitted } from "features/user/userSlice";
@@ -36,30 +36,12 @@ const LoginForm = () => {
         {() => (
           <Form className="flex gap-1 flex-col mt-2">
             <S.Label htmlFor="email">Email:</S.Label>
-            <Field
-              id="email"
-              type="email"
-              name="email"
-              className="bg-transparent border-b p-2 text-lg  font-medium border-main-300 focus:outline-none text-slate-100"
-            />
-            <ErrorMessage
-              name="email"
-              component="div"
-              className="text-pink-400 mt-1 font-light text-sm"
-            />
+            <S.FormField id="email" type="email" name="email" />
+            <S.FormErrorMessage name="email" component="div" />
             <S.Label htmlFor="password">Password:</S.Label>
 
-            <Field
-              type="password"
-              name="password"
-              id="password"
-              className="bg-transparent border-b p-2 text-lg font-medium border-main-300 focus:outline-none text-slate-100"
-            />
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-pink-400 mt-1 font-light text-sm"
-            />
+            <S.FormField type="password" name="password" id="password" />
+            <S.FormErrorMessage name="password" component="div" />
             <S.SubmitButton type="submit">Submit</S.SubmitButton>
           </Form>
         )}
