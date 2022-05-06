@@ -10,6 +10,7 @@ const BusyIcon = ({ className }: BusyIconProps) => {
       height="15px"
       viewBox="0 0 457 60"
       className={className}
+      data-testid="busy-icon"
     >
       <g>
         <circle fill="#3a7bfd" cx="-31" cy="30" r="30" />

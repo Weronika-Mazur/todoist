@@ -36,14 +36,21 @@ const TaskItem = ({ content, status, id }: TaskItemProps) => {
 
   return (
     <S.TaskItemContainer>
-      <S.TaskButton $status={status} onClick={handleToggleItemState}>
+      <S.TaskButton
+        $status={status}
+        onClick={handleToggleItemState}
+        data-testid={`task-button-${id}`}
+      >
         <S.Circle></S.Circle>
       </S.TaskButton>
       <S.TaskText $status={status}>{content}</S.TaskText>
-      <S.EditButton onClick={handleEditTask}>
+      <S.EditButton onClick={handleEditTask} data-testid={`edit-button-${id}`}>
         <S.GreyEditIcon />
       </S.EditButton>
-      <S.CrossButton onClick={handleDeleteTask}>
+      <S.CrossButton
+        onClick={handleDeleteTask}
+        data-testid={`cross-button-${id}`}
+      >
         <S.GreyCrossIcon />
       </S.CrossButton>
     </S.TaskItemContainer>
