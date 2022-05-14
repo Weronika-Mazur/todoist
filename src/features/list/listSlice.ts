@@ -5,14 +5,7 @@ import { ThunkAction } from "redux-thunk";
 
 import { listApi } from "services/listAPI";
 
-import {
-  DropDown,
-  List,
-  ListColors,
-  ListContent,
-  ListEditMode,
-  Modal,
-} from "types/type";
+import { List, ListColors, ListContent, SelectedList, Modal } from "types/type";
 import {
   setErrorMessage,
   setIsLoading,
@@ -24,8 +17,7 @@ interface State {
   listArray: List[];
   inbox: List;
   showModal: Modal;
-  editMode: ListEditMode;
-  dropDown: DropDown;
+  selectedList: SelectedList;
 }
 
 const initialState: State = {
@@ -39,17 +31,10 @@ const initialState: State = {
     activeCount: 0,
   },
   showModal: undefined,
-  editMode: {
-    active: false,
+  selectedList: {
     id: "",
     name: "",
     color: ListColors.green,
-  },
-  dropDown: {
-    active: false,
-    x: 0,
-    y: 0,
-    id: "",
   },
 };
 
@@ -57,16 +42,16 @@ export const listSlice = createSlice({
   name: "list",
   initialState,
   reducers: {
-    setActiveListID: (state, action: PayloadAction<string>) => {
+    setActiveListID: (state: State, action: PayloadAction<string>) => {
       state.activeListID = action.payload;
     },
-    setListArray: (state, action: PayloadAction<List[]>) => {
+    setListArray: (state: State, action: PayloadAction<List[]>) => {
       state.listArray = action.payload;
     },
-    setInbox: (state, action: PayloadAction<List>) => {
+    setInbox: (state: State, action: PayloadAction<List>) => {
       state.inbox = action.payload;
     },
-    updateActiveCount(state, action: PayloadAction<number>) {
+    updateActiveCount(state: State, action: PayloadAction<number>) {
       if (state.activeListID === state.inbox.listId) {
         state.inbox = {
           ...state.inbox,
@@ -80,41 +65,26 @@ export const listSlice = createSlice({
         );
       }
     },
-    setShowModal: (state, action: PayloadAction<Modal>) => {
+    setShowModal: (state: State, action: PayloadAction<Modal>) => {
       state.showModal = action.payload;
     },
-    activateListEditMode: (state, action: PayloadAction<string>) => {
+    activateListEditMode: (state: State, action: PayloadAction<string>) => {
       const checkId = (list: List) => list.listId === action.payload;
       const index = state.listArray.findIndex(checkId);
       if (index !== -1) {
         const targetList = state.listArray[index];
-        state.editMode = {
-          active: true,
+        state.selectedList = {
           name: targetList.name,
           color: targetList.color,
           id: targetList.listId,
         };
       }
     },
-    deactivateListEditMode: (state) => {
-      state.editMode = {
-        active: false,
+    deactivateListEditMode: (state: State) => {
+      state.selectedList = {
         id: "",
         name: "",
         color: ListColors.green,
-      };
-    },
-    setDropDown: (state, action: PayloadAction<DropDown>) => {
-      state.dropDown = {
-        ...action.payload,
-      };
-    },
-    deactivateDropDown: (state) => {
-      state.dropDown = {
-        active: false,
-        x: 0,
-        y: 0,
-        id: "",
       };
     },
     resetList: () => initialState,
@@ -137,12 +107,8 @@ export const selectShowModal = (state: RootState): Modal => {
   return state.list.showModal;
 };
 
-export const selectListEditMode = (state: RootState): ListEditMode => {
-  return state.list.editMode;
-};
-
-export const selectDropDown = (state: RootState): DropDown => {
-  return state.list.dropDown;
+export const selectSelectedList = (state: RootState): SelectedList => {
+  return state.list.selectedList;
 };
 
 type AppThunk<ReturnType = void> = ThunkAction<
@@ -292,8 +258,6 @@ export const {
   setShowModal,
   activateListEditMode,
   deactivateListEditMode,
-  setDropDown,
-  deactivateDropDown,
   resetList,
 } = listSlice.actions;
 

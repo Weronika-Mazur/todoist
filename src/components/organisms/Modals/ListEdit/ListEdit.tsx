@@ -1,17 +1,17 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { ListColors, ListContent } from "types/type";
 
-import ListCreator from "../ListCreator/ListCreator";
+import ListCreator from "../../ListCreator/ListCreator";
 import {
   setShowModal,
   updateList,
-  selectListEditMode,
   deactivateListEditMode,
+  selectSelectedList,
 } from "features/list/listSlice";
 
 const ListEdit = () => {
   const dispatch = useAppDispatch();
-  const editMode = useAppSelector(selectListEditMode);
+  const selectedList = useAppSelector(selectSelectedList);
 
   const handleCloseModal = () => {
     dispatch(deactivateListEditMode());
@@ -25,7 +25,7 @@ const ListEdit = () => {
         color: newColor,
       };
 
-      const data = await dispatch(updateList(newList, editMode.id));
+      const data = await dispatch(updateList(newList, selectedList.id));
       if (data) {
         handleCloseModal();
       }
@@ -34,8 +34,8 @@ const ListEdit = () => {
 
   return (
     <ListCreator
-      name={editMode.name}
-      defaultColor={editMode.color}
+      name={selectedList.name}
+      defaultColor={selectedList.color}
       handleCloseModal={handleCloseModal}
       onConfirm={editCurrentList}
     />

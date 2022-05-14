@@ -1,28 +1,24 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import {
-  deactivateDropDown,
-  selectDropDown,
-  setShowModal,
-} from "features/list/listSlice";
+import { deactivateListEditMode, setShowModal } from "features/list/listSlice";
 
 import Button from "components/atoms/Button/Button";
 import * as S from "./styles";
 import { deleteList } from "features/list/listSlice";
 import CancelButton from "components/atoms/CancelButton/CancelButton";
+import { selectSelectedList } from "features/list/listSlice";
 
 const DeleteModal = () => {
   const dispatch = useAppDispatch();
-  const { id } = useAppSelector(selectDropDown);
+  const { id } = useAppSelector(selectSelectedList);
 
   const handleCancel = () => {
-    dispatch(deactivateDropDown());
+    dispatch(deactivateListEditMode());
     dispatch(setShowModal());
   };
 
   const handleConfirm = () => {
     dispatch(deleteList(id));
-    dispatch(deactivateDropDown());
-    dispatch(setShowModal());
+    handleCancel();
   };
 
   return (

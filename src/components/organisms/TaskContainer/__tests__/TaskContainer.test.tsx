@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import TaskContainer from "../TaskContainer";
 import { renderWithState } from "utils/testHelpers";
 import { todoApi } from "services/todoAPI";
-import { TaskContent } from "types/type";
+import { Priority, TaskContent } from "types/type";
 
 const todoState = {
   todo: {
@@ -13,16 +13,19 @@ const todoState = {
         taskId: "1",
         content: "lorem ipsum",
         status: "active",
+        priority: Priority.p1,
       },
       {
         taskId: "2",
         content: "Go shopping",
         status: "completed",
+        priority: Priority.p1,
       },
       {
         taskId: "3",
         content: "Start working",
         status: "completed",
+        priority: Priority.p1,
       },
     ],
     taskFilter: "all",
@@ -41,6 +44,7 @@ beforeEach(() => {
       taskId: taskId,
       content: "Go shopping",
       status: "completed",
+      priority: Priority.p1,
     })
   );
 
@@ -51,6 +55,7 @@ beforeEach(() => {
         taskId: "4",
         content: newTask.content || "",
         status: "active",
+        priority: Priority.p1,
       })
     );
 
@@ -61,6 +66,7 @@ beforeEach(() => {
         taskId: taskId,
         content: "Go shopping",
         status: changes.status || "completed",
+        priority: Priority.p1,
       })
     );
 });
@@ -79,7 +85,7 @@ describe("Task Container", () => {
     renderWithState(<TaskContainer />, todoState);
     const input = screen.getByPlaceholderText(/Create a new todo.../i);
     fireEvent.change(input, { target: { value: "New task" } });
-    fireEvent.click(screen.getByRole("button", { name: /add/i }));
+    fireEvent.click(screen.getByRole("button", { name: "add" }));
 
     expect(await screen.findByText(/New task/i)).toBeInTheDocument();
   });

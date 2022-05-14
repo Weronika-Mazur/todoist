@@ -30,25 +30,28 @@ export const todoSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    setFilter: (state, action: PayloadAction<Filter>) => {
+    setFilter: (state: State, action: PayloadAction<Filter>) => {
       state.taskFilter = action.payload;
     },
-    setTaskArray: (state, action: PayloadAction<Task[]>) => {
+    setTaskArray: (state: State, action: PayloadAction<Task[]>) => {
       state.taskArray = action.payload || [];
     },
-    setIsLoading: (state, action: PayloadAction<boolean>) => {
+    setIsLoading: (state: State, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    setErrorMessage: (state, action: PayloadAction<string | undefined>) => {
+    setErrorMessage: (
+      state: State,
+      action: PayloadAction<string | undefined>
+    ) => {
       state.errorMessage = action.payload || "";
     },
-    activateTaskEditMode: (state, action: PayloadAction<string>) => {
+    activateTaskEditMode: (state: State, action: PayloadAction<string>) => {
       state.editMode = {
         active: true,
         id: action.payload,
       };
     },
-    deactivateTaskEditMode: (state) => {
+    deactivateTaskEditMode: (state: State) => {
       state.editMode = {
         active: false,
         id: "",

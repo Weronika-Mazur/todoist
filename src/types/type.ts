@@ -4,8 +4,9 @@ export interface Task {
   taskId: string;
   content: string;
   status: TaskStatus;
-  priority?: number;
-  dueDate?: Date;
+  priority: number;
+  dueDate?: string;
+  tags?: Tag[];
 }
 
 export interface List {
@@ -14,6 +15,12 @@ export interface List {
   owner: string;
   color: ListColors;
   activeCount: number;
+}
+
+export interface Tag {
+  tagId: string;
+  owner: string;
+  content: string;
 }
 
 export interface ListContent {
@@ -26,7 +33,12 @@ export interface TaskContent {
   content?: string;
   status?: TaskStatus;
   dueDate?: Date;
-  priority?: number;
+  priority?: Priority;
+  tags?: Tag[];
+}
+
+export interface TagContent {
+  content: string;
 }
 
 export interface TaskEditMode {
@@ -34,8 +46,7 @@ export interface TaskEditMode {
   id: string;
 }
 
-export interface ListEditMode {
-  active?: boolean;
+export interface SelectedList {
   id: string;
   name: string;
   color: ListColors;
@@ -60,19 +71,7 @@ export interface Token {
 
 export type Filter = "all" | "active" | "completed";
 
-export type Modal =
-  | undefined
-  | "createList"
-  | "editList"
-  | "dropDown"
-  | "deleteList";
-
-export interface DropDown {
-  active: boolean;
-  x: number;
-  y: number;
-  id: string;
-}
+export type Modal = undefined | "createList" | "editList" | "deleteList";
 
 export interface FilterArray {
   type: Filter;
@@ -85,4 +84,12 @@ export enum ListColors {
   violet = "VIOLET",
   fuchsia = "FUCHSIA",
   rose = "ROSE",
+}
+
+export enum Priority {
+  p1 = 1,
+  p2,
+  p3,
+  p4,
+  p5,
 }

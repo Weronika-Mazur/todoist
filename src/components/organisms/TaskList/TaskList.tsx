@@ -17,6 +17,8 @@ const TaskList = () => {
     return taskId === editModeId;
   }
 
+  const toDate = (date?: string) => (date ? new Date(date) : undefined);
+
   return (
     <S.TaskSection>
       {taskArray.map((task) =>
@@ -26,6 +28,9 @@ const TaskList = () => {
             id={task.taskId}
             status={task.status}
             content={task.content}
+            dueDate={toDate(task.dueDate)}
+            tags={task.tags}
+            priority={task.priority}
           />
         ) : (
           <TaskEdit key={task.taskId} id={task.taskId} content={task.content} />

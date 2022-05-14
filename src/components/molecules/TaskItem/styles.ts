@@ -1,8 +1,13 @@
-import CrossIcon from "assets/CrossIcon";
-import EditIcon from "assets/EditIcon";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
-import { TaskStatus } from "types/type";
+
+import CalendarIcon from "assets/CalendarIcon";
+import CrossIcon from "assets/CrossIcon";
+import EditIcon from "assets/EditIcon";
+import TagIcon from "assets/TagIcon";
+
+import { TaskStatus, Priority } from "types/type";
+import { PriorityBorderColors } from "utils/constants";
 
 const TaskItemHover = styled.div`
   &:hover {
@@ -13,27 +18,40 @@ const TaskItemHover = styled.div`
   }
 `;
 
-export const TaskItemContainer = tw(TaskItemHover)`
+export const Task = tw(TaskItemHover)`
+border-b-[3px] 
+border-main-600 
+rounded-md
+py-4 
+`;
+
+export const TaskDetailsContainer = tw.div`
+flex 
+pl-[3.2rem] 
+
+flex-wrap
+`;
+
+export const TaskItemContainer = tw.div`
 flex 
 justify-between 
 items-center 
 gap-3.5 
-py-4 
+
 px-4 
-border-b-[3px] 
-border-main-600 
-rounded-md
+
 `;
 
 export const Circle = tw.div`
 rounded-full 
 w-3 
 h-3 
-bg-main-500
+
 `;
 
 interface TaskProps {
   $status: TaskStatus;
+  $color: Priority;
 }
 
 const isCompleted = (state: TaskStatus) => state === "completed";
@@ -52,7 +70,7 @@ border-2
 animate__animated animate__fast animate__fadeInUp 
 z-initial
 ${(p: TaskProps) =>
-  isCompleted(p.$status) ? " border-main-500" : "border-blue"}
+  isCompleted(p.$status) ? " border-main-500" : PriorityBorderColors[p.$color]}
 `;
 
 export const CrossButton = tw.button`
@@ -71,4 +89,42 @@ fill-main-300
 
 export const GreyEditIcon = tw(EditIcon)`
 fill-main-300
+`;
+
+export const TaskTomorrowIcon = tw(CalendarIcon)<TaskProps>`
+
+w-[1.1rem] 
+h-[1.1rem] 
+ml-0.5 
+mr-1.5
+
+animate__animated animate__fast animate__fadeInUp 
+${(p: TaskProps) => (isCompleted(p.$status) ? " fill-main-500 " : "fill-blue ")}
+`;
+
+export const TaskTagIcon = tw(TagIcon)<TaskProps>`
+
+w-3
+h-5
+ml-0.5 
+mr-1.5
+animate__animated animate__fast animate__fadeInUp 
+${(p: TaskProps) =>
+  isCompleted(p.$status) ? " fill-main-500 " : "fill-main-300"}
+`;
+
+export const DetailsText = tw.p<TaskProps>`
+mr-2
+text-xs
+sm:text-sm
+
+
+animate__animated animate__fast animate__fadeInUp 
+${(p: TaskProps) =>
+  isCompleted(p.$status) ? " text-main-500 " : "text-main-300"}
+`;
+
+export const DetailsItemContainer = tw.div`
+flex 
+mt-3
 `;

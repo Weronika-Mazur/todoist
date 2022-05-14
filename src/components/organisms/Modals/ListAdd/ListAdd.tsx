@@ -1,8 +1,8 @@
 import { useAppDispatch } from "store/hooks";
 import { ListColors, ListContent } from "types/type";
 
-import ListCreator from "../ListCreator/ListCreator";
-import { addList, setShowModal } from "../../../features/list/listSlice";
+import ListCreator from "../../ListCreator/ListCreator";
+import { addList, setShowModal } from "../../../../features/list/listSlice";
 
 const ListAdd = () => {
   const dispatch = useAppDispatch();
