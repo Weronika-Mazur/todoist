@@ -3,6 +3,7 @@ import tw from "tailwind-styled-components";
 import {
   selectActiveListID,
   changeActiveListID,
+  setActiveListID,
 } from "../../../features/list/listSlice";
 
 interface Title {
@@ -12,9 +13,10 @@ interface Title {
 interface ListTitleProps {
   text: string;
   listId: string;
+  fetchTags?: boolean;
 }
 
-const ListTitle = ({ text, listId }: ListTitleProps) => {
+const ListTitle = ({ text, listId, fetchTags = true }: ListTitleProps) => {
   const dispatch = useAppDispatch();
   const activeList = useAppSelector(selectActiveListID);
 
@@ -32,7 +34,9 @@ ${(p: Title) =>
 `;
 
   const handleSelectList = (listId: string) => {
-    dispatch(changeActiveListID(listId));
+    fetchTags
+      ? dispatch(changeActiveListID(listId))
+      : dispatch(setActiveListID(listId));
   };
   return (
     <Title

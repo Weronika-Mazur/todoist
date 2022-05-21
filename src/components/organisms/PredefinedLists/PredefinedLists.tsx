@@ -30,6 +30,15 @@ const PredefinedLists = () => {
         <S.SkyCalendarIcon />
         <ListTitle listId="Calendar" text="Calendar" />
       </S.PredefinedListItem>
+
+      <S.PredefinedListItem>
+        <S.RoseTagsIcon />
+        <ListTitle
+          listId="Tags and filters"
+          text="Tags, filters"
+          fetchTags={false}
+        />
+      </S.PredefinedListItem>
     </S.List>
   );
 };

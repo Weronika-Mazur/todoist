@@ -9,7 +9,9 @@ py-[31px]
 bg-main-700 
 border-t-2 
 border-main-300  
-rounded-md`;
+rounded-md
+mt-6
+`;
 
 export const TaskCreatorContainer = tw.div`
 px-5
@@ -21,6 +23,8 @@ bg-main-700
 border-t-2 
 border-main-300 
 rounded-md
+mt-6
+mb-1 
 `;
 
 export const TaskCreatorInput = tw.input`
@@ -29,6 +33,7 @@ text-lg
 bg-transparent
 w-full
 ml-2
+
 placeholder:text-main-300 
 font-body 
 text-main-100 

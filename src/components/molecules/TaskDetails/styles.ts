@@ -57,7 +57,7 @@ lg:flex-row
 justify-center 
 items-center
 bg-main-700 
-mt-1 mb-4 
+
 lg:justify-start 
 gap-1
 p-3 

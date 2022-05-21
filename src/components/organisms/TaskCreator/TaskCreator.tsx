@@ -21,7 +21,7 @@ const TaskCreator = () => {
   const [taskTags, setTaskTags] = useState<Tag[]>([]);
   const [priority, setPriority] = useState<Priority>(Priority.p1);
 
-  async function handleAddTask() {
+  const handleAddTask = async () => {
     if (content !== "") {
       const newTask: TaskContent = {
         content: content,
@@ -39,7 +39,7 @@ const TaskCreator = () => {
         setPriority(Priority.p1);
       }
     }
-  }
+  };
 
   const handleSetDate = (newDate?: Date) => {
     setDate(newDate);

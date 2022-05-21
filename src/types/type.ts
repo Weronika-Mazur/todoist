@@ -41,7 +41,7 @@ export interface TagContent {
   content: string;
 }
 
-export interface TaskEditMode {
+export interface EditMode {
   active: boolean;
   id: string;
 }
@@ -92,4 +92,9 @@ export enum Priority {
   p3,
   p4,
   p5,
+}
+
+export interface TaskFilters {
+  priority?: Priority;
+  tag?: string;
 }

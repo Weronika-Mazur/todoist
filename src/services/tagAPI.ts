@@ -10,6 +10,16 @@ class TagAPI {
   addTag(newTag: TagContent) {
     return this.fetchService.post<TagContent, Tag>("tags/add-tag", newTag);
   }
+
+  deleteTag(tagId: string) {
+    const endpoint = `tags/delete-tag/${tagId}`;
+    return this.fetchService.delete<undefined, Tag>(endpoint);
+  }
+
+  updateTag(tagId: string, changes: TagContent) {
+    const endpoint = `tags/change-tag/${tagId}`;
+    return this.fetchService.put<TagContent, Tag>(endpoint, changes);
+  }
 }
 
 export const tagApi = new TagAPI(fetchService);

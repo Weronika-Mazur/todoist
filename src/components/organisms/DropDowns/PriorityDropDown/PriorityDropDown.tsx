@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import disableScroll from "disable-scroll";
+
 import { Priority } from "types/type";
 
 import * as S from "./styles";
@@ -14,6 +17,13 @@ const PriorityDropDown = ({ handleSetPriority }: PriorityDropDownProps) => {
   ).map((key) => {
     return Priority[key];
   });
+
+  useEffect(() => {
+    disableScroll.on();
+    return () => {
+      disableScroll.off();
+    };
+  }, []);
 
   return (
     <>

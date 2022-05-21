@@ -1,10 +1,20 @@
 import { fetchService, FetchService } from "./fetchService";
-import { TaskContent, Task } from "types/type";
+import { TaskContent, Task, TaskFilters } from "types/type";
 
 class TodoAPI {
   constructor(private readonly fetchService: FetchService) {}
   getTasks(listId: string) {
     const endpoint = `todos/${listId}`;
+    return this.fetchService.get<undefined, Task[]>(endpoint);
+  }
+
+  getFilteredTasks(filters: TaskFilters) {
+    const filterParams = filters
+      ? new URLSearchParams([...Object.entries(filters)])
+      : "";
+
+    const endpoint = filterParams ? `todos/?${filterParams}` : "todos/";
+
     return this.fetchService.get<undefined, Task[]>(endpoint);
   }
 
