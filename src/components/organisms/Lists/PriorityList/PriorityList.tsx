@@ -1,3 +1,4 @@
+import { setActiveListID } from "features/list/listSlice";
 import { fetchFilteredTaskArray } from "features/todo/todoSlice";
 import { useAppDispatch } from "store/hooks";
 import { Priority } from "types/type";
@@ -16,7 +17,8 @@ const PriorityList = () => {
   });
 
   const handleFilterBy = (priority: Priority) => {
-    dispatch(fetchFilteredTaskArray({ priority }));
+    dispatch(fetchFilteredTaskArray(undefined, { priority }));
+    dispatch(setActiveListID("Filtered"));
   };
 
   return (

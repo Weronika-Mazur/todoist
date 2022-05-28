@@ -17,6 +17,7 @@ import BusyIcon from "assets/BusyIcon";
 import * as S from "./styles";
 
 import { TagContent } from "types/type";
+import { setActiveListID } from "features/list/listSlice";
 
 const TagsList = () => {
   const dispatch = useAppDispatch();
@@ -56,7 +57,8 @@ const TagsList = () => {
   };
 
   const handleFilterBy = (tag: string) => {
-    dispatch(fetchFilteredTaskArray({ tag }));
+    dispatch(fetchFilteredTaskArray(undefined, { tag }));
+    dispatch(setActiveListID("Filtered"));
   };
 
   return (

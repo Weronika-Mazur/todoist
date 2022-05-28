@@ -29,7 +29,7 @@ const TaskEdit = ({ content, id, tags, dueDate, priority }: TaskEditProps) => {
       editTask(id, {
         content: text,
         priority: newPriority,
-        dueDate: date,
+        dueDate: date?.toLocaleDateString("en-CA"),
         tags: taskTags,
       })
     );

@@ -27,7 +27,7 @@ const TaskCreator = () => {
         content: content,
         status: "active",
         priority: priority,
-        dueDate: date,
+        dueDate: date?.toLocaleDateString("en-CA"),
         tags: taskTags,
       };
 

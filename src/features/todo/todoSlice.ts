@@ -5,7 +5,7 @@ import { ThunkAction } from "redux-thunk";
 
 import { todoApi } from "services/todoAPI";
 import { Task, TaskContent, EditMode, Filter, TaskFilters } from "types/type";
-import { setActiveListID, updateActiveCount } from "features/list/listSlice";
+import { updateActiveCount } from "features/list/listSlice";
 
 interface State {
   taskArray: Task[];
@@ -129,15 +129,15 @@ export const fetchTaskArray = (): TodoAppThunk => {
 };
 
 export const fetchFilteredTaskArray = (
-  taskFilters: TaskFilters
+  listId = "",
+  taskFilters?: TaskFilters
 ): TodoAppThunk => {
   return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
       dispatch(setTaskArray([]));
-      dispatch(setActiveListID("Filtered"));
 
-      const data = await todoApi.getFilteredTasks(taskFilters);
+      const data = await todoApi.getFilteredTasks(listId, taskFilters);
 
       if (!data) {
         throw Error("Couldn't get tasks");

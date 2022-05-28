@@ -1,10 +1,6 @@
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useAppSelector } from "store/hooks";
 import tw from "tailwind-styled-components";
-import {
-  selectActiveListID,
-  changeActiveListID,
-  setActiveListID,
-} from "../../../features/list/listSlice";
+import { selectActiveListID } from "../../../features/list/listSlice";
 
 interface Title {
   $selected: string;
@@ -14,10 +10,10 @@ interface ListTitleProps {
   text: string;
   listId: string;
   fetchTags?: boolean;
+  onClick?: () => void;
 }
 
-const ListTitle = ({ text, listId, fetchTags = true }: ListTitleProps) => {
-  const dispatch = useAppDispatch();
+const ListTitle = ({ text, listId, onClick }: ListTitleProps) => {
   const activeList = useAppSelector(selectActiveListID);
 
   const isSelected = (listID: string) => activeList === listID;
@@ -33,19 +29,8 @@ ${(p: Title) =>
     : "font-regular text-main-100 cursor-pointer"}
 `;
 
-  const handleSelectList = (listId: string) => {
-    fetchTags
-      ? dispatch(changeActiveListID(listId))
-      : dispatch(setActiveListID(listId));
-  };
   return (
-    <Title
-      $selected={listId}
-      onClick={() => {
-        handleSelectList(listId);
-      }}
-      title={text}
-    >
+    <Title $selected={listId} onClick={onClick} title={text}>
       {text}
     </Title>
   );

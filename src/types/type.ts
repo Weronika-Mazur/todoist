@@ -32,7 +32,7 @@ export interface TaskContent {
   taskId?: string;
   content?: string;
   status?: TaskStatus;
-  dueDate?: Date;
+  dueDate?: string;
   priority?: Priority;
   tags?: Tag[];
 }
@@ -97,4 +97,5 @@ export enum Priority {
 export interface TaskFilters {
   priority?: Priority;
   tag?: string;
+  date?: string;
 }

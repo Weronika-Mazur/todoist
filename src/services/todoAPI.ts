@@ -8,12 +8,14 @@ class TodoAPI {
     return this.fetchService.get<undefined, Task[]>(endpoint);
   }
 
-  getFilteredTasks(filters: TaskFilters) {
+  getFilteredTasks(listId: string, filters?: TaskFilters) {
     const filterParams = filters
       ? new URLSearchParams([...Object.entries(filters)])
       : "";
 
-    const endpoint = filterParams ? `todos/?${filterParams}` : "todos/";
+    const endpoint = filterParams
+      ? `todos/${listId}?${filterParams}`
+      : "todos/";
 
     return this.fetchService.get<undefined, Task[]>(endpoint);
   }
