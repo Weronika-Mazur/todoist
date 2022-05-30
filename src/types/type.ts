@@ -37,6 +37,14 @@ export interface TaskContent {
   tags?: Tag[];
 }
 
+export interface NewTask {
+  content: string;
+  status?: TaskStatus;
+  dueDate?: string;
+  priority: Priority;
+  tags: Tag[];
+}
+
 export interface TagContent {
   content: string;
 }
@@ -88,10 +96,10 @@ export enum ListColors {
 
 export enum Priority {
   p1 = 1,
-  p2,
-  p3,
-  p4,
-  p5,
+  p2 = 2,
+  p3 = 3,
+  p4 = 4,
+  p5 = 5,
 }
 
 export interface TaskFilters {

@@ -1,6 +1,4 @@
-import { useAppSelector } from "store/hooks";
 import tw from "tailwind-styled-components";
-import { selectActiveListID } from "../../../features/list/listSlice";
 
 interface Title {
   $selected: string;
@@ -10,12 +8,11 @@ interface ListTitleProps {
   text: string;
   listId: string;
   fetchTags?: boolean;
+  activeList: string;
   onClick?: () => void;
 }
 
-const ListTitle = ({ text, listId, onClick }: ListTitleProps) => {
-  const activeList = useAppSelector(selectActiveListID);
-
+const ListTitle = ({ text, listId, onClick, activeList }: ListTitleProps) => {
   const isSelected = (listID: string) => activeList === listID;
 
   const Title = tw.p<Title>`

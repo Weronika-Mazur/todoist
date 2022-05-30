@@ -1,4 +1,3 @@
-import CrossIcon from "assets/CrossIcon";
 import tw from "tailwind-styled-components";
 
 export const Backdrop = tw.div`
@@ -19,7 +18,7 @@ gap-3.5
 py-5 
 px-4 
 border-t-2 
-border-main-300 
+border-main-500 
 rounded-md 
 mb-1 
 mt-4
@@ -42,7 +41,7 @@ export const EditContainer = tw.div`
 flex 
 flex-col
 border-b-[3px] 
-border-main-600 
+border-main-500 
 p-0
 rounded-b-md 
 bg-main-900

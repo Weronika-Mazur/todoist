@@ -1,16 +1,19 @@
-import { Task } from "types/type";
-import TaskItem from "../../../molecules/TaskItem/TaskItem";
 import { useAppSelector } from "store/hooks";
+import { groupBy } from "lodash";
+
 import {
   selectIsLoading,
   selectTaskArrayWithFilters,
   selectTaskEditModeId,
 } from "features/todo/todoSlice";
 
-import * as S from "./styles";
+import TaskItem from "components/molecules/TaskItem/TaskItem";
 import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
+import NoTasks from "components/molecules/NoTasks/NoTasks";
 
-import _ from "lodash";
+import * as S from "./styles";
+import { Task } from "types/type";
+import { getDateString } from "utils/helpers";
 
 const CalendarTaskList = () => {
   const taskArray: Task[] = useAppSelector(selectTaskArrayWithFilters);
@@ -24,18 +27,15 @@ const CalendarTaskList = () => {
 
   const toDate = (date?: string) => (date ? new Date(date) : undefined);
 
-  const formatDate = (task: Task) =>
-    new Date(task.dueDate!).toLocaleDateString("en-GB", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+  const formatDate = (task: Task) => getDateString(new Date(task.dueDate!));
 
-  const groupedTasks = _.groupBy(taskArray, formatDate);
+  const groupedTasks = groupBy(taskArray, formatDate);
 
-  return Object.entries(groupedTasks).length !== 0 ? (
+  const groupedTasksEntries = Object.entries(groupedTasks);
+
+  return groupedTasksEntries.length !== 0 ? (
     <section>
-      {Object.entries(groupedTasks).map(([date, tasks]) => (
+      {groupedTasksEntries.map(([date, tasks]) => (
         <div key={date}>
           <S.DateHeader>{date}</S.DateHeader>
           <S.TaskSection>
@@ -65,12 +65,9 @@ const CalendarTaskList = () => {
         </div>
       ))}
     </section>
-  ) : !isLoading ? (
-    <S.EmptyIllustrationContainer>
-      <S.EmptyIllustration />
-      <S.NotFoundText>No tasks found</S.NotFoundText>
-    </S.EmptyIllustrationContainer>
-  ) : null;
+  ) : (
+    <NoTasks isLoading={isLoading} />
+  );
 };
 
 export default CalendarTaskList;

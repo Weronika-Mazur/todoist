@@ -104,31 +104,7 @@ type AppThunk<ReturnType = void> = ThunkAction<
 type TodoAppThunk = AppThunk<Promise<Task[] | undefined>>;
 type TaskAppThunk = AppThunk<Promise<Task | undefined>>;
 
-export const fetchTaskArray = (): TodoAppThunk => {
-  return async (dispatch, getState) => {
-    try {
-      dispatch(setIsLoading(true));
-      dispatch(setTaskArray([]));
-      const activeListID = getState().list.activeListID;
-      const data = await todoApi.getTasks(activeListID);
-
-      if (!data) {
-        throw Error("Couldn't get tasks");
-      }
-
-      dispatch(setTaskArray(data));
-
-      return data;
-    } catch (err: any) {
-      const errorMessage = `trying to get tasks. ${err.message}`;
-      dispatch(setErrorMessage(errorMessage));
-    } finally {
-      dispatch(setIsLoading(false));
-    }
-  };
-};
-
-export const fetchFilteredTaskArray = (
+export const fetchTaskArray = (
   listId = "",
   taskFilters?: TaskFilters
 ): TodoAppThunk => {
@@ -137,7 +113,7 @@ export const fetchFilteredTaskArray = (
       dispatch(setIsLoading(true));
       dispatch(setTaskArray([]));
 
-      const data = await todoApi.getFilteredTasks(listId, taskFilters);
+      const data = await todoApi.getTasks(listId, taskFilters);
 
       if (!data) {
         throw Error("Couldn't get tasks");

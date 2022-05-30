@@ -1,76 +1,74 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
+
 import { addTask } from "features/todo/todoSlice";
-
 import { selectIsLoading } from "features/todo/todoSlice";
-
-import { TaskContent } from "types/type";
-import { Priority, Tag } from "types/type";
-import * as S from "./styles";
 
 import BusyIcon from "assets/BusyIcon";
 import TaskInput from "./TaskInput";
 import TaskDetails from "components/molecules/TaskDetails/TaskDetails";
 
+import * as S from "./styles";
+import { NewTask, Priority, Tag } from "types/type";
+import { toDate } from "utils/helpers";
+
 const TaskCreator = () => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectIsLoading);
 
-  const [content, setContent] = useState("");
-  const [date, setDate] = useState<Date>();
-  const [taskTags, setTaskTags] = useState<Tag[]>([]);
-  const [priority, setPriority] = useState<Priority>(Priority.p1);
+  const [newTask, setNewTask] = useState({
+    content: "",
+    status: "active",
+    priority: Priority.p1,
+    dueDate: undefined,
+    tags: [],
+  } as NewTask);
 
   const handleAddTask = async () => {
-    if (content !== "") {
-      const newTask: TaskContent = {
-        content: content,
-        status: "active",
-        priority: priority,
-        dueDate: date?.toLocaleDateString("en-CA"),
-        tags: taskTags,
-      };
-
+    if (newTask.content !== "") {
       const data = await dispatch(addTask(newTask));
       if (data) {
-        setContent("");
-        setDate(undefined);
-        setTaskTags([]);
-        setPriority(Priority.p1);
+        setNewTask({
+          content: "",
+          status: "active",
+          priority: Priority.p1,
+          dueDate: undefined,
+          tags: [],
+        });
       }
     }
   };
 
   const handleSetDate = (newDate?: Date) => {
-    setDate(newDate);
+    setNewTask({ ...newTask, dueDate: newDate?.toLocaleDateString("en-CA") });
   };
 
   const handleSetPriority = (priority = Priority.p1) => {
-    setPriority(priority);
+    setNewTask({ ...newTask, priority });
   };
 
   const handleSetTaskTags = (newSet: Tag[]) => {
-    setTaskTags(newSet);
+    setNewTask({ ...newTask, tags: newSet });
   };
 
   const handleSetContent = (text: string) => {
-    setContent(text);
+    setNewTask({ ...newTask, content: text });
   };
 
   return !isLoading ? (
     <>
       <TaskInput
-        content={content}
+        content={newTask.content}
         handleAddTask={handleAddTask}
         handleSetContent={handleSetContent}
       />
 
       <TaskDetails
-        date={date}
+        date={toDate(newTask.dueDate)}
         handleSetDate={handleSetDate}
-        priority={priority}
+        priority={newTask.priority}
         handleSetPriority={handleSetPriority}
-        taskTags={taskTags}
+        taskTags={newTask.tags}
         handleSetTaskTags={handleSetTaskTags}
       />
     </>

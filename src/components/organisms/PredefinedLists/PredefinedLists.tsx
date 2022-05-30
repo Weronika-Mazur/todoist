@@ -1,18 +1,21 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   changeActiveListID,
+  selectActiveListID,
   selectInbox,
   setActiveListID,
-} from "../../../features/list/listSlice";
+} from "features/list/listSlice";
+import { fetchTaskArray } from "features/todo/todoSlice";
 
 import ListTitle from "components/atoms/ListTitle/ListTitle";
 import ActiveCount from "components/atoms/ActiveCount/ActiveCount";
+
 import * as S from "./styles";
-import { fetchFilteredTaskArray } from "features/todo/todoSlice";
-import { TaskFilters } from "types/type";
+import { getTodayString, getTomorrowString } from "utils/helpers";
 
 const PredefinedLists = () => {
   const inbox = useAppSelector(selectInbox);
+  const activeList = useAppSelector(selectActiveListID);
 
   const dispatch = useAppDispatch();
 
@@ -20,27 +23,32 @@ const PredefinedLists = () => {
     dispatch(changeActiveListID(listId));
   };
 
-  const handleFetchFilteredList = (
-    activeList: string,
-    filters?: TaskFilters
-  ) => {
-    dispatch(fetchFilteredTaskArray(undefined, filters));
-    dispatch(setActiveListID(activeList));
-  };
-
   const handleSetActiveList = (listId: string) => {
     dispatch(setActiveListID(listId));
   };
 
-  const getToday = () => {
-    const now = new Date();
-    return now.toLocaleDateString("en-CA");
+  const handleFetchToday = () => {
+    const filters = {
+      date: getTodayString(),
+    };
+    dispatch(fetchTaskArray(undefined, filters));
+    dispatch(setActiveListID("Today"));
   };
 
-  const getTomorrow = () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    return date.toLocaleDateString("en-CA");
+  const handleFetchTomorrow = () => {
+    const filters = {
+      date: getTomorrowString(),
+    };
+    dispatch(fetchTaskArray(undefined, filters));
+    dispatch(setActiveListID("Tomorrow"));
+  };
+
+  const handleFetchCalendar = () => {
+    const filters = {
+      date: `ge${getTodayString()}`,
+    };
+    dispatch(fetchTaskArray(undefined, filters));
+    dispatch(setActiveListID("Calendar"));
   };
 
   return (
@@ -53,6 +61,7 @@ const PredefinedLists = () => {
           onClick={() => {
             handleChangeActiveList(inbox.listId);
           }}
+          activeList={activeList}
         />
         <ActiveCount count={inbox.activeCount} />
       </S.PredefinedListItem>
@@ -62,11 +71,8 @@ const PredefinedLists = () => {
         <ListTitle
           listId="Today"
           text="Today"
-          onClick={() => {
-            handleFetchFilteredList("Today", {
-              date: getToday(),
-            });
-          }}
+          onClick={handleFetchToday}
+          activeList={activeList}
         />
       </S.PredefinedListItem>
 
@@ -75,11 +81,8 @@ const PredefinedLists = () => {
         <ListTitle
           listId="Tomorrow"
           text="Tomorrow"
-          onClick={() => {
-            handleFetchFilteredList("Tomorrow", {
-              date: getTomorrow(),
-            });
-          }}
+          onClick={handleFetchTomorrow}
+          activeList={activeList}
         />
       </S.PredefinedListItem>
 
@@ -88,11 +91,8 @@ const PredefinedLists = () => {
         <ListTitle
           listId="Calendar"
           text="Calendar"
-          onClick={() => {
-            handleFetchFilteredList("Calendar", {
-              date: "ge" + getToday(),
-            });
-          }}
+          onClick={handleFetchCalendar}
+          activeList={activeList}
         />
       </S.PredefinedListItem>
 
@@ -104,6 +104,7 @@ const PredefinedLists = () => {
           onClick={() => {
             handleSetActiveList("Tags and filters");
           }}
+          activeList={activeList}
         />
       </S.PredefinedListItem>
     </S.List>

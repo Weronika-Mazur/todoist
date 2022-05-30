@@ -1,14 +1,18 @@
-import { Task } from "types/type";
-import TaskItem from "../../../molecules/TaskItem/TaskItem";
 import { useAppSelector } from "store/hooks";
+
 import {
   selectIsLoading,
   selectTaskArrayWithFilters,
   selectTaskEditModeId,
 } from "features/todo/todoSlice";
 
-import * as S from "./styles";
+import TaskItem from "components/molecules/TaskItem/TaskItem";
+import NoTasks from "components/molecules/NoTasks/NoTasks";
 import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
+
+import * as S from "./styles";
+import { Task } from "types/type";
+import { toDate } from "utils/helpers";
 
 const TaskList = () => {
   const taskArray: Task[] = useAppSelector(selectTaskArrayWithFilters);
@@ -18,8 +22,6 @@ const TaskList = () => {
   function isEditModeActive(taskId: string): boolean {
     return taskId === editModeId;
   }
-
-  const toDate = (date?: string) => (date ? new Date(date) : undefined);
 
   return taskArray.length !== 0 ? (
     <S.TaskSection>
@@ -46,12 +48,9 @@ const TaskList = () => {
         )
       )}
     </S.TaskSection>
-  ) : !isLoading ? (
-    <S.EmptyIllustrationContainer>
-      <S.EmptyIllustration />
-      <S.NotFoundText>No tasks found</S.NotFoundText>
-    </S.EmptyIllustrationContainer>
-  ) : null;
+  ) : (
+    <NoTasks isLoading={isLoading} />
+  );
 };
 
 export default TaskList;

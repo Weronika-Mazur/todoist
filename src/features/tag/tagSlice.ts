@@ -130,12 +130,11 @@ export const deleteTag = (tagId: string): TagAppThunk => {
       }
 
       const currentTagArray: Tag[] = getState().tag.tagArray;
-
-      dispatch(
-        setTagArray(
-          currentTagArray.filter((tag) => tag.tagId !== returnedTag.tagId)
-        )
+      const newTagArray = currentTagArray.filter(
+        (tag) => tag.tagId !== returnedTag.tagId
       );
+
+      dispatch(setTagArray(newTagArray));
 
       return returnedTag;
     } catch (err: any) {
@@ -157,14 +156,11 @@ export const editTag = (tagId: string, changes: TagContent): TagAppThunk => {
       }
 
       const currentTagArray: Tag[] = getState().tag.tagArray;
-
-      dispatch(
-        setTagArray(
-          currentTagArray.map((tag) =>
-            tag.tagId === returnedTag.tagId ? returnedTag : tag
-          )
-        )
+      const newTagArray = currentTagArray.map((tag) =>
+        tag.tagId === returnedTag.tagId ? returnedTag : tag
       );
+
+      dispatch(setTagArray(newTagArray));
 
       dispatch(deactivateTagEditMode());
       return returnedTag;

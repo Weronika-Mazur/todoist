@@ -1,23 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
 import {
   activateTagEditMode,
   addTag,
   deleteTag,
+  fetchTags,
   selectIsLoading,
   selectTagArray,
   selectTagEditModeId,
 } from "features/tag/tagSlice";
-import { fetchFilteredTaskArray } from "features/todo/todoSlice";
+import { fetchTaskArray } from "features/todo/todoSlice";
+import { setActiveListID } from "features/list/listSlice";
 
 import Button from "components/atoms/Button/Button";
 import TagEdit from "components/molecules/TagEdit/TagEdit";
 import BusyIcon from "assets/BusyIcon";
-import * as S from "./styles";
 
+import * as S from "./styles";
 import { TagContent } from "types/type";
-import { setActiveListID } from "features/list/listSlice";
 
 const TagsList = () => {
   const dispatch = useAppDispatch();
@@ -57,9 +58,13 @@ const TagsList = () => {
   };
 
   const handleFilterBy = (tag: string) => {
-    dispatch(fetchFilteredTaskArray(undefined, { tag }));
+    dispatch(fetchTaskArray(undefined, { tag }));
     dispatch(setActiveListID("Filtered"));
   };
+
+  useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
 
   return (
     <section>

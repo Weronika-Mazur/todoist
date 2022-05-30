@@ -1,6 +1,9 @@
-import { useAppDispatch } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 
-import { changeActiveListID } from "../../../features/list/listSlice";
+import {
+  changeActiveListID,
+  selectActiveListID,
+} from "features/list/listSlice";
 
 import * as S from "./styles";
 import { ListColors } from "types/type";
@@ -19,9 +22,10 @@ interface ListItemProps {
 
 const ListItem = ({ name, color, id, number }: ListItemProps) => {
   const dispatch = useAppDispatch();
+  const activeList = useAppSelector(selectActiveListID);
 
-  const handleSelectList = (listId: string) => {
-    dispatch(changeActiveListID(listId));
+  const handleSelectList = () => {
+    dispatch(changeActiveListID(id));
   };
 
   return (
@@ -33,9 +37,8 @@ const ListItem = ({ name, color, id, number }: ListItemProps) => {
         <ListTitle
           listId={id}
           text={name}
-          onClick={() => {
-            handleSelectList(id);
-          }}
+          onClick={handleSelectList}
+          activeList={activeList}
         />
         <S.OptionsActiveCount count={number} />
       </S.TitleContainer>

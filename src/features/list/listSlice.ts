@@ -242,7 +242,7 @@ export const changeActiveListID = (
 ): AppThunk<Promise<void | undefined>> => {
   return async (dispatch) => {
     dispatch(setActiveListID(listId));
-    dispatch(fetchTaskArray());
+    dispatch(fetchTaskArray(listId));
   };
 };
 

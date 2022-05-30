@@ -1,4 +1,3 @@
-import Empty from "assets/Empty";
 import tw from "tailwind-styled-components";
 
 export const TaskSection = tw.section`
@@ -18,23 +17,4 @@ sm:text-left
 text-center
 font-medium
 text-main-100
-`;
-
-export const EmptyIllustrationContainer = tw.div`
-flex 
-flex-col 
-w-full 
-items-center 
-justify-center 
-mt-24 
-`;
-
-export const EmptyIllustration = tw(Empty)`
-w-1/2 
-h-fit
-`;
-
-export const NotFoundText = tw.p`
-mt-4 
-text-main-300
 `;

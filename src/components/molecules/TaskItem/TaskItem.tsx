@@ -7,6 +7,7 @@ import {
 
 import * as S from "./styles";
 import { Priority, Tag, TaskStatus } from "types/type";
+import { getDateString } from "utils/helpers";
 
 interface TaskItemProps {
   content: string;
@@ -44,11 +45,7 @@ const TaskItem = ({
     );
   };
 
-  const schedule = dueDate?.toLocaleDateString("en-GB", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const schedule = getDateString(dueDate);
 
   const TaskDetails =
     dueDate || tags ? (

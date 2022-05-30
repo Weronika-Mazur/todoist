@@ -1,23 +1,18 @@
 import { setActiveListID } from "features/list/listSlice";
-import { fetchFilteredTaskArray } from "features/todo/todoSlice";
+import { fetchTaskArray } from "features/todo/todoSlice";
 import { useAppDispatch } from "store/hooks";
 import { Priority } from "types/type";
+import { getPriorityArray } from "utils/helpers";
 
 import * as S from "./styles";
 
 const PriorityList = () => {
   const dispatch = useAppDispatch();
 
-  const priorityArray = (
-    Object.keys(Priority).filter((v) =>
-      isNaN(Number(v))
-    ) as (keyof typeof Priority)[]
-  ).map((key) => {
-    return Priority[key];
-  });
+  const priorityArray = getPriorityArray();
 
   const handleFilterBy = (priority: Priority) => {
-    dispatch(fetchFilteredTaskArray(undefined, { priority }));
+    dispatch(fetchTaskArray(undefined, { priority }));
     dispatch(setActiveListID("Filtered"));
   };
 
