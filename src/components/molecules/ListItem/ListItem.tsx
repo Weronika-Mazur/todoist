@@ -1,12 +1,17 @@
-import { useAppDispatch } from "store/hooks";
-import { setDropDown, setShowModal } from "features/list/listSlice";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 
-import ListTitle from "components/atoms/ListTitle/ListTitle";
+import {
+  changeActiveListID,
+  selectActiveListID,
+} from "features/list/listSlice";
 
 import * as S from "./styles";
 import { ListColors } from "types/type";
 
+import ListTitle from "components/atoms/ListTitle/ListTitle";
 import DotIcon from "assets/DotIcon";
+import DropDown from "components/molecules/DropDown/DropDown";
+import ListOptionsDropDown from "../../organisms/DropDowns/ListOptionsDropDown/ListOptionsDropDown";
 
 interface ListItemProps {
   name: string;
@@ -17,10 +22,10 @@ interface ListItemProps {
 
 const ListItem = ({ name, color, id, number }: ListItemProps) => {
   const dispatch = useAppDispatch();
+  const activeList = useAppSelector(selectActiveListID);
 
-  const handleShowMenu = (e: React.MouseEvent<HTMLElement>) => {
-    dispatch(setDropDown({ id, active: true, x: e.clientX, y: e.clientY }));
-    dispatch(setShowModal("dropDown"));
+  const handleSelectList = () => {
+    dispatch(changeActiveListID(id));
   };
 
   return (
@@ -29,12 +34,22 @@ const ListItem = ({ name, color, id, number }: ListItemProps) => {
         <DotIcon />
       </S.Container>
       <S.TitleContainer>
-        <ListTitle listId={id} text={name} />
+        <ListTitle
+          listId={id}
+          text={name}
+          onClick={handleSelectList}
+          activeList={activeList}
+        />
         <S.OptionsActiveCount count={number} />
       </S.TitleContainer>
-      <S.OptionsButton onClick={handleShowMenu}>
-        <S.GreyOptionsIcon />
-      </S.OptionsButton>
+      <DropDown
+        dropDown={<ListOptionsDropDown id={id} />}
+        placement="right-start"
+      >
+        <S.OptionsButton>
+          <S.GreyOptionsIcon />
+        </S.OptionsButton>
+      </DropDown>
     </S.ListItemContainer>
   );
 };

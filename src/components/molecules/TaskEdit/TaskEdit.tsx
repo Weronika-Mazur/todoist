@@ -1,59 +1,84 @@
 import { useState } from "react";
-
 import { useAppDispatch } from "store/hooks";
+
 import { deactivateTaskEditMode, editTask } from "features/todo/todoSlice";
-import disableScroll from "disable-scroll";
+import { NewTask, Priority, Tag } from "types/type";
 
 import * as S from "./styles";
+import TaskDetails from "../TaskDetails/TaskDetails";
+import CancelButton from "components/atoms/CancelButton/CancelButton";
+import Button from "components/atoms/Button/Button";
+import { toDate } from "utils/helpers";
 
 interface TaskEditProps {
   content: string;
   id: string;
+  tags?: Tag[];
+  dueDate?: Date;
+  priority: Priority;
 }
 
-const TaskEdit = ({ content, id }: TaskEditProps) => {
+const TaskEdit = ({ content, id, tags, dueDate, priority }: TaskEditProps) => {
   const dispatch = useAppDispatch();
-  const [text, setText] = useState(content);
 
-  const handleEndEditing = () => {
-    text !== content
-      ? dispatch(
-          editTask(id, {
-            content: text,
-          })
-        )
-      : dispatch(deactivateTaskEditMode());
+  const [newTask, setNewTask] = useState({
+    content: content,
+    priority: priority,
+    dueDate: dueDate,
+    tags: tags ?? [],
+  } as NewTask);
 
-    disableScroll.off();
+  const handleEndEditing = async () => {
+    const data = await dispatch(editTask(id, newTask));
+    if (data) {
+      dispatch(deactivateTaskEditMode());
+    }
   };
 
   const handleCancelEdit = () => {
     dispatch(deactivateTaskEditMode());
-    disableScroll.off();
   };
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setText(e.target.value);
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTask({ ...newTask, content: e.target.value });
+  };
 
-  disableScroll.on();
+  const handleSetDate = (newDate?: Date) => {
+    setNewTask({ ...newTask, dueDate: newDate?.toLocaleDateString("en-CA") });
+  };
+
+  const handleSetPriority = (priority = Priority.p1) => {
+    setNewTask({ ...newTask, priority });
+  };
+
+  const handleSetTaskTags = (newSet: Tag[]) => {
+    setNewTask({ ...newTask, tags: newSet });
+  };
 
   return (
     <>
-      <S.Backdrop
-        onClick={handleEndEditing}
-        data-testid="taskedit-backdrop"
-      ></S.Backdrop>
       <S.EditContainer>
-        <S.EditInput
-          type="text"
-          value={text}
-          maxLength={200}
-          onChange={handleTextChange}
-          autoFocus
+        <S.InputContainer>
+          <S.EditInput
+            type="text"
+            value={newTask.content}
+            maxLength={200}
+            onChange={handleTextChange}
+            autoFocus
+          />
+        </S.InputContainer>
+        <TaskDetails
+          date={toDate(newTask.dueDate)}
+          handleSetDate={handleSetDate}
+          priority={newTask.priority}
+          handleSetPriority={handleSetPriority}
+          taskTags={newTask.tags}
+          handleSetTaskTags={handleSetTaskTags}
         />
-        <button onClick={handleCancelEdit}>
-          <S.GreyCrossIcon />
-        </button>
+        <S.ButtonContainer>
+          <Button text="confirm" onClick={handleEndEditing} />
+          <CancelButton onClick={handleCancelEdit} />
+        </S.ButtonContainer>
       </S.EditContainer>
     </>
   );

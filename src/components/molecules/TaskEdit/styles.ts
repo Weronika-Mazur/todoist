@@ -1,4 +1,3 @@
-import CrossIcon from "assets/CrossIcon";
 import tw from "tailwind-styled-components";
 
 export const Backdrop = tw.div`
@@ -11,22 +10,19 @@ left-0
 bg-backdrop
 `;
 
-export const EditContainer = tw.div`
-md:relative
-sticky
-bottom-4
-md:bottom-0
-z-[40]
+export const InputContainer = tw.div`
 flex 
 justify-between 
 items-center 
 gap-3.5 
-py-4 
+py-5 
 px-4 
-border-b-[3px] 
-border-main-600 
+border-t-2 
+border-main-500 
 rounded-md 
-bg-main-500
+mb-1 
+mt-4
+bg-main-700
 `;
 
 export const EditInput = tw.input`
@@ -41,6 +37,21 @@ font-body
 font-medium
 `;
 
-export const GreyCrossIcon = tw(CrossIcon)`
-fill-main-300
+export const EditContainer = tw.div`
+flex 
+flex-col
+border-b-[3px] 
+border-main-500 
+p-0
+rounded-b-md 
+bg-main-900
+`;
+
+export const ButtonContainer = tw.div`
+flex 
+sm:justify-end
+justify-center
+bg-transparent
+px-3 
+py-4
 `;

@@ -1,9 +1,4 @@
-import { useAppDispatch, useAppSelector } from "store/hooks";
 import tw from "tailwind-styled-components";
-import {
-  selectActiveListID,
-  changeActiveListID,
-} from "../../../features/list/listSlice";
 
 interface Title {
   $selected: string;
@@ -12,12 +7,12 @@ interface Title {
 interface ListTitleProps {
   text: string;
   listId: string;
+  fetchTags?: boolean;
+  activeList: string;
+  onClick?: () => void;
 }
 
-const ListTitle = ({ text, listId }: ListTitleProps) => {
-  const dispatch = useAppDispatch();
-  const activeList = useAppSelector(selectActiveListID);
-
+const ListTitle = ({ text, listId, onClick, activeList }: ListTitleProps) => {
   const isSelected = (listID: string) => activeList === listID;
 
   const Title = tw.p<Title>`
@@ -31,17 +26,8 @@ ${(p: Title) =>
     : "font-regular text-main-100 cursor-pointer"}
 `;
 
-  const handleSelectList = (listId: string) => {
-    dispatch(changeActiveListID(listId));
-  };
   return (
-    <Title
-      $selected={listId}
-      onClick={() => {
-        handleSelectList(listId);
-      }}
-      title={text}
-    >
+    <Title $selected={listId} onClick={onClick} title={text}>
       {text}
     </Title>
   );

@@ -22,13 +22,13 @@ export const userSlice = createSlice({
   name: "list",
   initialState,
   reducers: {
-    setUserName: (state, action: PayloadAction<string>) => {
+    setUserName: (state: State, action: PayloadAction<string>) => {
       state.userName = action.payload;
     },
-    setEmail: (state, action: PayloadAction<string>) => {
+    setEmail: (state: State, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
-    setIsSubmitted: (state, action: PayloadAction<boolean>) => {
+    setIsSubmitted: (state: State, action: PayloadAction<boolean>) => {
       state.isSubmitted = action.payload;
     },
     resetUser: () => initialState,

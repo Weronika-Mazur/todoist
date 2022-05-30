@@ -6,6 +6,7 @@ interface MainContainerProps {
 
 export const MainContainer = tw.div<MainContainerProps>`
 p-8 
+pt-1
 w-full 
 md:pl-[18rem] 
 md:block
