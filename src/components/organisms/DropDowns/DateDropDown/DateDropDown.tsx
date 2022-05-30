@@ -1,3 +1,6 @@
+import disableScroll from "disable-scroll";
+import { useEffect } from "react";
+
 import "./dark.css";
 import * as S from "./styles";
 
@@ -31,6 +34,13 @@ const DateDropDown = ({ selectedDate, setDate }: DateDropDownProps) => {
   const handleNone = () => {
     setDate();
   };
+
+  useEffect(() => {
+    disableScroll.on();
+    return () => {
+      disableScroll.off();
+    };
+  }, []);
 
   return (
     <>

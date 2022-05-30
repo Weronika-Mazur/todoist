@@ -1,6 +1,6 @@
-import TaskFilters from "../TaskFilters/TaskFilters";
-import TaskList from "../TaskList/TaskList";
-import TaskCreator from "../TaskCreator/TaskCreator";
+import TaskFilters from "../../TaskFilters/TaskFilters";
+import TaskList from "../../Lists/TaskList/TaskList";
+import TaskCreator from "../../TaskCreator/TaskCreator";
 
 const TaskContainer = () => {
   return (

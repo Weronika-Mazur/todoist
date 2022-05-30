@@ -5,6 +5,7 @@ import PriorityDropDown from "components/organisms/DropDowns/PriorityDropDown/Pr
 
 import * as S from "./styles";
 import { Priority, Tag } from "types/type";
+import { getDateString } from "utils/helpers";
 
 interface TaskDetailsProps {
   date?: Date;
@@ -27,12 +28,7 @@ const TaskDetails = ({
     handleSetTaskTags(taskTags.filter((item) => item.tagId !== tag.tagId));
   };
 
-  const schedule =
-    date?.toLocaleDateString("en-GB", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }) ?? "Not scheduled";
+  const schedule = getDateString(date) ?? "Not scheduled";
 
   const priorityText =
     priority !== Priority.p1 ? `Priority ${priority}` : "No priority";

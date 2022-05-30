@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import TaskList from "../TaskList";
 import { renderWithState } from "utils/testHelpers";
 import { todoApi } from "services/todoAPI";
-import { TaskContent } from "types/type";
+import { Priority, TaskContent } from "types/type";
 
 const todoState = {
   todo: {
@@ -13,16 +13,19 @@ const todoState = {
         taskId: "1",
         content: "lorem ipsum",
         status: "active",
+        priority: Priority.p1,
       },
       {
         taskId: "2",
         content: "Go shopping",
         status: "completed",
+        priority: Priority.p1,
       },
       {
         taskId: "3",
         content: "Start working",
         status: "completed",
+        priority: Priority.p1,
       },
     ],
     taskFilter: "all",
@@ -43,6 +46,7 @@ beforeEach(() => {
         taskId: taskId,
         content: changes.content || "",
         status: "completed",
+        priority: Priority.p1,
       })
     );
 });
@@ -64,7 +68,7 @@ describe("Task List", () => {
   test("deactivates edit mode", () => {
     renderWithState(<TaskList />, todoState);
     fireEvent.click(screen.getByTestId("edit-button-2"));
-    fireEvent.click(screen.getByTestId("taskedit-backdrop"));
+    fireEvent.click(screen.getByText(/cancel/i));
 
     expect(screen.getByText(/Go shopping/i)).toBeInTheDocument();
   });
@@ -75,7 +79,7 @@ describe("Task List", () => {
 
     const input = screen.getByDisplayValue(/Go shopping/i);
     fireEvent.change(input, { target: { value: "Go shopping tomorrow" } });
-    fireEvent.click(screen.getByTestId("taskedit-backdrop"));
+    fireEvent.click(screen.getByText(/confirm/i));
 
     expect(
       await screen.findByText(/Go shopping tomorrow/i)

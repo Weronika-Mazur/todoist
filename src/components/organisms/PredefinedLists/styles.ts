@@ -1,5 +1,6 @@
 import CalendarIcon from "assets/CalendarIcon";
 import InboxIcon from "assets/InboxIcon";
+import TagIcon from "assets/TagIcon";
 import TodayIcon from "assets/TodayIcon";
 import TomorrowIcon from "assets/TomorrowIcon";
 import tw from "tailwind-styled-components";
@@ -35,6 +36,14 @@ mr-1.5
 
 export const WhiteInboxIcon = tw(InboxIcon)`
 fill-slate-100 
+w-[1.2rem] 
+h-[1.2rem] 
+ml-[0.2rem] 
+mr-[0.4rem]
+`;
+
+export const RoseTagsIcon = tw(TagIcon)`
+fill-rose-400 
 w-[1.2rem] 
 h-[1.2rem] 
 ml-[0.2rem] 

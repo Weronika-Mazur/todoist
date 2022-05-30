@@ -124,7 +124,6 @@ export type ListAppThunk = AppThunk<Promise<List | undefined>>;
 export const fetchListArray = (): TodoAppThunk => {
   return async (dispatch) => {
     try {
-      dispatch(setIsLoading(true));
       const data = await listApi.getLists();
 
       if (!data) {
@@ -142,13 +141,10 @@ export const fetchListArray = (): TodoAppThunk => {
 
       dispatch(changeActiveListID(inbox.listId));
 
-      dispatch(setErrorMessage(""));
       return data;
     } catch (err: any) {
       const errorMessage = `trying to get lists. ${err.message}`;
       dispatch(setErrorMessage(errorMessage));
-    } finally {
-      dispatch(setIsLoading(false));
     }
   };
 };
@@ -246,7 +242,7 @@ export const changeActiveListID = (
 ): AppThunk<Promise<void | undefined>> => {
   return async (dispatch) => {
     dispatch(setActiveListID(listId));
-    dispatch(fetchTaskArray());
+    dispatch(fetchTaskArray(listId));
   };
 };
 

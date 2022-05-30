@@ -1,19 +1,24 @@
+import { useEffect } from "react";
+import disableScroll from "disable-scroll";
+
 import { Priority } from "types/type";
 
 import * as S from "./styles";
+import { getPriorityArray } from "utils/helpers";
 
 interface PriorityDropDownProps {
   handleSetPriority: (priority?: Priority) => void;
 }
 
 const PriorityDropDown = ({ handleSetPriority }: PriorityDropDownProps) => {
-  const priorityArray = (
-    Object.keys(Priority).filter((v) =>
-      isNaN(Number(v))
-    ) as (keyof typeof Priority)[]
-  ).map((key) => {
-    return Priority[key];
-  });
+  const priorityArray = getPriorityArray();
+
+  useEffect(() => {
+    disableScroll.on();
+    return () => {
+      disableScroll.off();
+    };
+  }, []);
 
   return (
     <>

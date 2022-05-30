@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import * as S from "./styles";
 import { selectTagArray, selectIsLoading, addTag } from "features/tag/tagSlice";
@@ -19,6 +20,7 @@ const TagDropDown = ({
   const tagArray = useAppSelector(selectTagArray);
 
   const [text, setText] = useState("");
+  const targetRef = useRef();
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -27,7 +29,8 @@ const TagDropDown = ({
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setText(e.target.value);
 
-  const hasTag = (tag: Tag) => taskTags.indexOf(tag) !== -1;
+  const hasTag = (tag: Tag) =>
+    taskTags.find((element) => tag.tagId === element.tagId);
 
   const handleToggleTag = (tag: Tag) => {
     hasTag(tag)
@@ -47,6 +50,14 @@ const TagDropDown = ({
       }
     }
   };
+
+  useEffect(() => {
+    const targetElement = targetRef.current;
+    disableBodyScroll(targetElement!);
+    return () => {
+      enableBodyScroll(targetElement!);
+    };
+  }, []);
 
   return (
     <>
@@ -72,7 +83,7 @@ const TagDropDown = ({
       </S.InputListItem>
 
       <S.TagsListItem onClick={handleClick}>
-        <S.TagList>
+        <S.TagList ref={targetRef}>
           {Array.from(tagArray).map((tag) => (
             <S.TagItem onClick={() => handleToggleTag(tag)} key={tag.tagId}>
               <S.TagLabel>{tag.content}</S.TagLabel>
