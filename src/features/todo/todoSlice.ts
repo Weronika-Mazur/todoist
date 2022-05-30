@@ -142,7 +142,7 @@ export const clearCompleted = (): TodoAppThunk => {
         throw Error("Couldn't clear tasks");
       }
 
-      dispatch(fetchTaskArray());
+      dispatch(fetchTaskArray(activeListID));
       return data;
     } catch (err: any) {
       const errorMessage = `trying to clear completed tasks. ${err.message}`;
