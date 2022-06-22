@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
 import {
@@ -10,8 +11,6 @@ import {
   selectTagArray,
   selectTagEditModeId,
 } from "features/tag/tagSlice";
-import { fetchTaskArray } from "features/todo/todoSlice";
-import { setActiveListID } from "features/list/listSlice";
 
 import Button from "components/atoms/Button/Button";
 import TagEdit from "components/molecules/TagEdit/TagEdit";
@@ -22,6 +21,7 @@ import { TagContent } from "types/type";
 
 const TagsList = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const tagArray = useAppSelector(selectTagArray);
   const isLoading = useAppSelector(selectIsLoading);
@@ -58,8 +58,9 @@ const TagsList = () => {
   };
 
   const handleFilterBy = (tag: string) => {
-    dispatch(fetchTaskArray(undefined, { tag }));
-    dispatch(setActiveListID("Filtered"));
+    const searchParams = new URLSearchParams({ tag });
+    const url = `/home/filtered/?${searchParams}`;
+    navigate(url);
   };
 
   useEffect(() => {

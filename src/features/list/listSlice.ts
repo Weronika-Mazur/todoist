@@ -5,11 +5,19 @@ import { ThunkAction } from "redux-thunk";
 
 import { listApi } from "services/listAPI";
 
-import { List, ListColors, ListContent, SelectedList, Modal } from "types/type";
+import {
+  List,
+  ListColors,
+  ListContent,
+  SelectedList,
+  Modal,
+  Task,
+} from "types/type";
 import {
   setErrorMessage,
   setIsLoading,
   fetchTaskArray,
+  setTaskArray,
 } from "features/todo/todoSlice";
 
 interface State {
@@ -139,9 +147,7 @@ export const fetchListArray = (): TodoAppThunk => {
       dispatch(setInbox(inbox));
       dispatch(setListArray(data));
 
-      dispatch(changeActiveListID(inbox.listId));
-
-      return data;
+      return [inbox];
     } catch (err: any) {
       const errorMessage = `trying to get lists. ${err.message}`;
       dispatch(setErrorMessage(errorMessage));
@@ -217,16 +223,19 @@ export const deleteList = (id: string): ListAppThunk => {
       }
 
       const currentListArray: List[] = getState().list.listArray;
-
-      dispatch(
-        setListArray(
-          currentListArray.filter((list) => list.listId !== returnedList.listId)
-        )
+      const newListArray = currentListArray.filter(
+        (list) => list.listId !== returnedList.listId
       );
-      const activeListID = getState().list.activeListID;
-      if (activeListID === returnedList.listId) {
-        dispatch(changeActiveListID(getState().list.inbox.listId));
-      }
+
+      dispatch(setListArray(newListArray));
+
+      const currentTaskArray: Task[] = getState().todo.taskArray;
+      const newTaskArray = currentTaskArray.filter(
+        (task) => task.listId !== returnedList.listId
+      );
+
+      dispatch(setTaskArray(newTaskArray));
+
       return returnedList;
     } catch (err: any) {
       const errorMessage = `deleting list. ${err.message}`;
@@ -242,7 +251,7 @@ export const changeActiveListID = (
 ): AppThunk<Promise<void | undefined>> => {
   return async (dispatch) => {
     dispatch(setActiveListID(listId));
-    dispatch(fetchTaskArray(listId));
+    dispatch(fetchTaskArray({ listId }));
   };
 };
 

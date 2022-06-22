@@ -6,10 +6,14 @@ import {
   selectTaskFilter,
 } from "features/todo/todoSlice";
 
-import { FilterArray, Filter } from "types/type";
+import { FilterArray, Filter, TaskFilters } from "types/type";
 import * as S from "./styles";
 
-const TaskFilters = () => {
+interface TaskFilterBarProps {
+  filters?: TaskFilters;
+}
+
+const TaskFilterBar = ({ filters = {} }: TaskFilterBarProps) => {
   const dispatch = useAppDispatch();
   const itemsLeft = `${useAppSelector(selectItemsCounter)} items left`;
   const taskFilter = useAppSelector(selectTaskFilter);
@@ -38,7 +42,7 @@ const TaskFilters = () => {
   }
 
   function handleClearCompleted() {
-    dispatch(clearCompleted());
+    dispatch(clearCompleted(filters));
   }
 
   return (
@@ -64,4 +68,4 @@ const TaskFilters = () => {
   );
 };
 
-export default TaskFilters;
+export default TaskFilterBar;

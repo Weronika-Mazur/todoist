@@ -71,10 +71,8 @@ type TagsAppThunk = AppThunk<Promise<Tag[] | undefined>>;
 type TagAppThunk = AppThunk<Promise<Tag | undefined>>;
 
 export const fetchTags = (): TagsAppThunk => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
-      dispatch(setIsLoading(true));
-
       const data = await tagApi.getTags();
 
       if (!data) {
@@ -87,8 +85,6 @@ export const fetchTags = (): TagsAppThunk => {
     } catch (err: any) {
       const errorMessage = `trying to get tags. ${err.message}`;
       dispatch(setErrorMessage(errorMessage));
-    } finally {
-      dispatch(setIsLoading(false));
     }
   };
 };

@@ -2,6 +2,7 @@ export type TaskStatus = "completed" | "active";
 
 export interface Task {
   taskId: string;
+  listId?: string;
   content: string;
   status: TaskStatus;
   priority: number;
@@ -103,7 +104,8 @@ export enum Priority {
 }
 
 export interface TaskFilters {
-  priority?: Priority;
+  priority?: Priority | string;
   tag?: string;
   date?: string;
+  listId?: string;
 }

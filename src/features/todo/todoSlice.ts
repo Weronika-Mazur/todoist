@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "store/store";
 import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
@@ -59,6 +59,21 @@ export const todoSlice = createSlice({
     },
     resetTodo: () => initialState,
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTaskArray.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchTaskArray.fulfilled, (state, action) => {
+      state.taskArray = action.payload || [];
+      state.isLoading = false;
+    });
+    builder.addCase(fetchTaskArray.rejected, (state, action) => {
+      state.errorMessage = action.payload ?? "";
+      state.taskArray = [];
+
+      state.isLoading = false;
+    });
+  },
 });
 
 // selectors
@@ -104,46 +119,57 @@ type AppThunk<ReturnType = void> = ThunkAction<
 type TodoAppThunk = AppThunk<Promise<Task[] | undefined>>;
 type TaskAppThunk = AppThunk<Promise<Task | undefined>>;
 
-export const fetchTaskArray = (
-  listId = "",
-  taskFilters?: TaskFilters
-): TodoAppThunk => {
-  return async (dispatch, getState) => {
-    try {
-      dispatch(setIsLoading(true));
-      dispatch(setTaskArray([]));
+export const fetchTaskArray = createAsyncThunk<
+  Task[],
+  TaskFilters,
+  { rejectValue: string }
+>("todo/fetchTaskArray", async (filters: TaskFilters, { rejectWithValue }) => {
+  try {
+    const { listId, ...taskFilters } = filters;
 
-      const data = await todoApi.getTasks(listId, taskFilters);
+    const data = await todoApi.getTasks(listId, taskFilters);
 
-      if (!data) {
-        throw Error("Couldn't get tasks");
-      }
-
-      dispatch(setTaskArray(data));
-
-      return data;
-    } catch (err: any) {
-      const errorMessage = `trying to get tasks. ${err.message}`;
-      dispatch(setErrorMessage(errorMessage));
-    } finally {
-      dispatch(setIsLoading(false));
+    if (!data) {
+      throw Error("Couldn't get tasks");
     }
-  };
-};
 
-export const clearCompleted = (): TodoAppThunk => {
+    return data;
+  } catch (err: any) {
+    const errorMessage = `trying to get tasks. ${err.message}`;
+    return rejectWithValue(errorMessage);
+  }
+});
+
+export const clearCompleted = (filters: TaskFilters): TodoAppThunk => {
   return async (dispatch, getState) => {
     try {
       dispatch(setIsLoading(true));
-      const activeListID = getState().list.activeListID;
-      const data = await todoApi.clearCompleted(activeListID);
+      const { listId, ...taskFilters } = filters;
 
-      if (!data) {
+      const deletedTaskArray = await todoApi.clearCompleted(
+        listId,
+        taskFilters
+      );
+
+      if (!deletedTaskArray) {
         throw Error("Couldn't clear tasks");
       }
 
-      dispatch(fetchTaskArray(activeListID));
-      return data;
+      const currentTaskArray: Task[] = getState().todo.taskArray;
+
+      if (deletedTaskArray.length === 0) {
+        return deletedTaskArray;
+      }
+
+      const newTaskArray = currentTaskArray.filter(
+        (task) =>
+          !deletedTaskArray.find(
+            (deletedTask) => deletedTask.taskId === task.taskId
+          )
+      );
+
+      dispatch(setTaskArray(newTaskArray));
+      return deletedTaskArray;
     } catch (err: any) {
       const errorMessage = `trying to clear completed tasks. ${err.message}`;
       dispatch(setErrorMessage(errorMessage));
