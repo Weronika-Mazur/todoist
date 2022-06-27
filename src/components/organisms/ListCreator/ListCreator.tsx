@@ -20,7 +20,7 @@ interface ListCreatorProps {
 const ListCreator = ({
   handleCloseModal,
   title,
-  defaultColor = ListColors.green,
+  defaultColor = ListColors.GREEN,
   onConfirm,
   name = "",
 }: ListCreatorProps) => {

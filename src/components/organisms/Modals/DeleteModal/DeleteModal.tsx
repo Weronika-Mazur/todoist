@@ -24,9 +24,7 @@ const DeleteModal = () => {
     const data = await dispatch(deleteList(id));
     if (data) {
       handleCancel();
-      if (match) {
-        navigate("/home/");
-      }
+      match && navigate("/home/");
     }
   };
 

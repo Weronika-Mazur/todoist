@@ -12,11 +12,7 @@ const CalendarContainer = () => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectIsLoading);
 
-  const filters = useMemo(() => {
-    return {
-      date: `ge${getTodayString()}`,
-    };
-  }, []);
+  const filters = useMemo(() => ({ date: `ge${getTodayString()}` }), []);
 
   useLayoutEffect(() => {
     dispatch(fetchTaskArray(filters));

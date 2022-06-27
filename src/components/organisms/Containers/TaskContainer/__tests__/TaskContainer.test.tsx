@@ -12,19 +12,19 @@ const testTaskArray: Task[] = [
     taskId: "1",
     content: "lorem ipsum",
     status: "active",
-    priority: Priority.p1,
+    priority: Priority.P1,
   },
   {
     taskId: "2",
     content: "Go shopping",
     status: "completed",
-    priority: Priority.p1,
+    priority: Priority.P1,
   },
   {
     taskId: "3",
     content: "Start working",
     status: "completed",
-    priority: Priority.p1,
+    priority: Priority.P1,
   },
 ];
 
@@ -47,7 +47,7 @@ beforeEach(() => {
       taskId: taskId,
       content: "Go shopping",
       status: "completed",
-      priority: Priority.p1,
+      priority: Priority.P1,
     })
   );
 
@@ -58,7 +58,7 @@ beforeEach(() => {
         taskId: "4",
         content: newTask.content || "",
         status: "active",
-        priority: Priority.p1,
+        priority: Priority.P1,
       })
     );
 
@@ -69,7 +69,7 @@ beforeEach(() => {
         taskId: taskId,
         content: "Go shopping",
         status: changes.status || "completed",
-        priority: Priority.p1,
+        priority: Priority.P1,
       })
     );
 

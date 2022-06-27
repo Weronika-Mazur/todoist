@@ -47,7 +47,7 @@ const TaskEdit = ({ content, id, tags, dueDate, priority }: TaskEditProps) => {
     setNewTask({ ...newTask, dueDate: newDate?.toLocaleDateString("en-CA") });
   };
 
-  const handleSetPriority = (priority = Priority.p1) => {
+  const handleSetPriority = (priority = Priority.P1) => {
     setNewTask({ ...newTask, priority });
   };
 

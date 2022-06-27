@@ -88,19 +88,19 @@ export interface FilterArray {
 }
 
 export enum ListColors {
-  green = "GREEN",
-  sky = "SKY",
-  violet = "VIOLET",
-  fuchsia = "FUCHSIA",
-  rose = "ROSE",
+  GREEN = "GREEN",
+  SKY = "SKY",
+  VIOLET = "VIOLET",
+  FUCHSIA = "FUCHSIA",
+  ROSE = "ROSE",
 }
 
 export enum Priority {
-  p1 = 1,
-  p2 = 2,
-  p3 = 3,
-  p4 = 4,
-  p5 = 5,
+  P1 = 1,
+  P2 = 2,
+  P3 = 3,
+  P4 = 4,
+  P5 = 5,
 }
 
 export interface TaskFilters {

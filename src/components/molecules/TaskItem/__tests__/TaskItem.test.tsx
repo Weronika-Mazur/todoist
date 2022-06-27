@@ -12,7 +12,7 @@ describe("Task Item", () => {
         content="lorem ipsum"
         id="1"
         status="active"
-        priority={Priority.p1}
+        priority={Priority.P1}
       />
     );
     expect(screen.getByText(/lorem ipsum/i)).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe("Task Item", () => {
         content="lorem ipsum"
         id="1"
         status="active"
-        priority={Priority.p1}
+        priority={Priority.P1}
       />
     );
     expect(screen.getByTestId("task-button-1")).toHaveClass("border-blue");
@@ -36,7 +36,7 @@ describe("Task Item", () => {
         content="lorem ipsum"
         id="1"
         status="completed"
-        priority={Priority.p1}
+        priority={Priority.P1}
       />
     );
 

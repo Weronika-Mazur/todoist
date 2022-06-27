@@ -35,14 +35,14 @@ const initialState: State = {
     listId: "",
     name: "Inbox",
     owner: "",
-    color: ListColors.sky,
+    color: ListColors.SKY,
     activeCount: 0,
   },
   showModal: undefined,
   selectedList: {
     id: "",
     name: "",
-    color: ListColors.green,
+    color: ListColors.GREEN,
   },
 };
 
@@ -92,7 +92,7 @@ export const listSlice = createSlice({
       state.selectedList = {
         id: "",
         name: "",
-        color: ListColors.green,
+        color: ListColors.GREEN,
       };
     },
     resetList: () => initialState,
