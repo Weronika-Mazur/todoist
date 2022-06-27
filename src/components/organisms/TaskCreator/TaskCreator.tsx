@@ -19,7 +19,7 @@ const TaskCreator = () => {
   const [newTask, setNewTask] = useState({
     content: "",
     status: "active",
-    priority: Priority.p1,
+    priority: Priority.P1,
     dueDate: undefined,
     tags: [],
   } as NewTask);
@@ -31,7 +31,7 @@ const TaskCreator = () => {
         setNewTask({
           content: "",
           status: "active",
-          priority: Priority.p1,
+          priority: Priority.P1,
           dueDate: undefined,
           tags: [],
         });
@@ -43,7 +43,7 @@ const TaskCreator = () => {
     setNewTask({ ...newTask, dueDate: newDate?.toLocaleDateString("en-CA") });
   };
 
-  const handleSetPriority = (priority = Priority.p1) => {
+  const handleSetPriority = (priority = Priority.P1) => {
     setNewTask({ ...newTask, priority });
   };
 

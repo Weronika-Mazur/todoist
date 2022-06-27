@@ -35,6 +35,10 @@ const DateDropDown = ({ selectedDate, setDate }: DateDropDownProps) => {
     setDate();
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+  };
+
   useEffect(() => {
     disableScroll.on();
     return () => {
@@ -64,7 +68,7 @@ const DateDropDown = ({ selectedDate, setDate }: DateDropDownProps) => {
         </div>
         <S.ListItemDate>{getDate(tomorrow)}</S.ListItemDate>
       </S.ListItem>
-      <S.ListCalendar>
+      <S.ListCalendar onClick={handleClick}>
         <S.Calendar
           value={selectedDate}
           onChange={handleSetDate}

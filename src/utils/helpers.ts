@@ -1,4 +1,5 @@
 import { Priority } from "types/type";
+import { TaskFilters } from "../types/type";
 
 export const getPriorityArray = () => {
   const priorityArray = Object.keys(Priority).filter((v) =>
@@ -30,4 +31,20 @@ export const getTomorrowString = () => {
   const date = new Date();
   date.setDate(date.getDate() + 1);
   return date.toLocaleDateString("en-CA");
+};
+
+export const getEndpointUrl = (
+  endpoint: string,
+  listId: string,
+  filters?: TaskFilters
+) => {
+  const filterParams = filters
+    ? new URLSearchParams([...Object.entries(filters)])
+    : "";
+
+  const endpointUrl = `${endpoint}${listId}`;
+
+  const url = filterParams ? `${endpointUrl}?${filterParams}` : endpointUrl;
+
+  return url;
 };

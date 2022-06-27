@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { useAppSelector } from "store/hooks";
 import { selectErrorMessage } from "features/todo/todoSlice";
@@ -18,7 +18,8 @@ function App() {
       {errorMessage && <ErrorBanner />}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/home/*" element={<Home />} />
+          <Route path="/" element={<Navigate to="/home/" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

@@ -1,19 +1,19 @@
-import { setActiveListID } from "features/list/listSlice";
-import { fetchTaskArray } from "features/todo/todoSlice";
-import { useAppDispatch } from "store/hooks";
+import { useNavigate } from "react-router-dom";
+
 import { Priority } from "types/type";
 import { getPriorityArray } from "utils/helpers";
 
 import * as S from "./styles";
 
 const PriorityList = () => {
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const priorityArray = getPriorityArray();
 
   const handleFilterBy = (priority: Priority) => {
-    dispatch(fetchTaskArray(undefined, { priority }));
-    dispatch(setActiveListID("Filtered"));
+    const searchParams = new URLSearchParams({ priority: priority.toString() });
+    const url = `/home/filtered/?${searchParams}`;
+    navigate(url);
   };
 
   return (

@@ -31,7 +31,7 @@ const TaskDetails = ({
   const schedule = getDateString(date) ?? "Not scheduled";
 
   const priorityText =
-    priority !== Priority.p1 ? `Priority ${priority}` : "No priority";
+    priority !== Priority.P1 ? `Priority ${priority}` : "No priority";
 
   return (
     <S.TaskDetailsContainer>
@@ -42,7 +42,7 @@ const TaskDetails = ({
         >
           <S.DetailsButton>
             <S.TaskPriorityIcon $color={priority} />
-            <S.DetailsText $isSet={priority !== Priority.p1}>
+            <S.DetailsText $isSet={priority !== Priority.P1}>
               {priorityText}
             </S.DetailsText>
           </S.DetailsButton>

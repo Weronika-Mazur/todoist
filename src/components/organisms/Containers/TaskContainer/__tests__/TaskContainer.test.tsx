@@ -1,33 +1,36 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { MemoryRouter } from "react-router-dom";
 
 import TaskContainer from "../TaskContainer";
 import { renderWithState } from "utils/testHelpers";
 import { todoApi } from "services/todoAPI";
-import { Priority, TaskContent } from "types/type";
+import { Priority, Task, TaskContent, TaskFilters } from "types/type";
+
+const testTaskArray: Task[] = [
+  {
+    taskId: "1",
+    content: "lorem ipsum",
+    status: "active",
+    priority: Priority.P1,
+  },
+  {
+    taskId: "2",
+    content: "Go shopping",
+    status: "completed",
+    priority: Priority.P1,
+  },
+  {
+    taskId: "3",
+    content: "Start working",
+    status: "completed",
+    priority: Priority.P1,
+  },
+];
 
 const todoState = {
   todo: {
-    taskArray: [
-      {
-        taskId: "1",
-        content: "lorem ipsum",
-        status: "active",
-        priority: Priority.p1,
-      },
-      {
-        taskId: "2",
-        content: "Go shopping",
-        status: "completed",
-        priority: Priority.p1,
-      },
-      {
-        taskId: "3",
-        content: "Start working",
-        status: "completed",
-        priority: Priority.p1,
-      },
-    ],
+    taskArray: [],
     taskFilter: "all",
     isLoading: false,
     errorMessage: "",
@@ -44,7 +47,7 @@ beforeEach(() => {
       taskId: taskId,
       content: "Go shopping",
       status: "completed",
-      priority: Priority.p1,
+      priority: Priority.P1,
     })
   );
 
@@ -55,7 +58,7 @@ beforeEach(() => {
         taskId: "4",
         content: newTask.content || "",
         status: "active",
-        priority: Priority.p1,
+        priority: Priority.P1,
       })
     );
 
@@ -66,24 +69,41 @@ beforeEach(() => {
         taskId: taskId,
         content: "Go shopping",
         status: changes.status || "completed",
-        priority: Priority.p1,
+        priority: Priority.P1,
       })
+    );
+
+  jest
+    .spyOn(todoApi, "getTasks")
+    .mockImplementation((listId = "", filters?: TaskFilters) =>
+      Promise.resolve(testTaskArray)
     );
 });
 
 describe("Task Container", () => {
-  test("renders task container", () => {
-    renderWithState(<TaskContainer />, todoState);
+  test("renders task container", async () => {
+    renderWithState(
+      <MemoryRouter initialEntries={["/home/"]}>
+        <TaskContainer />
+      </MemoryRouter>,
+      todoState
+    );
     expect(
-      screen.getByPlaceholderText(/Create a new todo.../i)
+      await screen.findByPlaceholderText(/Create a new todo.../i)
     ).toBeInTheDocument();
     expect(screen.getByText(/All/i)).toBeInTheDocument();
     expect(screen.getByText(/lorem ipsum/i)).toBeInTheDocument();
   });
 
   test("adds task to list", async () => {
-    renderWithState(<TaskContainer />, todoState);
-    const input = screen.getByPlaceholderText(/Create a new todo.../i);
+    renderWithState(
+      <MemoryRouter initialEntries={["/home/"]}>
+        <TaskContainer />
+      </MemoryRouter>,
+      todoState
+    );
+
+    const input = await screen.findByPlaceholderText(/Create a new todo.../i);
     fireEvent.change(input, { target: { value: "New task" } });
     fireEvent.click(screen.getByRole("button", { name: "add" }));
 
@@ -91,18 +111,28 @@ describe("Task Container", () => {
   });
 
   test("deletes task from list", async () => {
-    renderWithState(<TaskContainer />, todoState);
+    renderWithState(
+      <MemoryRouter initialEntries={["/home/"]}>
+        <TaskContainer />
+      </MemoryRouter>,
+      todoState
+    );
 
-    fireEvent.click(screen.getByTestId("cross-button-2"));
+    fireEvent.click(await screen.findByTestId("cross-button-2"));
     await waitFor(() => {
       expect(screen.queryByText(/Go shopping/i)).not.toBeInTheDocument();
     });
   });
 
   test("changes tasks status from complete to active", async () => {
-    renderWithState(<TaskContainer />, todoState);
+    renderWithState(
+      <MemoryRouter initialEntries={["/home/"]}>
+        <TaskContainer />
+      </MemoryRouter>,
+      todoState
+    );
 
-    fireEvent.click(screen.getByTestId("task-button-2"));
+    fireEvent.click(await screen.findByTestId("task-button-2"));
     await waitFor(() => {
       expect(screen.getByTestId("task-button-2")).toHaveClass("border-blue");
     });

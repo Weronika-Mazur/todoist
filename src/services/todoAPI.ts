@@ -1,20 +1,13 @@
 import { fetchService, FetchService } from "./fetchService";
 import { TaskContent, Task, TaskFilters } from "types/type";
 import { endpoints } from "utils/endpoints";
+import { getEndpointUrl } from "utils/helpers";
 
 class TodoAPI {
   constructor(private readonly fetchService: FetchService) {}
 
   getTasks(listId = "", filters?: TaskFilters) {
-    const filterParams = filters
-      ? new URLSearchParams([...Object.entries(filters)])
-      : "";
-
-    const endpointUrl = `${endpoints.todos.getTasks}${listId}`;
-
-    const endpoint = filterParams
-      ? `${endpointUrl}?${filterParams}`
-      : endpointUrl;
+    const endpoint = getEndpointUrl(endpoints.todos.getTasks, listId, filters);
 
     return this.fetchService.get<undefined, Task[]>(endpoint);
   }
@@ -30,8 +23,13 @@ class TodoAPI {
     return this.fetchService.delete<undefined, Task>(endpoint);
   }
 
-  clearCompleted(listId: string) {
-    const endpoint = `${endpoints.todos.clearTasks}${listId}`;
+  clearCompleted(listId = "", filters?: TaskFilters) {
+    const endpoint = getEndpointUrl(
+      endpoints.todos.clearTasks,
+      listId,
+      filters
+    );
+
     return this.fetchService.delete<undefined, Task[]>(endpoint);
   }
 

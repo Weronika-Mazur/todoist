@@ -1,24 +1,31 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useMatch, useNavigate } from "react-router-dom";
+
 import { deactivateListEditMode, setShowModal } from "features/list/listSlice";
+import { selectSelectedList, deleteList } from "features/list/listSlice";
 
 import Button from "components/atoms/Button/Button";
-import * as S from "./styles";
-import { deleteList } from "features/list/listSlice";
 import CancelButton from "components/atoms/CancelButton/CancelButton";
-import { selectSelectedList } from "features/list/listSlice";
+import * as S from "./styles";
 
 const DeleteModal = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { id } = useAppSelector(selectSelectedList);
+
+  const match = useMatch(`/home/${id}`);
 
   const handleCancel = () => {
     dispatch(deactivateListEditMode());
     dispatch(setShowModal());
   };
 
-  const handleConfirm = () => {
-    dispatch(deleteList(id));
-    handleCancel();
+  const handleConfirm = async () => {
+    const data = await dispatch(deleteList(id));
+    if (data) {
+      handleCancel();
+      match && navigate("/home/");
+    }
   };
 
   return (

@@ -66,7 +66,7 @@ const CalendarTaskList = () => {
       ))}
     </section>
   ) : (
-    <NoTasks isLoading={isLoading} />
+    <NoTasks />
   );
 };
 

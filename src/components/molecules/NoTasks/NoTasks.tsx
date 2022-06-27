@@ -1,16 +1,10 @@
 import * as S from "./styles";
 
-interface NoTasksProps {
-  isLoading: boolean;
-}
-
-const NoTasks = ({ isLoading }: NoTasksProps) => {
-  return !isLoading ? (
-    <S.EmptyIllustrationContainer>
-      <S.EmptyIllustration />
-      <S.NotFoundText>No tasks found</S.NotFoundText>
-    </S.EmptyIllustrationContainer>
-  ) : null;
-};
+const NoTasks = () => (
+  <S.EmptyIllustrationContainer>
+    <S.EmptyIllustration />
+    <S.NotFoundText>No tasks found</S.NotFoundText>
+  </S.EmptyIllustrationContainer>
+);
 
 export default NoTasks;

@@ -5,11 +5,14 @@ import { Provider } from "react-redux";
 
 import "./index.scss";
 import "animate.css";
+import { StrictMode } from "react";
 
 const container = document.getElementById("root") as HTMLDivElement;
 const root = createRoot(container);
 root.render(
   <Provider store={store}>
-    <App />
+    <StrictMode>
+      <App />
+    </StrictMode>
   </Provider>
 );
