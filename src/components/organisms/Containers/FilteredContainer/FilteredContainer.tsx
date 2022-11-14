@@ -1,23 +1,19 @@
-import { useLayoutEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-
-import { fetchTaskArray, selectIsLoading } from "features/todo/todoSlice";
 
 import TaskFilterBar from "../../TaskFilters/TaskFilterBar";
 import TaskList from "../../Lists/TaskList/TaskList";
 
-import { TaskFilters } from "types/type";
+import { TaskFilters } from "types/todo";
+import { useTodos } from "lib/todos";
 
 interface FilteredContainerProps {
   filters?: TaskFilters;
 }
 
 const FilteredContainer = ({ filters }: FilteredContainerProps) => {
-  const dispatch = useAppDispatch();
   const params = useParams();
   const [searchParams] = useSearchParams();
-  const isLoading = useAppSelector(selectIsLoading);
 
   const listId = params.listId;
   const tag = searchParams.get("tag");
@@ -35,14 +31,12 @@ const FilteredContainer = ({ filters }: FilteredContainerProps) => {
 
   const taskFilters = filters ?? paramsFilter;
 
-  useLayoutEffect(() => {
-    dispatch(fetchTaskArray(taskFilters));
-  }, [dispatch, taskFilters]);
+  const { isLoading } = useTodos({ filters: taskFilters });
 
   return (
     <main className="w-full mr-[0px]">
       <TaskFilterBar filters={taskFilters} />
-      {!isLoading && <TaskList />}
+      {!isLoading && <TaskList filters={taskFilters} />}
     </main>
   );
 };

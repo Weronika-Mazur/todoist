@@ -1,30 +1,32 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import { useAppSelector } from "store/hooks";
-import { selectErrorMessage } from "features/todo/todoSlice";
+import { selectErrorMessage } from "features/app/appSlice";
 
 import "./App.scss";
-import Home from "views/Home/Home";
-import Login from "views/Login/Login";
 
 import ErrorBanner from "components/molecules/ErrorBanner/ErrorBanner";
-import Register from "views/Register/Register";
+
+import { AppRoutes } from "routes";
+
+import { QueryClient, QueryClientProvider } from "react-query";
+// import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 function App() {
   const errorMessage = useAppSelector(selectErrorMessage);
 
   return (
-    <div className="App font-body text-main-100 font-medium text-base">
-      {errorMessage && <ErrorBanner />}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/home/*" element={<Home />} />
-          <Route path="/" element={<Navigate to="/home/" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      {/* <ReactQueryDevtools /> */}
+      <div className="App font-body text-main-100 font-medium text-base">
+        {errorMessage && <ErrorBanner />}
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </div>
+    </QueryClientProvider>
   );
 }
 

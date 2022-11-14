@@ -54,4 +54,5 @@ justify-center
 bg-transparent
 px-3 
 py-4
+gap-4
 `;

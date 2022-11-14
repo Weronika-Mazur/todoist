@@ -5,37 +5,40 @@ export class FetchService {
     return `Bearer ${localStorage.getItem("jwt")}`;
   }
 
-  get<B, T>(endpoint: string): Promise<T> {
-    return this.client<B, T>("GET", endpoint);
+  get<B, T>(endpoint: string, headers?: Headers): Promise<T> {
+    return this.client<B, T>("GET", endpoint, undefined, headers);
   }
 
-  post<B, T>(endpoint: string, body: B): Promise<T> {
-    return this.client<B, T>("POST", endpoint, body);
+  post<B, T>(endpoint: string, body: B, headers?: Headers): Promise<T> {
+    return this.client<B, T>("POST", endpoint, body, headers);
   }
 
-  put<B, T>(endpoint: string, body: B): Promise<T> {
-    return this.client<B, T>("PUT", endpoint, body);
+  put<B, T>(endpoint: string, body: B, headers?: Headers): Promise<T> {
+    return this.client<B, T>("PUT", endpoint, body, headers);
   }
 
-  delete<B, T>(endpoint: string, body?: B): Promise<T> {
-    return this.client<B, T>("DELETE", endpoint, body);
+  delete<B, T>(endpoint: string, body?: B, headers?: Headers): Promise<T> {
+    return this.client<B, T>("DELETE", endpoint, body, headers);
   }
 
   private async client<B, T>(
     method: string,
     endpoint: string,
-    body?: B
+    body?: B,
+    headers?: Headers
   ): Promise<T> {
     const url = `${this.url}${endpoint}`;
+
+    const header = new Headers(headers);
+    header.append("Authorization", this.getToken());
+
+    const parsedBody = body instanceof FormData ? body : JSON.stringify(body);
 
     try {
       const data = await fetch(url, {
         method: method,
-        body: JSON.stringify(body),
-        headers: {
-          "content-type": "application/json",
-          Authorization: this.getToken(),
-        },
+        body: parsedBody,
+        headers: header,
       });
 
       if (!data) {
@@ -56,5 +59,5 @@ export class FetchService {
 }
 
 export const fetchService = new FetchService(
-  "https://lit-sands-47270.herokuapp.com/"
+  "https://todoist-backend.fly.dev/"
 );

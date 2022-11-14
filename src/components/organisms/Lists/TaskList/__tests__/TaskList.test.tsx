@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 
 import TaskList from "../TaskList";
 import { renderWithState } from "utils/testHelpers";
-import { todoApi } from "services/todoAPI";
+import { todoApi } from "lib/todos/todoAPI/todoAPI";
 import { Priority, TaskContent } from "types/type";
 
 const todoState = {

@@ -1,14 +1,17 @@
 import { useAppDispatch } from "store/hooks";
 import { useNavigate } from "react-router-dom";
 
-import { ListColors, ListContent } from "types/type";
-
 import ListCreator from "../../ListCreator/ListCreator";
-import { addList, setShowModal } from "../../../../features/list/listSlice";
+
+import { setShowModal } from "features/app/appSlice";
+import { useAddList } from "lib/lists";
+import { List, ListColors, ListContent } from "types/list";
 
 const ListAdd = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { addList } = useAddList();
 
   const handleCloseModal = () => {
     dispatch(setShowModal());
@@ -21,11 +24,12 @@ const ListAdd = () => {
         color: newColor,
       };
 
-      const data = await dispatch(addList(newList));
-      if (data) {
-        handleCloseModal();
-        navigate(`/home/${data.listId}`);
-      }
+      addList(newList, {
+        onSuccess: (data: List) => {
+          handleCloseModal();
+          navigate(`/home/${data.listId}`);
+        },
+      });
     }
   };
 

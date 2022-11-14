@@ -1,22 +1,24 @@
 import { useAppDispatch } from "store/hooks";
-import { setShowModal, activateListEditMode } from "features/list/listSlice";
+import { activateListEditMode } from "features/list/listSlice";
+import { setShowModal } from "features/app/appSlice";
 
 import * as S from "./styles";
+import { List } from "types/list";
 
 interface ListOptionsDropDownProps {
-  id: string;
+  list: List;
 }
 
-const ListOptionsDropDown = ({ id }: ListOptionsDropDownProps) => {
+const ListOptionsDropDown = ({ list }: ListOptionsDropDownProps) => {
   const dispatch = useAppDispatch();
 
   const handleEdit = (e: React.MouseEvent<HTMLElement>) => {
-    dispatch(activateListEditMode(id));
+    dispatch(activateListEditMode(list));
     dispatch(setShowModal("editList"));
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
-    dispatch(activateListEditMode(id));
+    dispatch(activateListEditMode(list));
     dispatch(setShowModal("deleteList"));
   };
 

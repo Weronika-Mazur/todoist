@@ -23,6 +23,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-flatpickr": "^3.10.11",
+    "react-query": "^3.39.2",
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
@@ -44,7 +45,17 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-restricted-imports": [
+        "error",
+        {
+          "patterns": [
+            "lib/*/*"
+          ]
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [

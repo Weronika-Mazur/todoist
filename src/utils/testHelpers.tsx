@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import todoReducer from "features/todo/todoSlice";
 import listReducer from "features/list/listSlice";
-import userSlice from "features/user/userSlice";
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -15,7 +14,6 @@ export const renderWithState = (ui: React.ReactElement, initialState = {}) => {
     reducer: {
       todo: todoReducer,
       list: listReducer,
-      user: userSlice,
     },
     preloadedState: {
       ...initialState,

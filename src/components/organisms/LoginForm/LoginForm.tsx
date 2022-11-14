@@ -1,37 +1,33 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
 
 import { Formik, Form } from "formik";
 
-import { LoginFormValues } from "types/type";
-import { login, setIsSubmitted } from "features/user/userSlice";
-import { selectIsSubmitted } from "features/user/userSlice";
-import * as S from "./styles";
 import { loginSchema } from "utils/schemas";
+import { useLogin } from "lib/auth";
+
+import { LoginFormValues } from "types/type";
+import * as S from "./styles";
 
 const LoginForm = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const initialValues: LoginFormValues = { email: "", password: "" };
 
-  const isSubmitted = useAppSelector(selectIsSubmitted);
+  const { login } = useLogin();
 
-  useEffect(() => {
-    if (isSubmitted) {
-      dispatch(setIsSubmitted(false));
-      navigate("/");
-    }
-  }, [isSubmitted, dispatch, navigate]);
+  const handleSubmit = async (values: LoginFormValues) => {
+    login(values, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
+  };
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={loginSchema}
-        onSubmit={(values) => {
-          dispatch(login(values));
-        }}
+        onSubmit={handleSubmit}
       >
         {() => (
           <Form className="flex gap-1 flex-col mt-2">

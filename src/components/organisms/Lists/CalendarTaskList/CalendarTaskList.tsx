@@ -1,10 +1,10 @@
 import { useAppSelector } from "store/hooks";
 import { groupBy } from "lodash";
+import { useMemo } from "react";
 
 import {
-  selectIsLoading,
-  selectTaskArrayWithFilters,
   selectTaskEditModeId,
+  selectTaskFilter,
 } from "features/todo/todoSlice";
 
 import TaskItem from "components/molecules/TaskItem/TaskItem";
@@ -12,12 +12,16 @@ import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
 import NoTasks from "components/molecules/NoTasks/NoTasks";
 
 import * as S from "./styles";
-import { Task } from "types/type";
-import { getDateString } from "utils/helpers";
+import { Task } from "types/todo";
+import { getDateString, getTodayString } from "utils/helpers";
+import { useTodos } from "lib/todos";
 
 const CalendarTaskList = () => {
-  const taskArray: Task[] = useAppSelector(selectTaskArrayWithFilters);
-  const isLoading = useAppSelector(selectIsLoading);
+  const taskArrayFilter = useAppSelector(selectTaskFilter);
+
+  const filters = useMemo(() => ({ date: `ge${getTodayString()}` }), []);
+  const { getArrayWithFilters } = useTodos({ filters });
+  const arrayWithFilters = getArrayWithFilters(taskArrayFilter);
 
   const editModeId = useAppSelector(selectTaskEditModeId);
 
@@ -29,7 +33,7 @@ const CalendarTaskList = () => {
 
   const formatDate = (task: Task) => getDateString(new Date(task.dueDate!));
 
-  const groupedTasks = groupBy(taskArray, formatDate);
+  const groupedTasks = groupBy(arrayWithFilters, formatDate);
 
   const groupedTasksEntries = Object.entries(groupedTasks);
 
@@ -43,21 +47,25 @@ const CalendarTaskList = () => {
               !isEditModeActive(task.taskId) ? (
                 <TaskItem
                   key={task.taskId}
-                  id={task.taskId}
                   status={task.status}
+                  taskId={task.taskId}
                   content={task.content}
-                  dueDate={toDate(task.dueDate)}
                   tags={task.tags}
                   priority={task.priority}
+                  dueDate={toDate(task.dueDate)}
+                  listId={task.listId}
+                  filters={filters}
                 />
               ) : (
                 <TaskEdit
                   key={task.taskId}
-                  id={task.taskId}
+                  taskId={task.taskId}
                   content={task.content}
                   dueDate={toDate(task.dueDate)}
                   tags={task.tags}
                   priority={task.priority}
+                  listId={task.listId}
+                  filters={filters}
                 />
               )
             )}

@@ -1,6 +1,6 @@
-import PriorityIcon from "assets/PriorityIcon";
 import tw from "tailwind-styled-components";
-import { Priority } from "types/type";
+import PriorityIcon from "assets/PriorityIcon";
+import { Priority } from "types/todo";
 import { PriorityColors } from "utils/constants";
 
 export const PriorityList = tw.ul`

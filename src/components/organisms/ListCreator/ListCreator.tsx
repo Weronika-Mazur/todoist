@@ -3,11 +3,10 @@ import { useState } from "react";
 import ColorPick from "components/molecules/ColorPick/ColorPick";
 import Button from "components/atoms/Button/Button";
 import DotIcon from "assets/DotIcon";
-import * as S from "./styles";
 
-import { ListColors } from "types/type";
+import * as S from "./styles";
+import { ListColors } from "types/list";
 import { Colors } from "utils/constants";
-import CancelButton from "components/atoms/CancelButton/CancelButton";
 
 interface ListCreatorProps {
   handleCloseModal: () => void;
@@ -61,7 +60,7 @@ const ListCreator = ({
         </S.ListEditContainer>
         <S.ButtonContainer>
           <Button text="confirm" onClick={handleConfirm} />
-          <CancelButton onClick={handleCancel} />
+          <Button variant="outlined" text="cancel" onClick={handleCancel} />
         </S.ButtonContainer>
       </S.Card>
     </S.Backdrop>

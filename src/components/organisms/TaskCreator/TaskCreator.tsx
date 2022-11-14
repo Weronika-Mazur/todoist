@@ -1,20 +1,19 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-
-import { addTask } from "features/todo/todoSlice";
-import { selectIsLoading } from "features/todo/todoSlice";
 
 import BusyIcon from "assets/BusyIcon";
 import TaskInput from "./TaskInput";
 import TaskDetails from "components/molecules/TaskDetails/TaskDetails";
 
 import * as S from "./styles";
-import { NewTask, Priority, Tag } from "types/type";
+import { NewTask, Priority } from "types/todo";
+import { Tag } from "types/tag";
 import { toDate } from "utils/helpers";
+import { useAddTodo } from "lib/todos";
+import { useGetListId } from "utils/useGetListId";
 
-const TaskCreator = () => {
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(selectIsLoading);
+const TaskCreator = ({ isLoading }: { isLoading: boolean }) => {
+  const { addTask } = useAddTodo();
+  const listId = useGetListId();
 
   const [newTask, setNewTask] = useState({
     content: "",
@@ -26,16 +25,20 @@ const TaskCreator = () => {
 
   const handleAddTask = async () => {
     if (newTask.content !== "") {
-      const data = await dispatch(addTask(newTask));
-      if (data) {
-        setNewTask({
-          content: "",
-          status: "active",
-          priority: Priority.P1,
-          dueDate: undefined,
-          tags: [],
-        });
-      }
+      addTask(
+        { newTask, listId },
+        {
+          onSuccess: () => {
+            setNewTask({
+              content: "",
+              status: "active",
+              priority: Priority.P1,
+              dueDate: undefined,
+              tags: [],
+            });
+          },
+        }
+      );
     }
   };
 

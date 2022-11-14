@@ -1,14 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import todoReducer from "features/todo/todoSlice";
 import listReducer from "features/list/listSlice";
-import userSlice from "features/user/userSlice";
 import tagSlice from "features/tag/tagSlice";
+import appSlice from "features/app/appSlice";
 
 export const store = configureStore({
   reducer: {
+    app: appSlice,
     todo: todoReducer,
     list: listReducer,
-    user: userSlice,
+
     tag: tagSlice,
   },
 });

@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 import CalendarIcon from "assets/CalendarIcon";
 import PriorityIcon from "assets/PriorityIcon";
 import TagIcon from "assets/TagIcon";
-import { Priority } from "types/type";
+import { Priority } from "types/todo";
 import { PriorityColors } from "utils/constants";
 
 export const TaskCalendarIcon = tw(CalendarIcon)`

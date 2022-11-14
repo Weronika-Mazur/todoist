@@ -4,8 +4,9 @@ import TagDropDown from "components/organisms/DropDowns/TagDropDown/TagDropDown"
 import PriorityDropDown from "components/organisms/DropDowns/PriorityDropDown/PriorityDropDown";
 
 import * as S from "./styles";
-import { Priority, Tag } from "types/type";
+import { Tag } from "types/tag";
 import { getDateString } from "utils/helpers";
+import { Priority } from "types/todo";
 
 interface TaskDetailsProps {
   date?: Date;

@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 import styled from "styled-components";
 
-import { Priority } from "../../../../types/type";
+import { Priority } from "types/todo";
 import PriorityIcon from "assets/PriorityIcon";
 import { PriorityColors } from "utils/constants";
 

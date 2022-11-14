@@ -1,17 +1,21 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { useMatch, useNavigate } from "react-router-dom";
 
-import { deactivateListEditMode, setShowModal } from "features/list/listSlice";
-import { selectSelectedList, deleteList } from "features/list/listSlice";
-
 import Button from "components/atoms/Button/Button";
-import CancelButton from "components/atoms/CancelButton/CancelButton";
+
 import * as S from "./styles";
+import { useDeleteList } from "lib/lists";
+import { setShowModal } from "features/app/appSlice";
+import {
+  deactivateListEditMode,
+  selectSelectedList,
+} from "features/list/listSlice";
 
 const DeleteModal = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useAppSelector(selectSelectedList);
+  const { deleteList } = useDeleteList();
 
   const match = useMatch(`/home/${id}`);
 
@@ -21,11 +25,12 @@ const DeleteModal = () => {
   };
 
   const handleConfirm = async () => {
-    const data = await dispatch(deleteList(id));
-    if (data) {
-      handleCancel();
-      match && navigate("/home/");
-    }
+    deleteList(id, {
+      onSuccess: () => {
+        handleCancel();
+        match && navigate("/home/");
+      },
+    });
   };
 
   return (
@@ -34,7 +39,7 @@ const DeleteModal = () => {
         <S.Title>Are you sure you want to delete this list?</S.Title>
         <S.ButtonContainer>
           <Button text="confirm" onClick={handleConfirm} />
-          <CancelButton onClick={handleCancel} />
+          <Button variant="outlined" text="cancel" onClick={handleCancel} />
         </S.ButtonContainer>
       </S.Card>
     </S.Backdrop>

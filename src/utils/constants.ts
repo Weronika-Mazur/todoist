@@ -1,4 +1,5 @@
-import { ListColors, Priority } from "types/type";
+import { ListColors } from "types/list";
+import { Priority } from "types/todo";
 
 export const Colors = {
   [ListColors.GREEN]: "fill-green-400",
@@ -22,4 +23,13 @@ export const PriorityBorderColors = {
   [Priority.P3]: "border-yellow-400",
   [Priority.P4]: "border-orange-400",
   [Priority.P5]: "border-red-400",
+};
+
+export const headerJson = new Headers({ "content-type": "application/json" });
+
+export const AppsQueryKeys = {
+  lists: "lists",
+  todos: "todos",
+  tags: "tags",
+  user: "user",
 };

@@ -1,17 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-
 import { Formik, Form } from "formik";
 
 import { RegisterFormValues } from "types/type";
-import { register, setIsSubmitted } from "features/user/userSlice";
-import { selectIsSubmitted } from "features/user/userSlice";
 import * as S from "./styles";
 import { registerSchema } from "utils/schemas";
+import { useRegister } from "lib/auth";
 
 const LoginForm = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const initialValues: RegisterFormValues = {
     username: "",
@@ -20,14 +15,7 @@ const LoginForm = () => {
     repeatPassword: "",
   };
 
-  const isSubmitted = useAppSelector(selectIsSubmitted);
-
-  useEffect(() => {
-    if (isSubmitted) {
-      dispatch(setIsSubmitted(false));
-      navigate("/");
-    }
-  }, [isSubmitted, dispatch, navigate]);
+  const { register } = useRegister();
 
   const onSubmit = (values: RegisterFormValues) => {
     const newUser = {
@@ -35,7 +23,12 @@ const LoginForm = () => {
       email: values.email,
       password: values.password,
     };
-    dispatch(register(newUser));
+
+    register(newUser, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
   };
 
   return (

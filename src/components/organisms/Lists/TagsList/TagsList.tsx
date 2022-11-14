@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-
-import {
-  activateTagEditMode,
-  addTag,
-  deleteTag,
-  fetchTags,
-  selectIsLoading,
-  selectTagArray,
-  selectTagEditModeId,
-} from "features/tag/tagSlice";
 
 import Button from "components/atoms/Button/Button";
 import TagEdit from "components/molecules/TagEdit/TagEdit";
 import BusyIcon from "assets/BusyIcon";
 
 import * as S from "./styles";
-import { TagContent } from "types/type";
+import { TagContent } from "types/tag";
+import { useAddTag, useDeleteTag, useTags } from "lib/tag";
+import {
+  activateTagEditMode,
+  selectTagEditModeId,
+} from "features/tag/tagSlice";
 
 const TagsList = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const tagArray = useAppSelector(selectTagArray);
-  const isLoading = useAppSelector(selectIsLoading);
   const editModeId = useAppSelector(selectTagEditModeId);
+
+  const { data: tagArray, isLoading } = useTags();
+  const { addTag } = useAddTag();
+  const { deleteTag } = useDeleteTag();
 
   const [content, setContent] = useState("");
 
@@ -42,10 +39,11 @@ const TagsList = () => {
         content: content.trim(),
       };
 
-      const data = await dispatch(addTag(newTag));
-      if (data) {
-        setContent("");
-      }
+      addTag(newTag, {
+        onSuccess: () => {
+          setContent("");
+        },
+      });
     }
   };
 
@@ -54,7 +52,7 @@ const TagsList = () => {
   };
 
   const handleDeleteTag = (id: string) => {
-    dispatch(deleteTag(id));
+    deleteTag(id);
   };
 
   const handleFilterBy = (tag: string) => {
@@ -62,10 +60,6 @@ const TagsList = () => {
     const url = `/home/filtered/?${searchParams}`;
     navigate(url);
   };
-
-  useEffect(() => {
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   return (
     <section>
@@ -89,7 +83,7 @@ const TagsList = () => {
       )}
 
       <S.TagList>
-        {Array.from(tagArray).map((tag) =>
+        {tagArray?.map((tag) =>
           !isEditModeActive(tag.tagId) ? (
             <S.ListItem key={tag.tagId}>
               <S.TaskTagIcon />

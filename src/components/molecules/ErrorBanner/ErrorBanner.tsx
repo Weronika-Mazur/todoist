@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { setErrorMessage, selectErrorMessage } from "features/todo/todoSlice";
+import { setErrorMessage, selectErrorMessage } from "features/app/appSlice";
 
 import * as S from "./styles";
 

@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 
 import TaskContainer from "../TaskContainer";
 import { renderWithState } from "utils/testHelpers";
-import { todoApi } from "services/todoAPI";
+import { todoApi } from "lib/todos/todoAPI/todoAPI";
 import { Priority, Task, TaskContent, TaskFilters } from "types/type";
 
 const testTaskArray: Task[] = [

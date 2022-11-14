@@ -30,11 +30,13 @@ const DropDown = ({ dropDown, children, placement }: DropDownProps) => {
     useDismiss(context),
   ]);
 
-  const handleShowDropDown = () => {
+  const handleShowDropDown = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     setOpen(true);
   };
 
-  const handleCloseDropDown = () => {
+  const handleCloseDropDown = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     setOpen(false);
   };
 

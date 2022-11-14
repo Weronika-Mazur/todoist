@@ -1,13 +1,11 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import {
-  setFilter,
-  clearCompleted,
-  selectItemsCounter,
-  selectTaskFilter,
-} from "features/todo/todoSlice";
+import { setFilter, selectTaskFilter } from "features/todo/todoSlice";
 
-import { FilterArray, Filter, TaskFilters } from "types/type";
+import { TaskFilters } from "types/todo";
+import { FilterArray, Filter } from "types/type";
+
 import * as S from "./styles";
+import { useClearCompleted, useTodos } from "lib/todos";
 
 interface TaskFilterBarProps {
   filters?: TaskFilters;
@@ -15,8 +13,11 @@ interface TaskFilterBarProps {
 
 const TaskFilterBar = ({ filters = {} }: TaskFilterBarProps) => {
   const dispatch = useAppDispatch();
-  const itemsLeft = `${useAppSelector(selectItemsCounter)} items left`;
-  const taskFilter = useAppSelector(selectTaskFilter);
+  const { activeItemsCounter } = useTodos({ filters });
+
+  const itemsLeft = `${activeItemsCounter ?? 0} items left`;
+  const taskArrayFilter = useAppSelector(selectTaskFilter);
+  const { clearCompleted } = useClearCompleted();
 
   const filterArray: FilterArray[] = [
     {
@@ -34,7 +35,7 @@ const TaskFilterBar = ({ filters = {} }: TaskFilterBarProps) => {
   ];
 
   function isActiveFilter(filterType: Filter): boolean {
-    return taskFilter === filterType;
+    return taskArrayFilter === filterType;
   }
 
   function handleSetFilter(filterType: Filter) {
@@ -42,7 +43,7 @@ const TaskFilterBar = ({ filters = {} }: TaskFilterBarProps) => {
   }
 
   function handleClearCompleted() {
-    dispatch(clearCompleted(filters));
+    clearCompleted(filters);
   }
 
   return (

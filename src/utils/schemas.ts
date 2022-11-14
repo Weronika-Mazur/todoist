@@ -1,6 +1,6 @@
 import { object, string, ref } from "yup";
 
-const email = {
+export const email = {
   email: string()
     .required("Email is required")
     .email("Invalid email")
@@ -15,6 +15,23 @@ const password = {
 
 export const loginSchema = object().shape({
   ...email,
+  ...password,
+});
+
+export const changePasswordSchema = object().shape({
+  newPassword: string()
+    .required("Password is required")
+    .min(5, "Password must be minimum 5 characters long"),
+  repeatNewPassword: string()
+    .required("Repeat new password")
+    .oneOf([ref("newPassword"), null], "Passwords don't match"),
+  ...password,
+});
+export const changeEmailSchema = object().shape({
+  ...email,
+  repeatEmail: string()
+    .required("Repeat email")
+    .oneOf([ref("email"), null], "Emails don't match"),
   ...password,
 });
 

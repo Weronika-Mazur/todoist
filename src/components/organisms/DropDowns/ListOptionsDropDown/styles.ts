@@ -23,6 +23,7 @@ cursor-pointer
 w-full
 flex
 pr-8
+items-center
 `;
 
 export const ListCrossIcon = tw(TrashIcon)`

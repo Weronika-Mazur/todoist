@@ -1,6 +1,6 @@
 import * as S from "./styles";
 import { Colors } from "utils/constants";
-import { ListColors } from "types/type";
+import { ListColors } from "types/list";
 
 interface ColorPickProps {
   handleChangeColor: (color: ListColors) => void;
