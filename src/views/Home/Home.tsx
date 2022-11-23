@@ -17,7 +17,7 @@ const Home = () => {
     }
 
     //eslint-disable-next-line
-  }, []);
+  }, [isLoading, user]);
 
   return !isLoading ? (
     <MainLayout SideBar={SideBar}>{<Outlet />}</MainLayout>

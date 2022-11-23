@@ -18,7 +18,7 @@ const Account = () => {
     }
 
     //eslint-disable-next-line
-  }, []);
+  }, [isLoading, user]);
   return (
     <MainLayout SideBar={ProfileSideBar}>
       <S.SettingsContainer>
