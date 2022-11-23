@@ -11,7 +11,7 @@ const TaskContainer = () => {
 
   const { getInbox } = useLists();
 
-  const listId = params.listId ?? getInbox?.listId;
+  const listId = params.listId ?? getInbox?.listId ?? "";
 
   const { isLoading } = useTodos({ filters: { listId } });
 

@@ -7,6 +7,7 @@ import Button from "components/atoms/Button/Button";
 import * as S from "./styles";
 import { useRemoveProfilePicture, useUpdateUser, useUser } from "lib/auth";
 import { setShowModal } from "features/app/appSlice";
+import { Modal } from "types/type";
 
 const AccountSettings = () => {
   const dispatch = useAppDispatch();
@@ -33,14 +34,14 @@ const AccountSettings = () => {
   };
 
   const handleShowChangeEmail = () => {
-    dispatch(setShowModal("changeEmail"));
+    dispatch(setShowModal(Modal.ChangeEmail));
   };
   const handleShowChangePassword = () => {
-    dispatch(setShowModal("changePassword"));
+    dispatch(setShowModal(Modal.ChangePassword));
   };
 
   const handleShowDeleteUser = () => {
-    dispatch(setShowModal("deleteUser"));
+    dispatch(setShowModal(Modal.DeleteUser));
   };
 
   const handleRemoveProfilePicture = () => {

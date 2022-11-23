@@ -20,20 +20,6 @@ export interface ChangePasswordValues {
   password: string;
 }
 
-export interface FieldProps<T> {
-  values: T;
-  touched: TouchedValues<T>;
-  errors?: ErrorValues<T>;
-}
-
-type TouchedValues<T> = {
-  [K in keyof T]?: boolean;
-};
-
-type ErrorValues<T> = {
-  [K in keyof T]?: string;
-};
-
 export interface RegisterFormValues {
   username: string;
   email: string;
@@ -48,14 +34,14 @@ export interface Token {
 
 export type Filter = "all" | "active" | "completed";
 
-export type Modal =
-  | undefined
-  | "createList"
-  | "editList"
-  | "deleteList"
-  | "changeEmail"
-  | "changePassword"
-  | "deleteUser";
+export enum Modal {
+  CreateList = "createList",
+  EditList = "editList",
+  DeleteList = "deleteList",
+  ChangeEmail = "changeEmail",
+  ChangePassword = "changePassword",
+  DeleteUser = "deleteUser",
+}
 
 export interface FilterArray {
   type: Filter;

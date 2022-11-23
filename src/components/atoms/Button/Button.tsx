@@ -7,6 +7,8 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string;
 };
 
+type ButtonVariant = keyof typeof variants;
+
 const variants = {
   primary: "bg-blue",
   outlined: "bg-transparent border border-main-300",
@@ -24,7 +26,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   px-8 
   py-1
   rounded-md
-  ${(p: { $variant: keyof typeof variants }) => p.$variant}
+  ${(p: { $variant: ButtonVariant }) => p.$variant}
     `;
 
     return (

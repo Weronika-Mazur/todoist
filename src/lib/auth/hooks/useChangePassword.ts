@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 import { useAppDispatch } from "store/hooks";
 
 import { userApi } from "../userAPI/userAPI";
-import { ErrorMessage, User } from "types/type";
+import { ErrorMessage } from "types/type";
 import { setErrorMessage } from "features/app/appSlice";
 import { ChangePassword } from "../types/type";
 
@@ -12,18 +12,6 @@ const changePasswordFn = async (changes: ChangePassword) => {
   if (!response) {
     throw Error("Cannot connect to server");
   }
-
-  //   if (response.error) {
-  //     throw response.error;
-  //   }
-  //   const { token, user } = response;
-
-  //   if (!token || !user) {
-  //     throw Error("Error authenticating");
-  //   }
-
-  //   token && localStorage.setItem("jwt", token);
-  //   return user;
 };
 
 export const useChangePassword = () => {

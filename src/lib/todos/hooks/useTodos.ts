@@ -31,7 +31,6 @@ export const useTodos = ({ filters }: UseTodosProps) => {
     queryFn: () => fetchTaskArray(filters),
     retry: false,
     onError: (err: any) => {
-      console.log(err);
       const error = err.message || err;
       const errorMessage = `fetching tasks. ${error}`;
       dispatch(setErrorMessage(errorMessage));

@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "store/store";
-
 import { Modal } from "types/type";
 
 interface State {
-  showModal: Modal;
+  showModal?: Modal;
   errorMessage: string;
 }
 
@@ -17,7 +16,7 @@ export const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    setShowModal: (state: State, action: PayloadAction<Modal>) => {
+    setShowModal: (state: State, action: PayloadAction<Modal | undefined>) => {
       state.showModal = action.payload;
     },
     setErrorMessage: (
@@ -30,7 +29,7 @@ export const appSlice = createSlice({
   },
 });
 
-export const selectShowModal = (state: RootState): Modal => {
+export const selectShowModal = (state: RootState): Modal | undefined => {
   return state.app.showModal;
 };
 

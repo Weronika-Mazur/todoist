@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "store/store";
 
 import { List, ListColors, SelectedList } from "types/list";
-import { Modal } from "types/type";
 
 interface State {
   activeListID: string;

@@ -4,6 +4,7 @@ import { setShowModal } from "features/app/appSlice";
 
 import * as S from "./styles";
 import { List } from "types/list";
+import { Modal } from "types/type";
 
 interface ListOptionsDropDownProps {
   list: List;
@@ -14,12 +15,12 @@ const ListOptionsDropDown = ({ list }: ListOptionsDropDownProps) => {
 
   const handleEdit = (e: React.MouseEvent<HTMLElement>) => {
     dispatch(activateListEditMode(list));
-    dispatch(setShowModal("editList"));
+    dispatch(setShowModal(Modal.EditList));
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
     dispatch(activateListEditMode(list));
-    dispatch(setShowModal("deleteList"));
+    dispatch(setShowModal(Modal.DeleteList));
   };
 
   return (

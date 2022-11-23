@@ -20,11 +20,13 @@ const TagsList = () => {
 
   const editModeId = useAppSelector(selectTagEditModeId);
 
-  const { data: tagArray, isLoading } = useTags();
+  const { data, isLoading } = useTags();
   const { addTag } = useAddTag();
   const { deleteTag } = useDeleteTag();
 
   const [content, setContent] = useState("");
+
+  const tagArray = data ?? [];
 
   function isEditModeActive(tagId: string): boolean {
     return tagId === editModeId;
@@ -51,9 +53,7 @@ const TagsList = () => {
     dispatch(activateTagEditMode(id));
   };
 
-  const handleDeleteTag = (id: string) => {
-    deleteTag(id);
-  };
+  const handleDeleteTag = deleteTag;
 
   const handleFilterBy = (tag: string) => {
     const searchParams = new URLSearchParams({ tag });
@@ -83,7 +83,7 @@ const TagsList = () => {
       )}
 
       <S.TagList>
-        {tagArray?.map((tag) =>
+        {tagArray.map((tag) =>
           !isEditModeActive(tag.tagId) ? (
             <S.ListItem key={tag.tagId}>
               <S.TaskTagIcon />

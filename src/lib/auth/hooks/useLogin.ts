@@ -40,7 +40,6 @@ export const useLogin = () => {
       },
       retry: false,
       onError: (err: any) => {
-        console.log(err);
         const error = err.message || err;
         const errorMessage = `loging in. ${error}`;
         dispatch(setErrorMessage(errorMessage));

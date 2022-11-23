@@ -6,7 +6,7 @@ import UserListItem from "components/molecules/UserListItem/UserListItem";
 import PredefinedLists from "../PredefinedLists/PredefinedLists";
 
 import * as S from "./styles";
-import { SideBarProps } from "types/type";
+import { Modal, SideBarProps } from "types/type";
 import { useLists } from "lib/lists";
 
 const SideBar = ({ isVisible }: SideBarProps) => {
@@ -14,7 +14,7 @@ const SideBar = ({ isVisible }: SideBarProps) => {
   const { getUsersLists: listArray } = useLists();
 
   const handleShowListCreator = () => {
-    dispatch(setShowModal("createList"));
+    dispatch(setShowModal(Modal.CreateList));
   };
 
   return (
