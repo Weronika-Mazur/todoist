@@ -1,32 +1,25 @@
 import { useParams } from "react-router-dom";
-import { useLayoutEffect } from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
-
-import { selectIsLoading } from "features/todo/todoSlice";
-import { changeActiveListID, selectInbox } from "features/list/listSlice";
 
 import TaskFilterBar from "../../TaskFilters/TaskFilterBar";
 import TaskList from "../../Lists/TaskList/TaskList";
 import TaskCreator from "../../TaskCreator/TaskCreator";
+import { useTodos } from "lib/todos";
+import { useLists } from "lib/lists";
 
 const TaskContainer = () => {
-  const dispatch = useAppDispatch();
   const params = useParams();
-  const isLoading = useAppSelector(selectIsLoading);
 
-  const { listId: inboxId } = useAppSelector(selectInbox);
+  const { getInbox } = useLists();
 
-  const listId = params.listId ?? inboxId;
+  const listId = params.listId ?? getInbox?.listId ?? "";
 
-  useLayoutEffect(() => {
-    dispatch(changeActiveListID(listId));
-  }, [dispatch, listId]);
+  const { isLoading } = useTodos({ filters: { listId } });
 
   return (
     <main className="w-full mr-[0px]">
-      <TaskCreator />
+      <TaskCreator isLoading={isLoading} />
       <TaskFilterBar filters={{ listId }} />
-      {!isLoading && <TaskList />}
+      <TaskList filters={{ listId }} />
     </main>
   );
 };

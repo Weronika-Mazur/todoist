@@ -1,6 +1,8 @@
-import MenuIcon from "assets/MenuIcon";
-import UserIcon from "assets/UserIcon";
 import tw from "tailwind-styled-components";
+
+import MenuIcon from "assets/MenuIcon";
+import OptionsIcon from "assets/OptionsIcons";
+import UserPicture from "components/molecules/UserPicture/UserPicture";
 
 export const Bar = tw.nav`
 fixed
@@ -67,9 +69,25 @@ h-5
 ml-3
 `;
 
-export const DarkUserIcon = tw(UserIcon)`
+export const DarkUserIcon = tw(UserPicture)`
 w-7 
 h-7 
 mr-3 
 fill-main-700
+rounded-full
+object-cover
+`;
+
+export const WhiteOptionsIcon = tw(OptionsIcon)`
+fill-slate-100 
+w-5 
+h-5 
+mr-4 
+ml-1
+cursor-pointer
+rotate-90
+`;
+
+export const OptionsButton = tw.button`
+
 `;

@@ -1,14 +1,21 @@
+import tw from "tailwind-styled-components";
+
 import CalendarIcon from "assets/CalendarIcon";
 import InboxIcon from "assets/InboxIcon";
 import TagIcon from "assets/TagIcon";
 import TodayIcon from "assets/TodayIcon";
 import TomorrowIcon from "assets/TomorrowIcon";
-import tw from "tailwind-styled-components";
+
+interface Title {
+  $selected: string;
+}
 
 export const PredefinedListItem = tw.li`
-mt-2
+py-1
+pl-1
 flex
 items-center
+${(p: Title) => (p.$selected ? "bg-main-500 rounded-md" : "")}
 `;
 
 export const SkyCalendarIcon = tw(CalendarIcon)`

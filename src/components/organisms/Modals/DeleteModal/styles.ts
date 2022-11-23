@@ -30,6 +30,7 @@ border-t-2
 border-main-500 
 px-8 
 py-5
+gap-4
 `;
 
 export const Title = tw.h1`

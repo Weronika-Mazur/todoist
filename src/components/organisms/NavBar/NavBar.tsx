@@ -1,30 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { NavLink } from "react-router-dom";
 
-import { resetTodo } from "features/todo/todoSlice";
-import { resetList } from "features/list/listSlice";
-import { resetUser } from "features/user/userSlice";
-
-import { selectEmail } from "features/user/userSlice";
 import * as S from "./styles";
+import DropDown from "components/molecules/DropDown/DropDown";
+import AccountOptionsDropDown from "../DropDowns/AccountOptionsDropDown/AccountOptionsDropDown";
+import { useUser } from "lib/auth";
 
 interface NavBarProps {
   handleToggleSideBar: () => void;
 }
 
 const NavBar = ({ handleToggleSideBar }: NavBarProps) => {
-  const username = useAppSelector(selectEmail);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  function handleLogOut() {
-    localStorage.removeItem("jwt");
-    dispatch(resetTodo());
-    dispatch(resetUser());
-    dispatch(resetList());
-
-    navigate("/login");
-  }
+  const { user } = useUser();
 
   return (
     <S.Bar>
@@ -32,12 +18,20 @@ const NavBar = ({ handleToggleSideBar }: NavBarProps) => {
         <S.MenuButton onClick={handleToggleSideBar}>
           <S.WhiteMenuIcon />
         </S.MenuButton>
-        <S.Logo>TODO</S.Logo>
+        <NavLink to="/home/">
+          <S.Logo>TODO</S.Logo>
+        </NavLink>
       </S.LogoContainer>
       <S.NavContainer>
-        <S.UserName>{username}</S.UserName>
+        <S.UserName>{user?.userName}</S.UserName>
+
         <S.DarkUserIcon />
-        <S.LogOutButton onClick={handleLogOut}>Log out</S.LogOutButton>
+
+        <DropDown dropDown={<AccountOptionsDropDown />} placement="left-start">
+          <S.OptionsButton>
+            <S.WhiteOptionsIcon />
+          </S.OptionsButton>
+        </DropDown>
       </S.NavContainer>
     </S.Bar>
   );

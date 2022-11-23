@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import disableScroll from "disable-scroll";
 
-import { Priority } from "types/type";
-
+import { Priority } from "types/todo";
 import * as S from "./styles";
 import { getPriorityArray } from "utils/helpers";
 

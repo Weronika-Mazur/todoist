@@ -1,5 +1,4 @@
-import { Priority } from "types/type";
-import { TaskFilters } from "../types/type";
+import { TaskFilters, Priority } from "types/todo";
 
 export const getPriorityArray = () => {
   const priorityArray = Object.keys(Priority).filter((v) =>

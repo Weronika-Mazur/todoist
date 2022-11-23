@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { Priority } from "types/type";
+import { Priority } from "types/todo";
 import { getPriorityArray } from "utils/helpers";
 
 import * as S from "./styles";

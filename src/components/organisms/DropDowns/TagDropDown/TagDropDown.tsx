@@ -1,10 +1,11 @@
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useAppDispatch } from "store/hooks";
 import { useEffect, useRef, useState } from "react";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import * as S from "./styles";
-import { selectTagArray, selectIsLoading, addTag } from "features/tag/tagSlice";
-import { Tag, TagContent } from "types/type";
+import { Tag, TagContent } from "types/tag";
+import { useAddTag, useTags } from "lib/tag";
+import { setErrorMessage } from "features/app/appSlice";
 
 interface TagDropDownDropDownProps {
   handleSetTaskTags: (newSet: Tag[]) => void;
@@ -16,8 +17,9 @@ const TagDropDown = ({
   taskTags,
 }: TagDropDownDropDownProps) => {
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(selectIsLoading);
-  const tagArray = useAppSelector(selectTagArray);
+
+  const { data: tagArray, isLoading } = useTags();
+  const { addTag } = useAddTag();
 
   const [text, setText] = useState("");
   const targetRef = useRef();
@@ -44,10 +46,11 @@ const TagDropDown = ({
         content: text.trim(),
       };
 
-      const data = await dispatch(addTag(newTag));
-      if (data) {
-        setText("");
-      }
+      addTag(newTag, {
+        onSuccess: () => {
+          setText("");
+        },
+      });
     }
   };
 
@@ -84,7 +87,7 @@ const TagDropDown = ({
 
       <S.TagsListItem onClick={handleClick}>
         <S.TagList ref={targetRef}>
-          {Array.from(tagArray).map((tag) => (
+          {tagArray?.map((tag) => (
             <S.TagItem onClick={() => handleToggleTag(tag)} key={tag.tagId}>
               <S.TagLabel>{tag.content}</S.TagLabel>
               <S.Checkmark $isChecked={hasTag(tag)}>

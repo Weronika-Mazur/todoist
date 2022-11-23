@@ -1,52 +1,67 @@
 import { useAppSelector } from "store/hooks";
 
-import {
-  selectTaskArrayWithFilters,
-  selectTaskEditModeId,
-} from "features/todo/todoSlice";
-
-import TaskItem from "components/molecules/TaskItem/TaskItem";
 import NoTasks from "components/molecules/NoTasks/NoTasks";
+import TaskItem from "components/molecules/TaskItem/TaskItem";
 import TaskEdit from "components/molecules/TaskEdit/TaskEdit";
+
+import {
+  selectTaskEditModeId,
+  selectTaskFilter,
+} from "features/todo/todoSlice";
 
 import * as S from "./styles";
 import { toDate } from "utils/helpers";
+import { TaskFilters } from "types/todo";
+import { useTodos } from "lib/todos";
 
-const TaskList = () => {
-  const taskArray = useAppSelector(selectTaskArrayWithFilters);
+interface TaskListProps {
+  filters: TaskFilters;
+}
+
+const TaskList = ({ filters }: TaskListProps) => {
+  const taskArrayFilter = useAppSelector(selectTaskFilter);
   const editModeId = useAppSelector(selectTaskEditModeId);
 
   function isEditModeActive(taskId: string): boolean {
     return taskId === editModeId;
   }
 
-  return taskArray.length !== 0 ? (
+  const { getArrayWithFilters } = useTodos({ filters });
+  const arrayWithFilters = getArrayWithFilters(taskArrayFilter);
+
+  if (!arrayWithFilters) return null;
+
+  if (arrayWithFilters.length === 0) return <NoTasks />;
+
+  return (
     <S.TaskSection>
-      {taskArray.map((task) =>
+      {arrayWithFilters.map((task) =>
         !isEditModeActive(task.taskId) ? (
           <TaskItem
             key={task.taskId}
-            id={task.taskId}
             status={task.status}
+            taskId={task.taskId}
             content={task.content}
-            dueDate={toDate(task.dueDate)}
             tags={task.tags}
             priority={task.priority}
+            dueDate={toDate(task.dueDate)}
+            listId={task.listId}
+            filters={filters}
           />
         ) : (
           <TaskEdit
             key={task.taskId}
-            id={task.taskId}
+            taskId={task.taskId}
             content={task.content}
             dueDate={toDate(task.dueDate)}
             tags={task.tags}
             priority={task.priority}
+            listId={task.listId}
+            filters={filters}
           />
         )
       )}
     </S.TaskSection>
-  ) : (
-    <NoTasks />
   );
 };
 

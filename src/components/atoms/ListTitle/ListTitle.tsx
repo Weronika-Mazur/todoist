@@ -6,7 +6,7 @@ interface Title {
 
 interface ListTitleProps {
   text: string;
-  listId: string;
+  listId?: string;
   fetchTags?: boolean;
   isActive?: boolean;
   onClick?: () => void;
@@ -18,11 +18,11 @@ const ListTitle = ({ text, onClick, isActive }: ListTitleProps) => {
   break-words
   truncate
 
-${(p: Title) =>
-  p.$selected
-    ? "text-slate-100 font-extrabold"
-    : "font-regular text-main-100 cursor-pointer"}
-`;
+  ${(p: Title) =>
+    p.$selected
+      ? "text-slate-100 font-bold cursor-default"
+      : "font-regular text-main-100 cursor-pointer"}
+  `;
 
   return (
     <Title $selected={isActive} onClick={onClick} title={text}>

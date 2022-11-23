@@ -1,24 +1,38 @@
 import { useState } from "react";
 import { useAppDispatch } from "store/hooks";
 
-import { deactivateTaskEditMode, editTask } from "features/todo/todoSlice";
-import { NewTask, Priority, Tag } from "types/type";
+import Button from "components/atoms/Button/Button";
+import TaskDetails from "../TaskDetails/TaskDetails";
+
+import { deactivateTaskEditMode } from "features/todo/todoSlice";
 
 import * as S from "./styles";
-import TaskDetails from "../TaskDetails/TaskDetails";
-import CancelButton from "components/atoms/CancelButton/CancelButton";
-import Button from "components/atoms/Button/Button";
 import { toDate } from "utils/helpers";
+import { AppsQueryKeys } from "utils/constants";
+import { useChangeTodo } from "lib/todos";
+
+import { NewTask, Priority, TaskFilters } from "types/todo";
+import { Tag } from "types/tag";
 
 interface TaskEditProps {
   content: string;
-  id: string;
+  taskId: string;
+  listId: string;
   tags?: Tag[];
   dueDate?: Date;
   priority: Priority;
+  filters: TaskFilters;
 }
 
-const TaskEdit = ({ content, id, tags, dueDate, priority }: TaskEditProps) => {
+const TaskEdit = ({
+  content,
+  taskId,
+  listId,
+  tags,
+  dueDate,
+  priority,
+  filters,
+}: TaskEditProps) => {
   const dispatch = useAppDispatch();
 
   const [newTask, setNewTask] = useState({
@@ -27,12 +41,23 @@ const TaskEdit = ({ content, id, tags, dueDate, priority }: TaskEditProps) => {
     dueDate: dueDate,
     tags: tags ?? [],
   } as NewTask);
+  const { changeTodo } = useChangeTodo();
+  const todosQueryKey = [AppsQueryKeys.todos, filters];
 
   const handleEndEditing = async () => {
-    const data = await dispatch(editTask(id, newTask));
-    if (data) {
-      dispatch(deactivateTaskEditMode());
-    }
+    changeTodo(
+      {
+        taskId,
+        todosQueryKey,
+        listId,
+        changes: newTask,
+      },
+      {
+        onSuccess: () => {
+          dispatch(deactivateTaskEditMode());
+        },
+      }
+    );
   };
 
   const handleCancelEdit = () => {
@@ -77,7 +102,7 @@ const TaskEdit = ({ content, id, tags, dueDate, priority }: TaskEditProps) => {
         />
         <S.ButtonContainer>
           <Button text="confirm" onClick={handleEndEditing} />
-          <CancelButton onClick={handleCancelEdit} />
+          <Button variant="outlined" text="cancel" onClick={handleCancelEdit} />
         </S.ButtonContainer>
       </S.EditContainer>
     </>

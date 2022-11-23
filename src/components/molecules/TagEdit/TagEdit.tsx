@@ -4,7 +4,8 @@ import { useAppDispatch } from "store/hooks";
 import disableScroll from "disable-scroll";
 
 import * as S from "./styles";
-import { deactivateTagEditMode, editTag } from "features/tag/tagSlice";
+import { deactivateTagEditMode } from "features/tag/tagSlice";
+import { useChangeTag } from "lib/tag";
 
 interface TagEditProps {
   content: string;
@@ -14,15 +15,23 @@ interface TagEditProps {
 const TagEdit = ({ content, id }: TagEditProps) => {
   const dispatch = useAppDispatch();
   const [text, setText] = useState(content);
+  const { changeTag } = useChangeTag();
 
   const handleEndEditing = () => {
-    text !== content
-      ? dispatch(
-          editTag(id, {
+    text !== content &&
+      changeTag(
+        {
+          tagId: id,
+          changes: {
             content: text,
-          })
-        )
-      : dispatch(deactivateTagEditMode());
+          },
+        },
+        {
+          onSuccess: () => {
+            dispatch(deactivateTagEditMode());
+          },
+        }
+      );
 
     disableScroll.off();
   };

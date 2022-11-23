@@ -6,7 +6,7 @@ import CrossIcon from "assets/CrossIcon";
 import EditIcon from "assets/EditIcon";
 import TagIcon from "assets/TagIcon";
 
-import { TaskStatus, Priority } from "types/type";
+import { TaskStatus, Priority } from "types/todo";
 import { PriorityBorderColors } from "utils/constants";
 
 const TaskItemHover = styled.div`
