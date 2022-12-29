@@ -9,6 +9,7 @@ import { setErrorMessage } from "features/app/appSlice";
 
 interface UseTodosProps {
   filters: TaskFilters;
+  enabled?: boolean;
 }
 
 export const fetchTaskArray = async (filters: TaskFilters) => {
@@ -23,7 +24,7 @@ export const fetchTaskArray = async (filters: TaskFilters) => {
   return data;
 };
 
-export const useTodos = ({ filters }: UseTodosProps) => {
+export const useTodos = ({ filters, enabled = true }: UseTodosProps) => {
   const dispatch = useAppDispatch();
 
   const query = useQuery<Task[], ErrorMessage>({
@@ -35,6 +36,7 @@ export const useTodos = ({ filters }: UseTodosProps) => {
       const errorMessage = `fetching tasks. ${error}`;
       dispatch(setErrorMessage(errorMessage));
     },
+    enabled,
   });
 
   const activeItemsCounter = query.data?.filter(

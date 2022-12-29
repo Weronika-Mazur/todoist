@@ -3,7 +3,6 @@ import { useAppDispatch } from "store/hooks";
 
 import { AppsQueryKeys } from "utils/constants";
 import { userApi } from "../userAPI/userAPI";
-import { handleUserResponse } from "../utils/helpers";
 import { LoginFormValues } from "types/type";
 import { ErrorMessage, User } from "types/type";
 import { setErrorMessage } from "features/app/appSlice";

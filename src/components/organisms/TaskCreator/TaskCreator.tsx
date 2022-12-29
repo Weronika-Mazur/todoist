@@ -9,11 +9,15 @@ import { NewTask, Priority } from "types/todo";
 import { Tag } from "types/tag";
 import { toDate } from "utils/helpers";
 import { useAddTodo } from "lib/todos";
-import { useGetListId } from "utils/useGetListId";
 
-const TaskCreator = ({ isLoading }: { isLoading: boolean }) => {
+const TaskCreator = ({
+  isLoading,
+  listId,
+}: {
+  isLoading: boolean;
+  listId?: string;
+}) => {
   const { addTask } = useAddTodo();
-  const listId = useGetListId();
 
   const [newTask, setNewTask] = useState({
     content: "",
@@ -24,7 +28,7 @@ const TaskCreator = ({ isLoading }: { isLoading: boolean }) => {
   } as NewTask);
 
   const handleAddTask = async () => {
-    if (newTask.content !== "") {
+    if (newTask.content !== "" && listId) {
       addTask(
         { newTask, listId },
         {

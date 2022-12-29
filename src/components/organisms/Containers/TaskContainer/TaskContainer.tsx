@@ -9,17 +9,22 @@ import { useLists } from "lib/lists";
 const TaskContainer = () => {
   const params = useParams();
 
-  const { getInbox } = useLists();
+  const { getInbox, isLoading: isLoadingLists } = useLists();
 
-  const listId = params.listId ?? getInbox?.listId ?? "";
+  const listId = params.listId ?? getInbox?.listId;
 
-  const { isLoading } = useTodos({ filters: { listId } });
+  const enabled = !isLoadingLists && !!listId;
+
+  const { isLoading } = useTodos({
+    filters: { listId },
+    enabled,
+  });
 
   return (
     <main className="w-full mr-[0px]">
-      <TaskCreator isLoading={isLoading} />
-      <TaskFilterBar filters={{ listId }} />
-      <TaskList filters={{ listId }} />
+      <TaskCreator isLoading={isLoading} listId={listId} />
+      <TaskFilterBar filters={{ listId }} enabled={enabled} />
+      <TaskList filters={{ listId }} enabled={enabled} />
     </main>
   );
 };

@@ -38,7 +38,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --bail",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -70,11 +70,15 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
+    "@faker-js/faker": "^7.6.0",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^14.1.1",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/react-flatpickr": "^3.8.6",
     "autoprefixer": "^10.4.4",
+    "jsonwebtoken": "^8.5.1",
+    "nock": "^13.2.9",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.24"
   }
