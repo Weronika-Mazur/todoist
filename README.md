@@ -2,7 +2,9 @@
 
 Task management app based on todoist created with React, Redux, Typescript, Tailwind.
 
-![ScreenShot](https://i.postimg.cc/9ftcPZfg/Screenshot-from-2022-05-31-01-02-48.png)
+[![Screenshot-from-2023-01-18-19-05-55.png](https://i.postimg.cc/ZY2Bqm97/Screenshot-from-2023-01-18-19-05-55.png)](https://postimg.cc/mh32d0yC)
+
+[![Frame-2.jpg](https://i.postimg.cc/zGHXP2qy/Frame-2.jpg)](https://postimg.cc/bZ8hZTDP)
 
 ## Demo
 
