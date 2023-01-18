@@ -1,140 +1,199 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
+import nock from "nock";
+import userEvent from "@testing-library/user-event";
+import { faker } from "@faker-js/faker";
 
 import TaskContainer from "../TaskContainer";
-import { renderWithState } from "utils/testHelpers";
-import { todoApi } from "lib/todos/todoAPI/todoAPI";
-import { Priority, Task, TaskContent, TaskFilters } from "types/type";
+import { render } from "test/testHelpers";
+import { Priority, Task } from "types/todo";
+import { listGenerator, todoGenerator, userGenerator } from "test/generators";
 
-const testTaskArray: Task[] = [
-  {
-    taskId: "1",
-    content: "lorem ipsum",
-    status: "active",
-    priority: Priority.P1,
-  },
-  {
-    taskId: "2",
-    content: "Go shopping",
-    status: "completed",
-    priority: Priority.P1,
-  },
-  {
-    taskId: "3",
-    content: "Start working",
-    status: "completed",
-    priority: Priority.P1,
-  },
-];
+import { BASEURL } from "utils/constants";
+import { endpoints } from "utils/endpoints";
+import { TaskContent } from "types/todo";
+import { accessControlHeaders } from "test/constants";
 
-const todoState = {
-  todo: {
-    taskArray: [],
-    taskFilter: "all",
-    isLoading: false,
-    errorMessage: "",
-    editMode: {
-      active: false,
-      id: "",
-    },
-  },
+const generateTaskList = (overrides?: Partial<Task>) => {
+  const testUser = userGenerator();
+  const testList = listGenerator({
+    inbox: true,
+    name: "Inbox",
+    owner: testUser.userId,
+  });
+
+  const testTask = todoGenerator({ listId: testList.listId, ...overrides });
+  const testTaskList = [
+    testTask,
+    todoGenerator({ listId: testList.listId }),
+    todoGenerator({ listId: testList.listId }),
+  ];
+
+  return { testTask, testUser, testList, testTaskList };
 };
 
-beforeEach(() => {
-  jest.spyOn(todoApi, "deleteTask").mockImplementation((taskId: string) =>
-    Promise.resolve({
-      taskId: taskId,
-      content: "Go shopping",
-      status: "completed",
-      priority: Priority.P1,
-    })
+const renderTaskContainer = (overrides?: Partial<Task>) => {
+  const { testTask, testUser, testList, testTaskList } =
+    generateTaskList(overrides);
+  nock.disableNetConnect();
+
+  nock(BASEURL)
+    .persist()
+    .intercept(`/${endpoints.list.getLists}`, "OPTIONS")
+    .reply(200, undefined, accessControlHeaders)
+    .get(`/${endpoints.list.getLists}`)
+    .reply(200, [testList], accessControlHeaders);
+
+  nock(BASEURL)
+    .persist()
+    .intercept(`/${endpoints.todos.getTasks}${testList.listId}`, "OPTIONS")
+    .reply(200, undefined, accessControlHeaders)
+    .get(`/${endpoints.todos.getTasks}${testList.listId}`)
+    .reply(200, testTaskList, accessControlHeaders);
+
+  render(
+    <MemoryRouter initialEntries={["/home/"]}>
+      <TaskContainer />
+    </MemoryRouter>,
+    {
+      user: testUser,
+    }
   );
 
-  jest
-    .spyOn(todoApi, "addTask")
-    .mockImplementation((listId: string, newTask: TaskContent) =>
-      Promise.resolve({
-        taskId: "4",
-        content: newTask.content || "",
-        status: "active",
-        priority: Priority.P1,
-      })
-    );
-
-  jest
-    .spyOn(todoApi, "updateTask")
-    .mockImplementation((taskId: string, changes: TaskContent) =>
-      Promise.resolve({
-        taskId: taskId,
-        content: "Go shopping",
-        status: changes.status || "completed",
-        priority: Priority.P1,
-      })
-    );
-
-  jest
-    .spyOn(todoApi, "getTasks")
-    .mockImplementation((listId = "", filters?: TaskFilters) =>
-      Promise.resolve(testTaskArray)
-    );
-});
+  return { testTask, testUser, testList, testTaskList };
+};
 
 describe("Task Container", () => {
   test("renders task container", async () => {
-    renderWithState(
-      <MemoryRouter initialEntries={["/home/"]}>
-        <TaskContainer />
-      </MemoryRouter>,
-      todoState
-    );
+    const { testTaskList } = renderTaskContainer();
     expect(
       await screen.findByPlaceholderText(/Create a new todo.../i)
     ).toBeInTheDocument();
     expect(screen.getByText(/All/i)).toBeInTheDocument();
-    expect(screen.getByText(/lorem ipsum/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(testTaskList[0].content)
+    ).toBeInTheDocument();
   });
 
   test("adds task to list", async () => {
-    renderWithState(
-      <MemoryRouter initialEntries={["/home/"]}>
-        <TaskContainer />
-      </MemoryRouter>,
-      todoState
-    );
+    const user = userEvent.setup();
+    const newTaskContent = faker.lorem.words();
+
+    const { testTaskList, testList } = renderTaskContainer();
+    expect(
+      await screen.findByText(testTaskList[0].content)
+    ).toBeInTheDocument();
+
+    const endpoint = `/${endpoints.todos.addTask}${testList.listId}`;
+
+    nock(BASEURL)
+      .intercept(endpoint, "OPTIONS")
+      .reply(200, undefined, accessControlHeaders)
+      .post(endpoint, (body: TaskContent) => body.content === newTaskContent)
+      .reply(
+        200,
+        (uri: string, requestBody: TaskContent) => ({
+          listId: testList.listId,
+          taskId: faker.datatype.uuid(),
+          content: newTaskContent,
+          status: "active",
+          priority: Priority.P1,
+          ...requestBody,
+        }),
+        accessControlHeaders
+      );
 
     const input = await screen.findByPlaceholderText(/Create a new todo.../i);
-    fireEvent.change(input, { target: { value: "New task" } });
-    fireEvent.click(screen.getByRole("button", { name: "add" }));
+    await user.click(input);
+    await user.type(input, newTaskContent);
+    await user.click(screen.getByRole("button", { name: "add" }));
 
-    expect(await screen.findByText(/New task/i)).toBeInTheDocument();
+    expect(await screen.findByText(newTaskContent)).toBeInTheDocument();
   });
 
   test("deletes task from list", async () => {
-    renderWithState(
-      <MemoryRouter initialEntries={["/home/"]}>
-        <TaskContainer />
-      </MemoryRouter>,
-      todoState
+    const user = userEvent.setup();
+    const { testTaskList } = renderTaskContainer();
+    expect(
+      await screen.findByText(testTaskList[0].content)
+    ).toBeInTheDocument();
+
+    const endpoint = `/${endpoints.todos.deleteTask}${testTaskList[1].taskId}`;
+
+    nock(BASEURL)
+      .intercept(endpoint, "OPTIONS")
+      .reply(200, undefined, accessControlHeaders)
+      .delete(endpoint)
+      .reply(200, testTaskList[1], accessControlHeaders);
+
+    await user.click(
+      screen.getByTestId(`cross-button-${testTaskList[1].taskId}`)
     );
 
-    fireEvent.click(await screen.findByTestId("cross-button-2"));
     await waitFor(() => {
-      expect(screen.queryByText(/Go shopping/i)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(testTaskList[1].content)
+      ).not.toBeInTheDocument();
     });
   });
 
   test("changes tasks status from complete to active", async () => {
-    renderWithState(
-      <MemoryRouter initialEntries={["/home/"]}>
-        <TaskContainer />
-      </MemoryRouter>,
-      todoState
+    const user = userEvent.setup();
+    const { testTask } = renderTaskContainer({
+      status: "completed",
+      priority: Priority.P1,
+    });
+    expect(await screen.findByText(testTask.content)).toBeInTheDocument();
+
+    const endpoint = `/${endpoints.todos.updateTask}${testTask.taskId}`;
+
+    nock(BASEURL)
+      .intercept(endpoint, "OPTIONS")
+      .reply(200, undefined, accessControlHeaders)
+      .put(endpoint)
+      .reply(
+        200,
+        (uri: string, requestBody: TaskContent) => ({
+          ...testTask,
+          ...requestBody,
+        }),
+        accessControlHeaders
+      );
+
+    const taskButton = screen.getByTestId(`task-button-${testTask.taskId}`);
+
+    await user.click(taskButton);
+
+    await waitFor(() => {
+      expect(taskButton).toHaveClass("border-blue");
+    });
+  });
+
+  test("clears completed tasks from list", async () => {
+    const user = userEvent.setup();
+    const { testTaskList, testList, testTask } = renderTaskContainer({
+      status: "completed",
+    });
+    expect(
+      await screen.findByText(testTaskList[0].content)
+    ).toBeInTheDocument();
+
+    const endpoint = `/${endpoints.todos.clearTasks}${testList.listId}`;
+    const deletedTasks = testTaskList.filter(
+      (task: Task) => task.status === "completed"
     );
 
-    fireEvent.click(await screen.findByTestId("task-button-2"));
+    nock(BASEURL)
+      .intercept(endpoint, "OPTIONS")
+      .reply(200, undefined, accessControlHeaders)
+      .delete(endpoint)
+      .reply(200, deletedTasks, accessControlHeaders);
+
+    await user.click(screen.getByText("Clear completed"));
+
     await waitFor(() => {
-      expect(screen.getByTestId("task-button-2")).toHaveClass("border-blue");
+      expect(screen.queryByText(testTask.content)).not.toBeInTheDocument();
     });
   });
 });

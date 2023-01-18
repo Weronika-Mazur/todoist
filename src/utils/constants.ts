@@ -33,3 +33,5 @@ export const AppsQueryKeys = {
   tags: "tags",
   user: "user",
 };
+
+export const BASEURL = "https://todoist-backend.fly.dev/";

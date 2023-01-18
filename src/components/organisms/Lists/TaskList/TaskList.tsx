@@ -16,9 +16,10 @@ import { useTodos } from "lib/todos";
 
 interface TaskListProps {
   filters: TaskFilters;
+  enabled?: boolean;
 }
 
-const TaskList = ({ filters }: TaskListProps) => {
+const TaskList = ({ filters, enabled = true }: TaskListProps) => {
   const taskArrayFilter = useAppSelector(selectTaskFilter);
   const editModeId = useAppSelector(selectTaskEditModeId);
 
@@ -26,7 +27,7 @@ const TaskList = ({ filters }: TaskListProps) => {
     return taskId === editModeId;
   }
 
-  const { getArrayWithFilters } = useTodos({ filters });
+  const { getArrayWithFilters } = useTodos({ filters, enabled });
   const arrayWithFilters = getArrayWithFilters(taskArrayFilter);
 
   if (!arrayWithFilters) return null;

@@ -1,3 +1,5 @@
+import { BASEURL } from "utils/constants";
+
 export class FetchService {
   constructor(private readonly url: string) {}
 
@@ -58,6 +60,4 @@ export class FetchService {
   }
 }
 
-export const fetchService = new FetchService(
-  "https://todoist-backend.fly.dev/"
-);
+export const fetchService = new FetchService(BASEURL);

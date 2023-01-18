@@ -1,11 +1,9 @@
-import { useAppDispatch } from "store/hooks";
 import { useEffect, useRef, useState } from "react";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import * as S from "./styles";
 import { Tag, TagContent } from "types/tag";
 import { useAddTag, useTags } from "lib/tag";
-import { setErrorMessage } from "features/app/appSlice";
 
 interface TagDropDownDropDownProps {
   handleSetTaskTags: (newSet: Tag[]) => void;
@@ -16,8 +14,6 @@ const TagDropDown = ({
   handleSetTaskTags,
   taskTags,
 }: TagDropDownDropDownProps) => {
-  const dispatch = useAppDispatch();
-
   const { data: tagArray, isLoading } = useTags();
   const { addTag } = useAddTag();
 

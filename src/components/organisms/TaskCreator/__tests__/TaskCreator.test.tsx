@@ -2,24 +2,12 @@ import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import TaskCreator from "../TaskCreator";
-import { renderWithState } from "utils/testHelpers";
-
-const todoState = {
-  todo: {
-    taskArray: [],
-    taskFilter: "all",
-    isLoading: false,
-    errorMessage: "",
-    editMode: {
-      active: false,
-      id: "",
-    },
-  },
-};
+import { render } from "test/testHelpers";
 
 describe("Task Creator", () => {
   test("renders loading animation when started", () => {
-    renderWithState(<TaskCreator />);
+    render(<TaskCreator isLoading={true} />);
+
     expect(
       screen.queryByPlaceholderText(/Create a new todo.../i)
     ).not.toBeInTheDocument();
@@ -27,7 +15,8 @@ describe("Task Creator", () => {
   });
 
   test("renders task creator when not loading", () => {
-    renderWithState(<TaskCreator />, todoState);
+    render(<TaskCreator isLoading={false} />);
+
     expect(
       screen.getByPlaceholderText(/Create a new todo.../i)
     ).toBeInTheDocument();

@@ -9,11 +9,15 @@ import { useClearCompleted, useTodos } from "lib/todos";
 
 interface TaskFilterBarProps {
   filters?: TaskFilters;
+  enabled?: boolean;
 }
 
-const TaskFilterBar = ({ filters = {} }: TaskFilterBarProps) => {
+const TaskFilterBar = ({
+  filters = {},
+  enabled = true,
+}: TaskFilterBarProps) => {
   const dispatch = useAppDispatch();
-  const { activeItemsCounter } = useTodos({ filters });
+  const { activeItemsCounter } = useTodos({ filters, enabled });
 
   const itemsLeft = `${activeItemsCounter ?? 0} items left`;
   const taskArrayFilter = useAppSelector(selectTaskFilter);
